@@ -1,0 +1,33 @@
+Start med å kikke på :
+https://github.com/arnabkd/Prosjekt-2100
+
+Etter det, lager du en mappe (spiller ingen trille hvor)
+mkdir Prosjekt-2100
+cd Prosjekt-2100
+git clone git@github.com:arnabkd/Prosjekt-2100.git
+Skriv inn din passphrase, så har du klonet hele gitprosjektet.
+
+
+Når du legger til ting i koden / redigerer koden, så lagrer du først filen.
+Deretter skriver du : git status
+Da ser du hvilke filer som har vært endret siden forrige commit. Du kan også skrive "git diff <filnavn>" for å sjekke hvilke endringer som er blitt gjort siden sist.
+
+Etter dette, bestemmer du deg for hvilke filer som skal legges til i commit.
+La oss si at du har endret på Fil1.txt og Fil2.txt , men du vil bare legge til endringer i Fil1.txt i denne commit'en.
+
+git add Fil1.txt
+git commit
+Da vil du få opp en teksteditor som inneholder commit message. Her skriver du inn en beskrivelse av endringene dine.
+
+Deretter: git push
+
+For å gjøre dette samtidig på flere filer (hvis du vil gjøre Fil1.txt, Fil2.txt.... etc) gjør du slik
+git add Fil1.txt
+git add Fil2.txt
+git add ....
+
+git commit -m "endret på Fil1, Fil 2, .... (gjerne mye mer utfyllende enn dette)"
+git push
+
+
+Det er utrolig viktig med bra commit messages! "Endret på funksjon X til å fungere slik og slik" vs "Endret på Fil1.java" :)
