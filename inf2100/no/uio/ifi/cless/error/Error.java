@@ -12,7 +12,7 @@ import no.uio.ifi.cless.log.Log;
 public class Error {
     public static void error(String where, String message) {
 	//-- Must be changed in part 0:
-
+	System.err.println("Error at line " + where + " : " + message);
 	System.exit(1);
     }
 	
