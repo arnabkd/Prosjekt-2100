@@ -41,7 +41,12 @@ public class CharGenerator {
 
 	public static boolean isMoreToRead() {
 		//-- Must be changed in part 0:
-		return false;
+		//Check if nextC is -1 (EOF)
+		return nextC != -1;
+	}
+
+	public static boolean isComment() {
+		return nextC == '#';
 	}
 
 	public static int curLineNum() {
@@ -51,7 +56,20 @@ public class CharGenerator {
 	public static void readNext() {
 		curC = nextC;
 		if (! isMoreToRead()) return;
-		
+
 		//-- Must be changed in part 0:
+		try {
+			//Update nextC :
+			nextC = (char) sourceFile.read();
+
+			//1. If current character is # , read past the rest of the line
+			if (isComment())  {
+				sourceFile.readLine();
+				nextC = (char) sourceFile.read();
+			}
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
 	}
 }
+
