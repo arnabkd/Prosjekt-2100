@@ -20,14 +20,15 @@ public enum Token { addToken, assignToken, commaToken, divideToken, elseToken,
 
 	public static boolean isOperator(Token t) {
 		//-- Must be changed in part 0:
-		return isNumberOperator(t) || isComparisonOperator(t);
+		return isNumericalOperator(t) || isComparisonOperator(t);
 	}
 
-	public static boolean isNumberOperator(Token t) {
+	public static boolean isNumericalOperator(Token t) {
 		if(t == addToken) return true;
 		if(t == subtractToken) return true;
 		if(t == multiplyToken) return true;
 		if(t == divideToken) return true;
+		return false;
 	}
 
 	public static boolean isComparisonOperator(Token t) {
@@ -37,5 +38,6 @@ public enum Token { addToken, assignToken, commaToken, divideToken, elseToken,
 		if(t == lessEqualToken) return true;
 		if(t == greaterToken) return true;
 		if(t == greaterEqualToken) return true;
+		return false;
 	}
 }
