@@ -41,11 +41,26 @@ public class Scanner {
 				nextNextToken = eofToken;
 				//-- Must be changed in part 0:
 			} else {
-				CharGenerator.readNext();
+				CharGenerator.readNext(); //Read the first char of the next token
+				char curC = CharGenerator.curC;
 				char nextC = CharGenerator.nextC;
-				if (isLetterAZ(nextC)) {
 
-				} //else if () {
+
+				//Case 1 : nameToken / intToken
+				//Case 1a: intToken
+				//Case 1b: nameToken
+
+				//Case 2 : numberToken
+
+				//Case 3 : operatorToken
+
+				//Case 4 : forToken
+
+				//Case 5 : ifToken
+				//Case 4a : Brackets
+				//Case 4b :
+
+
 
 				//}
 				//illegal("Illegal symbol: '" + CharGenerator.curC + "'!");
@@ -53,6 +68,18 @@ public class Scanner {
 		}
 		Log.noteToken();
 	}
+
+	/*private static String getNameToken() {
+		String name = "";
+		char nextC = CharGenerator.nextC;
+		while (isLetterAZ (nextC)) {
+			name += nextC;
+
+			CharGenerator.readNext();
+			nextC = CharGenerator.nextC;
+		}
+		return name;
+	} */
 
 	private static boolean isLetterAZ(char c) {
 		//-- Must be changed in part 0:
@@ -62,12 +89,30 @@ public class Scanner {
 	private static boolean isDigit(char c) {
 		return Character.isDigit(c);
 	}
-	// private static boolean isOperator(char c) {
-	//	switch (c) {
-	//	case '+': return true;
-	//	case '-': return true;
-	//	case '/': return true
-	//	}
+
+	private static Token isNumericalOperator(char c) {
+		switch (c) {
+		case '+': return Token.addToken;
+		case '-': return Token.subtractToken;
+		case '/': return Token.divideToken;
+		case '*': return Token.multiplyToken;
+		default : return null;
+		}
+	}
+
+	private static Token isComparisonOperator(char c1, char c2) {
+		if (c1 == '=' && c2 == '=') return Token.equalToken;
+		if (c1 == '!' && c2 == '=') return Token.notEqualToken;
+		if (c1 == '>' && c2 == '=') return Token.greaterEqualToken;
+		if (c1 == '<' && c2 == '=') return Token.lessEqualToken;
+		return null;
+	}
+
+	private static Token isComparisonOperator (char c) {
+		if (c == '<') return Token.lessToken;
+		if (c == '>') return Token.greaterToken;
+		return null;
+	}
 
 	// }
 	// private static boolean isCommentStart(char c) {
