@@ -13,94 +13,94 @@ import static no.uio.ifi.cless.scanner.Token.*;
  * Module for forming characters into tokens.
  */
 public class Scanner {
-    public static Token curToken, nextToken, nextNextToken;
-    public static String curName, nextName, nextNextName;
-    public static int curNum, nextNum, nextNextNum;
-    public static int curLine, nextLine, nextNextLine;
-    
-    public static void init() {
-	//-- Must be changed in part 0:
-	
-    }
+	public static Token curToken, nextToken, nextNextToken;
+	public static String curName, nextName, nextNextName;
+	public static int curNum, nextNum, nextNextNum;
+	public static int curLine, nextLine, nextNextLine;
 
-    public static void finish() {
-	//-- Must be changed in part 0:
-    }
-
-    public static void readNext() {
-	curToken = nextToken;  nextToken = nextNextToken;
-	curName = nextName;	 nextName = nextNextName;
-	curNum = nextNum;  nextNum = nextNextNum;
-	curLine = nextLine;	 nextLine = nextNextLine;
-
-	nextNextToken = null;
-	while (nextNextToken == null) {
-	    nextNextLine = CharGenerator.curLineNum();
-
-	    if (! CharGenerator.isMoreToRead()) {
-		nextNextToken = eofToken;
+	public static void init() {
 		//-- Must be changed in part 0:
-	    } else {
-		CharGenerator.readNext();
-		char nextC = CharGenerator.nextC;
-		if (isLetterAZ(nextC)) {
 
-		} else if () {
-
-		}		
-		illegal("Illegal symbol: '" + CharGenerator.curC + "'!");
-	    }
 	}
-	Log.noteToken();
-    }
 
-    private static boolean isLetterAZ(char c) {
-	//-- Must be changed in part 0:
-	return Character.isLetter(c);
-    }
-    
-    private static boolean isDigit(char c) {
-	return Character.isDigit(c);
-    }
-    // private static boolean isOperator(char c) {
-    // 	switch (c) {
-    // 	case '+': return true;
-    // 	case '-': return true;
-    // 	case '/': return true 
-    // 	}
-	
-    // }
-    // private static boolean isCommentStart(char c) {
-    // 	return 
-    // }
+	public static void finish() {
+		//-- Must be changed in part 0:
+	}
 
-    // Various error reporting methods
-    // (They are placed in this package because most of them include
-    // information found here.)
+	public static void readNext() {
+		curToken = nextToken;  nextToken = nextNextToken;
+		curName = nextName;	 nextName = nextNextName;
+		curNum = nextNum;  nextNum = nextNextNum;
+		curLine = nextLine;	 nextLine = nextNextLine;
 
-    public static void illegal(String message) {
-	Error.error(curLine, message);
-    }
+		nextNextToken = null;
+		while (nextNextToken == null) {
+			nextNextLine = CharGenerator.curLineNum();
 
-    public static void expected(String exp) {
-	illegal(exp + " expected, but found a " + curToken + "!");
-    }
+			if (! CharGenerator.isMoreToRead()) {
+				nextNextToken = eofToken;
+				//-- Must be changed in part 0:
+			} else {
+				CharGenerator.readNext();
+				char nextC = CharGenerator.nextC;
+				if (isLetterAZ(nextC)) {
 
-    public static void check(Token t) {
-	if (curToken != t)
-	    expected("A " + t);
-    }
+				} //else if () {
 
-    public static void check(Token t1, Token t2) {
-	if (curToken != t1 && curToken != t2)
-	    expected("A " + t1 + " or a " + t2);
-    }
+				//}
+				//illegal("Illegal symbol: '" + CharGenerator.curC + "'!");
+			}
+		}
+		Log.noteToken();
+	}
 
-    public static void skip(Token t) {
-	check(t);  readNext();
-    }
+	private static boolean isLetterAZ(char c) {
+		//-- Must be changed in part 0:
+		return Character.isLetter(c);
+	}
 
-    public static void skip(Token t1, Token t2) {
-	check(t1,t2);  readNext();
-    }
+	private static boolean isDigit(char c) {
+		return Character.isDigit(c);
+	}
+	// private static boolean isOperator(char c) {
+	//	switch (c) {
+	//	case '+': return true;
+	//	case '-': return true;
+	//	case '/': return true
+	//	}
+
+	// }
+	// private static boolean isCommentStart(char c) {
+	//	return
+	// }
+
+	// Various error reporting methods
+	// (They are placed in this package because most of them include
+	// information found here.)
+
+	public static void illegal(String message) {
+		Error.error(curLine, message);
+	}
+
+	public static void expected(String exp) {
+		illegal(exp + " expected, but found a " + curToken + "!");
+	}
+
+	public static void check(Token t) {
+		if (curToken != t)
+			expected("A " + t);
+	}
+
+	public static void check(Token t1, Token t2) {
+		if (curToken != t1 && curToken != t2)
+			expected("A " + t1 + " or a " + t2);
+	}
+
+	public static void skip(Token t) {
+		check(t);  readNext();
+	}
+
+	public static void skip(Token t1, Token t2) {
+		check(t1,t2);  readNext();
+	}
 }
