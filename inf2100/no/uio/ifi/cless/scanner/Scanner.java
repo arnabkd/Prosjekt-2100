@@ -39,7 +39,7 @@ public class Scanner {
 			if (! CharGenerator.isMoreToRead()) {
 				nextNextToken = eofToken;
 				//-- Must be changed in part 0:
-			} 
+			}  
 			//An else-if shall be inserted here 
 			else {
 				illegal("Illegal symbol: '" + CharGenerator.curC + "'!");
@@ -49,8 +49,8 @@ public class Scanner {
 	}
 
 	private static boolean isLetterAZ(char c) {
-		//-- Must be changed in part 0:
-		return false;
+	    //-- Must be changed in part 0:
+	    return Character.isLetter(c);
 	}
 
 	// Various error reporting methods
