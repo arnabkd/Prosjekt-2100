@@ -72,7 +72,8 @@ public class Log {
     public static void noteSourceLine(int lineNum, String line) {
 	if (! doLogParser && ! doLogScanner) return;
 
-	//-- Must be changed in part 0:
+	//-- Must be changed in part 
+	writeLogLine(lineNum + ": " + line);
     }
 	
     /**
@@ -84,6 +85,14 @@ public class Log {
 	if (! doLogScanner) return;
 
 	//-- Must be changed in part 0:
+	String logline = "Scanner : " + Scanner.nextNextToken + " ";
+
+	if (Scanner.nextNextToken == nameToken)
+	    logline = logline + Scanner.nextNextName;
+	else if (Scanner.nextNextToken == numberToken)
+	    logline = logline + Scanner.nextNextNum;
+	
+	writeLogLine(logline);
     }
 
     public static void noteBinding(String name, int lineNum, int useLineNum) {
