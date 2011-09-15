@@ -51,8 +51,10 @@ public class Scanner {
 
 				curString += curC;
 
-				//New token contained in curString now
-				if (nextC == ' ' && curC != ' ') {
+				//New token contained in curString now 
+				//if the current character is not a delimiter and if the next 
+				//character is a delimiter
+				if (isDelim(nextC) && !isDelim(curC)) {
 					nextNextToken = getToken(curString);
 					curString = null;
 					
@@ -68,6 +70,10 @@ public class Scanner {
 			}
 		}
 		Log.noteToken();
+	}
+
+	private boolean isDelim(char c){
+		return (c == ' ') || (c == ';') || (c == '\n') || (c == '\t');
 	}
 
 	/*private static String getNameToken() {
