@@ -34,6 +34,10 @@ public class Scanner {
 		curLine = nextLine;	 nextLine = nextNextLine;
 
 		nextNextToken = null;
+
+		String curString = "";
+		char curC, nextC;
+
 		while (nextNextToken == null) {
 			nextNextLine = CharGenerator.curLineNum();
 
@@ -42,27 +46,22 @@ public class Scanner {
 				//-- Must be changed in part 0:
 			} else {
 				CharGenerator.readNext(); //Read the first char of the next token
-				char curC = CharGenerator.curC;
-				char nextC = CharGenerator.nextC;
+				curC = CharGenerator.curC;
+				nextC = CharGenerator.nextC;
 
+				curString += curC;
 
-				//Case 1 : nameToken / intToken
-				//Case 1a: intToken
-				//Case 1b: nameToken
+				//New token contained in curString now
+				if (nextC == ' ' && curC != ' ') {
+					nextNextToken = getToken(curString);
+					curString = null;
+					if (nextNextToken == null){
+						illegal("Illegal symbol: '" + CharGenerator.curC + "'!");
+						System.exit(1);
+					}
+				}
 
-				//Case 2 : numberToken
-
-				//Case 3 : operatorToken
-
-				//Case 4 : forToken
-
-				//Case 5 : ifToken
-				//Case 4a : Brackets
-				//Case 4b :
-
-
-
-				//}
+				
 				//illegal("Illegal symbol: '" + CharGenerator.curC + "'!");
 			}
 		}
@@ -70,17 +69,18 @@ public class Scanner {
 	}
 
 	/*private static String getNameToken() {
-		String name = "";
-		char nextC = CharGenerator.nextC;
-		while (isLetterAZ (nextC)) {
-			name += nextC;
+	  String name = "";
+	  char nextC = CharGenerator.nextC;
+	  while (isLetterAZ (nextC)) {
+	  name += nextC;
 
-			CharGenerator.readNext();
-			nextC = CharGenerator.nextC;
-		}
-		return name;
-	} */
+	  CharGenerator.readNext();
+	  nextC = CharGenerator.nextC;
+	  }
+	  return name;
+	  } */
 
+	//Must be changed so that it only matches [a-zA-Z]
 	private static boolean isLetterAZ(char c) {
 		//-- Must be changed in part 0:
 		return Character.isLetter(c);
@@ -90,29 +90,56 @@ public class Scanner {
 		return Character.isDigit(c);
 	}
 
-	private static Token isNumericalOperator(char c) {
-		switch (c) {
-		case '+': return Token.addToken;
-		case '-': return Token.subtractToken;
-		case '/': return Token.divideToken;
-		case '*': return Token.multiplyToken;
-		default : return null;
-		}
+
+	private static Token getToken(String s){
+		if (s.equals("+")) return Token.addToken;
+		else if (s.equals("-")) return Token.subtractToken;
+		else if (s.equals("/")) return Token.divideToken;
+		else if (s.equals("*")) return Token.multiplyToken;
+		else if (s.equals("==")) return Token.equalToken;
+		else if (s.equals("!=")) return Token.notEqualToken;
+		else if (s.equals(">=")) return Token.greaterEqualToken;
+		else if (s.equals("<=")) return Token.lessEqualToken;
+		else if (s.equals(">")) return Token.greaterToken;
+		else if (s.equals("<")) return Token.lessToken;
+		else if (s.equals(";")) return Token.semicolonToken;
+		else if (s.equals(",")) return Token.commaToken;
+		else if (s.equals("(")) return Token.leftBracketToken;
+		else if (s.equals(")")) return Token.rightBracketToken;
+		else if (s.equals("{")) return Token.leftCurlToken;
+		else if (s.equals("}")) return Token.rightCurlToken;
+		else if (s.equals("if")) return Token.ifToken;
+		else if (s.equals("else")) return Token.elseToken;
+		else if (s.equals("for")) return Token.forToken;
+		else if (s.equals("while")) return Token.whileToken;
+		else if (s.matches("[a-z_A-Z][a-z_0-9A-Z]*")) return Token.nameToken;
+		else if (s.matches("[0-9]+$")) return Token.numberToken;
+		else return null;
 	}
 
-	private static Token isComparisonOperator(char c1, char c2) {
-		if (c1 == '=' && c2 == '=') return Token.equalToken;
-		if (c1 == '!' && c2 == '=') return Token.notEqualToken;
-		if (c1 == '>' && c2 == '=') return Token.greaterEqualToken;
-		if (c1 == '<' && c2 == '=') return Token.lessEqualToken;
-		return null;
-	}
+	// private static Token numericalOperator(char c) {
+	//	switch (c) {
+	//	case '+': return Token.addToken;
+	//	case '-': return Token.subtractToken;
+	//	case '/': return Token.divideToken;
+	//	case '*': return Token.multiplyToken;
+	//	default : return null;
+	//	}
+	// }
 
-	private static Token isComparisonOperator (char c) {
-		if (c == '<') return Token.lessToken;
-		if (c == '>') return Token.greaterToken;
-		return null;
-	}
+	// private static Token comparisonOperator(char c1, char c2) {
+	//	if (c1 == '=' && c2 == '=') return Token.equalToken;
+	//	if (c1 == '!' && c2 == '=') return Token.notEqualToken;
+	//	if (c1 == '>' && c2 == '=') return Token.greaterEqualToken;
+	//	if (c1 == '<' && c2 == '=') return Token.lessEqualToken;
+	//	return null;
+	// }
+
+	// private static Token comparisonOperator (char c) {
+	//	if (c == '<') return Token.lessToken;
+	//	if (c == '>') return Token.greaterToken;
+	//	return null;
+	// }
 
 	// }
 	// private static boolean isCommentStart(char c) {
