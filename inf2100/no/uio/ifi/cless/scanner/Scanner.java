@@ -35,11 +35,13 @@ public class Scanner {
 
 		nextNextToken = null;
 
+		char curC = CharGenerator.curC;
+		char nextC = CharGenerator.nextC;
 		String curString = "";
-		char curC, nextC;
 
 		while (nextNextToken == null) {
 			nextNextLine = CharGenerator.curLineNum();
+			
 
 			if (! CharGenerator.isMoreToRead()) {
 				nextNextToken = eofToken;
@@ -48,16 +50,17 @@ public class Scanner {
 				CharGenerator.readNext(); //Read the first char of the next token
 				curC = CharGenerator.curC;
 				nextC = CharGenerator.nextC;
+				curString = curString + curC;
+				System.out.println("nextC  : " +nextC + "  -- curC : " + curC);
 
-				curString += curC;
-
-				//New token contained in curString now 
-				//if the current character is not a delimiter and if the next 
+				//New token contained in curString
+				//if the current character is not a delimiter and if the next
 				//character is a delimiter
-				if (isDelim(nextC) && !isDelim(curC)) {
+				if (!isDelim(curC) && isDelim(nextC)) {
 					nextNextToken = getToken(curString);
+					System.out.println("curString " + curString);
 					curString = null;
-					
+
 					if (nextNextToken == null){
 						illegal("Illegal symbol: '" + CharGenerator.curC + "'!");
 						System.exit(1);
@@ -65,15 +68,17 @@ public class Scanner {
 					break;
 				}
 
-				
+
+
+
 				//illegal("Illegal symbol: '" + CharGenerator.curC + "'!");
 			}
 		}
 		Log.noteToken();
 	}
 
-	private boolean isDelim(char c){
-		return (c == ' ') || (c == ';') || (c == '\n') || (c == '\t');
+	private static boolean isDelim(char c){
+		return (c == ' ') || (c == ';') || (c == '\n') || (c == '\t') || (c == '(') || (c == ')');
 	}
 
 	/*private static String getNameToken() {

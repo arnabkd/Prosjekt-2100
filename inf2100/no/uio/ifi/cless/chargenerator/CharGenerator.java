@@ -61,7 +61,6 @@ public class CharGenerator {
 		try {
 			//Update nextC :
 			nextC = (char) sourceFile.read();
-
 			//1. If current character is # , read past the rest of the line
 			if (isComment())  {
 				sourceFile.readLine();
