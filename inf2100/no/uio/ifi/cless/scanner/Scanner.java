@@ -55,10 +55,12 @@ public class Scanner {
 				if (nextC == ' ' && curC != ' ') {
 					nextNextToken = getToken(curString);
 					curString = null;
+					
 					if (nextNextToken == null){
 						illegal("Illegal symbol: '" + CharGenerator.curC + "'!");
 						System.exit(1);
 					}
+					break;
 				}
 
 				
@@ -108,12 +110,13 @@ public class Scanner {
 		else if (s.equals(")")) return Token.rightBracketToken;
 		else if (s.equals("{")) return Token.leftCurlToken;
 		else if (s.equals("}")) return Token.rightCurlToken;
+		else if (s.equals("int")) return Token.intToken;
 		else if (s.equals("if")) return Token.ifToken;
 		else if (s.equals("else")) return Token.elseToken;
 		else if (s.equals("for")) return Token.forToken;
 		else if (s.equals("while")) return Token.whileToken;
 		else if (s.matches("[a-z_A-Z][a-z_0-9A-Z]*")) return Token.nameToken;
-		else if (s.matches("[0-9]+$")) return Token.numberToken;
+		else if (s.matches("[0-9]+")) return Token.numberToken;
 		else return null;
 	}
 
