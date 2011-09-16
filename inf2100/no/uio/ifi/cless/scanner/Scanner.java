@@ -41,25 +41,34 @@ public class Scanner {
 
 		while (nextNextToken == null) {
 			nextNextLine = CharGenerator.curLineNum();
-			
+
 
 			if (! CharGenerator.isMoreToRead()) {
 				nextNextToken = eofToken;
 				//-- Must be changed in part 0:
 			} else {
+				curString = curString + curC;
 				CharGenerator.readNext(); //Read the first char of the next token
+				
 				curC = CharGenerator.curC;
 				nextC = CharGenerator.nextC;
-				curString = curString + curC;
+
 				System.out.println("nextC  : " +nextC + "  -- curC : " + curC);
 
 				//New token contained in curString
 				//if the current character is not a delimiter and if the next
 				//character is a delimiter
 				if (!isDelim(curC) && isDelim(nextC)) {
+					curString += curC;
 					nextNextToken = getToken(curString);
 					System.out.println("curString " + curString);
 					curString = null;
+					CharGenerator.readNext();
+					
+					if(nextC == ' ') {
+						CharGenerator.readNext();
+						break;
+					}
 
 					if (nextNextToken == null){
 						illegal("Illegal symbol: '" + CharGenerator.curC + "'!");
@@ -127,7 +136,7 @@ public class Scanner {
 		else if (s.equals("for")) return Token.forToken;
 		else if (s.equals("while")) return Token.whileToken;
 		else if (s.matches("[a-z_A-Z][a-z_0-9A-Z]*")) return Token.nameToken;
-		else if (s.matches("[0-9]+")) return Token.numberToken;
+		else if (s.matches("-?[0-9]+")) return Token.numberToken;
 		else return null;
 	}
 
