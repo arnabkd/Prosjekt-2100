@@ -34,6 +34,27 @@ public class Scanner {
 		curLine = nextLine;	 nextLine = nextNextLine;
 
 		nextNextToken = null;
+		while (nextNextToken == null) {
+			nextNextLine = CharGenerator.curLineNum();
+
+			if (! CharGenerator.isMoreToRead()) {
+				nextNextToken = eofToken;
+				//-- Must be changed in part 0:
+			} else {
+				illegal("Illegal symbol: '" + CharGenerator.curC + "'!");
+			}
+		}
+		Log.noteToken();
+	}
+
+	/*
+	public static void readNext() {
+		curToken = nextToken;  nextToken = nextNextToken;
+		curName = nextName;	 nextName = nextNextName;
+		curNum = nextNum;  nextNum = nextNextNum;
+		curLine = nextLine;	 nextLine = nextNextLine;
+
+		nextNextToken = null;
 
 		char curC = CharGenerator.curC;
 		char nextC = CharGenerator.nextC;
@@ -49,7 +70,7 @@ public class Scanner {
 			} else {
 				curString = curString + curC;
 				CharGenerator.readNext(); //Read the first char of the next token
-				
+
 				curC = CharGenerator.curC;
 				nextC = CharGenerator.nextC;
 
@@ -64,7 +85,7 @@ public class Scanner {
 					System.out.println("curString " + curString);
 					curString = null;
 					CharGenerator.readNext();
-					
+
 					if(nextC == ' ') {
 						CharGenerator.readNext();
 						break;
@@ -84,7 +105,7 @@ public class Scanner {
 			}
 		}
 		Log.noteToken();
-	}
+	}*/
 
 	private static boolean isDelim(char c){
 		return (c == ' ') || (c == ';') || (c == '\n') || (c == '\t') || (c == '(') || (c == ')');
