@@ -34,9 +34,10 @@ public class Scanner {
 		curLine = nextLine;	 nextLine = nextNextLine;
 
 		nextNextToken = null;
+		String curNumber = "" , curString = "";
 		while (nextNextToken == null) {
 			nextNextLine = CharGenerator.curLineNum();
-			
+
 			if (! CharGenerator.isMoreToRead()) {
 				nextNextToken = eofToken;
 				//-- Must be changed in part 0:
@@ -98,15 +99,9 @@ public class Scanner {
 				CharGenerator.readNext();
 			}else if (isLetterAZ(CharGenerator.curC)) {
 				//Need to check for : intToken, ifToken, elseToken, forToken, whileToken and lastly nameToken
-				String curString = "";
-
 				while(CharGenerator.isMoreToRead() && isPartOfVarName(CharGenerator.curC)){
-					//curString = curString + CharGenerator.nextC;
-					
-					//CharGenerator.readNext();
 					curString = curString + CharGenerator.curC;
 					CharGenerator.readNext();
-					//System.out.println("curString *"+curString+"*");
 				}
 				if(curString.equals("if")) {
 					nextNextToken = ifToken;
@@ -122,25 +117,22 @@ public class Scanner {
 					nextNextToken = nameToken;
 					nextNextName = curString;
 				}
-				
-
 			}else if (isDigit(CharGenerator.curC) || (CharGenerator.curC == '-' && isDigit(CharGenerator.nextC))) {
 				boolean negative = false;
 				if(CharGenerator.curC == '-'){negative = true; CharGenerator.readNext();}
-				
-				String curNumber = "";
 				while (isDigit(CharGenerator.curC)) {
 					curNumber = curNumber + CharGenerator.curC;
 					CharGenerator.readNext();
 				}
 				nextNextToken = numberToken;
 				nextNextNum = Integer.parseInt(curNumber);
-
 				if(negative) nextNextNum = 0 - nextNextNum;
+
 			}else{
 				illegal("Illegal symbol: '" + CharGenerator.curC + "'!");
 			}
 		}
+
 
 		Log.noteToken();
 	}
@@ -149,16 +141,8 @@ public class Scanner {
 	/**Checks if character can be part of a variable
 	 */
 	private static boolean isPartOfVarName(char c){
-		//return (c == ' ') || (c == ';') || (c == '\n') || (c == '\t') || (c == '(') || (c == ')') || (c == '{') ;
-		//	System.out.println ("Testing if -" + c +"- is delimiter");
-		//System.out.println(c);
 		return isLetterAZ(c) || isDigit(c) || (c == '_');
 	}
-
-	private static boolean test(char c){
-		return (c!=' ') || (c!='\n') || (c!='\r') || (c!='(') || (c!=')') || (c!='{') || (c!='}') || (c!='[') || (c!=']') || (c!=';') || (c!='\t');
-	}
-
 
 	//Must be changed so that it only matches [a-zA-Z]
 	private static boolean isLetterAZ(char c) {
@@ -230,79 +214,3 @@ public class Scanner {
 		check(t1,t2);  readNext();
 	}
 }
-
-
-
-/*
-  public static void readNext() {
-  curToken = nextToken;	 nextToken = nextNextToken;
-  curName = nextName;	 nextName = nextNextName;
-  curNum = nextNum;	 nextNum = nextNextNum;
-  curLine = nextLine;	 nextLine = nextNextLine;
-
-  nextNextToken = null;
-
-  char curC = CharGenerator.curC;
-  char nextC = CharGenerator.nextC;
-  String curString = "";
-
-  while (nextNextToken == null) {
-  nextNextLine = CharGenerator.curLineNum();
-
-
-
-  if (! CharGenerator.isMoreToRead()) {
-  nextNextToken = eofToken;
-  //-- Must be changed in part 0:
-  } else {
-  curString = curString + curC;
-  CharGenerator.readNext(); //Read the first char of the next token
-
-  curC = CharGenerator.curC;
-  nextC = CharGenerator.nextC;
-
-  System.out.println("nextC	 : " +nextC + "	 -- curC : " + curC);
-
-  //New token contained in curString
-  //if the current character is not a delimiter and if the next
-  //character is a delimiter
-  if (!isDelim(curC) && isDelim(nextC)) {
-  curString += curC;
-  nextNextToken = getToken(curString);
-  System.out.println("curString " + curString);
-  curString = null;
-  CharGenerator.readNext();
-
-  if(nextC == ' ') {
-  CharGenerator.readNext();
-  break;
-  }
-
-  if (nextNextToken == null){
-  illegal("Illegal symbol: '" + CharGenerator.curC + "'!");
-  System.exit(1);
-  }
-  break;
-  }
-
-
-
-
-  //illegal("Illegal symbol: '" + CharGenerator.curC + "'!");
-  }
-  }
-  Log.noteToken();
-  }*/
-
-
-/*private static String getNameToken() {
-  String name = "";
-  char nextC = CharGenerator.nextC;
-  while (isLetterAZ (nextC)) {
-  name += nextC;
-
-  CharGenerator.readNext();
-  nextC = CharGenerator.nextC;
-  }
-  return name;
-  } */

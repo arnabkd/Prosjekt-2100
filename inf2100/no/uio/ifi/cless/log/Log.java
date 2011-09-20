@@ -92,7 +92,7 @@ public class Log {
 		else if (Scanner.nextNextToken == numberToken)
 		    logline = logline + Scanner.nextNextNum;
 		
-		System.out.println(System.currentTimeMillis() + " - " + logline);
+		//System.out.println(System.currentTimeMillis() + " - " + logline);
 		writeLogLine(logline);
 	}
 
