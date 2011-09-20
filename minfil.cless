@@ -1,0 +1,6 @@
+int main ()
+{
+int v;
+v = getint()- 1;
+putint(v); putchar(10);
+}
