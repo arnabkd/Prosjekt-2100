@@ -42,7 +42,8 @@ public class CharGenerator {
 	public static boolean isMoreToRead() {
 		//-- Must be changed in part 0:
 		//Check if nextC is -1 (EOF)
-		return nextC != -1;
+	    System.out.println("Checking EOF : nextC is" + (int)nextC);
+	    return (int)nextC != -1;
 	}
 
 	public static boolean isComment() {
@@ -57,10 +58,8 @@ public class CharGenerator {
 
 	public static void readNext() {
 		curC = nextC;
-
-		if(isNewLine(nextC)){
-
-		}else if(isNewLine(curC)){
+		
+		if(isNewLine(curC)){
 			sourceLine = "";
 			sourcePos = 0;
 		}else {
@@ -71,8 +70,9 @@ public class CharGenerator {
 
 		//-- Must be changed in part 0:
 		try {
-			//Update nextC :
-			nextC = (char) sourceFile.read();
+		    //Update nextC :
+		    nextC = (char) sourceFile.read();
+
 			//1. If current character is # , read past the rest of the line
 			if (isComment())  {
 				sourceFile.readLine();
@@ -81,6 +81,7 @@ public class CharGenerator {
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
+		//System.out.println ("curC : " +curC + " -- nextC : " + nextC);
 	}
 }
 

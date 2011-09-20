@@ -90,8 +90,8 @@ public class Log {
 		if (Scanner.nextNextToken == nameToken)
 			logline = logline + Scanner.nextNextName;
 		else if (Scanner.nextNextToken == numberToken)
-			logline = logline + Scanner.nextNextNum;
-
+		    logline = logline + Scanner.nextNextNum;
+		System.out.println(logline);
 		writeLogLine(logline);
 	}
 
