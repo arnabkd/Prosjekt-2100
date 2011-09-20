@@ -18,6 +18,7 @@ public class CharGenerator {
 	private static LineNumberReader sourceFile = null;
 	private static String sourceLine;
 	private static int sourcePos;
+	private static int nextCVal;
 
 	public static void init() {
 		try {
@@ -26,6 +27,7 @@ public class CharGenerator {
 			Error.error("Cannot read " + CLess.sourceName + "!");
 		}
 		sourceLine = "";  sourcePos = 0;  curC = nextC = ' ';
+		nextCVal = 0;
 		readNext();	 readNext();
 	}
 
@@ -42,8 +44,8 @@ public class CharGenerator {
 	public static boolean isMoreToRead() {
 		//-- Must be changed in part 0:
 		//Check if nextC is -1 (EOF)
-	    System.out.println("Checking EOF : nextC is" + (int)nextC);
-	    return (int)nextC != -1;
+	    //System.out.println("Checking EOF : nextC is" + (int)nextC);
+	    return nextCVal != -1;
 	}
 
 	public static boolean isComment() {
@@ -71,7 +73,8 @@ public class CharGenerator {
 		//-- Must be changed in part 0:
 		try {
 		    //Update nextC :
-		    nextC = (char) sourceFile.read();
+		    nextCVal = sourceFile.read();
+			nextC = (char) nextCVal;
 
 			//1. If current character is # , read past the rest of the line
 			if (isComment())  {
