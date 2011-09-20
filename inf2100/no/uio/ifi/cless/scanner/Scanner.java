@@ -36,11 +36,13 @@ public class Scanner {
 		nextNextToken = null;
 		while (nextNextToken == null) {
 			nextNextLine = CharGenerator.curLineNum();
-
+			
 			if (! CharGenerator.isMoreToRead()) {
 				nextNextToken = eofToken;
 				//-- Must be changed in part 0:
-			} else if (CharGenerator.curC == '<' && CharGenerator.nextC == '=') {
+			}else if(CharGenerator.curC == ' ' || CharGenerator.curC == '\n' || CharGenerator.curC == '\r'){
+				CharGenerator.readNext(); readNext();
+			}else if (CharGenerator.curC == '<' && CharGenerator.nextC == '=') {
 				nextNextToken = lessEqualToken;
 				CharGenerator.readNext();  CharGenerator.readNext();
 			}else if (CharGenerator.curC == '<') {
@@ -96,12 +98,16 @@ public class Scanner {
 				CharGenerator.readNext();
 			}else if (isLetterAZ(CharGenerator.curC)) {
 				//Need to check for : intToken, ifToken, elseToken, forToken, whileToken and lastly nameToken
-				String curString = "" + CharGenerator.curC;
-				while(CharGenerator.isMoreToRead() && !isDelim(CharGenerator.nextC)){
-					curString = curString + CharGenerator.nextC;
+				String curString = "";
+
+				while(CharGenerator.isMoreToRead() && isPartOfVarName(CharGenerator.curC)){
+					//curString = curString + CharGenerator.nextC;
+					
+					//CharGenerator.readNext();
+					curString = curString + CharGenerator.curC;
 					CharGenerator.readNext();
+					//System.out.println("curString *"+curString+"*");
 				}
-				curString = curString + CharGenerator.curC;
 				if(curString.equals("if")) {
 					nextNextToken = ifToken;
 				}else if (curString.equals("else")){
@@ -116,16 +122,21 @@ public class Scanner {
 					nextNextToken = nameToken;
 					nextNextName = curString;
 				}
+				
 
 			}else if (isDigit(CharGenerator.curC) || (CharGenerator.curC == '-' && isDigit(CharGenerator.nextC))) {
-				String curNumber = "" + CharGenerator.curC;
-				while (isDigit(CharGenerator.nextC)) {
-					System.out.println("NEI");
-					curNumber = curNumber + CharGenerator.nextC;
+				boolean negative = false;
+				if(CharGenerator.curC == '-'){negative = true; CharGenerator.readNext();}
+				
+				String curNumber = "";
+				while (isDigit(CharGenerator.curC)) {
+					curNumber = curNumber + CharGenerator.curC;
 					CharGenerator.readNext();
 				}
 				nextNextToken = numberToken;
 				nextNextNum = Integer.parseInt(curNumber);
+
+				if(negative) nextNextNum = 0 - nextNextNum;
 			}else{
 				illegal("Illegal symbol: '" + CharGenerator.curC + "'!");
 			}
@@ -135,20 +146,24 @@ public class Scanner {
 	}
 
 
-	/**Checks if character is delimeter aka. not a letter or digit
+	/**Checks if character can be part of a variable
 	 */
-	private static boolean isDelim(char c){
+	private static boolean isPartOfVarName(char c){
 		//return (c == ' ') || (c == ';') || (c == '\n') || (c == '\t') || (c == '(') || (c == ')') || (c == '{') ;
 		//	System.out.println ("Testing if -" + c +"- is delimiter");
-		return !isLetterAZ(c) && !isDigit(c) && (c != '_');
+		//System.out.println(c);
+		return isLetterAZ(c) || isDigit(c) || (c == '_');
 	}
 
+	private static boolean test(char c){
+		return (c!=' ') || (c!='\n') || (c!='\r') || (c!='(') || (c!=')') || (c!='{') || (c!='}') || (c!='[') || (c!=']') || (c!=';') || (c!='\t');
+	}
 
 
 	//Must be changed so that it only matches [a-zA-Z]
 	private static boolean isLetterAZ(char c) {
 		//-- Must be changed in part 0:
-		return (65 <= c || c <= 90) || (97 <= c || c <= 122);
+		return (65 <= c && c <= 90) || (97 <= c && c <= 122);
 	}
 
 	private static boolean isDigit(char c) {
@@ -233,6 +248,7 @@ public class Scanner {
 
   while (nextNextToken == null) {
   nextNextLine = CharGenerator.curLineNum();
+
 
 
   if (! CharGenerator.isMoreToRead()) {
