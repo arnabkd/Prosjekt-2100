@@ -53,8 +53,20 @@ public class CharGenerator {
 		return (sourceFile == null ? 0 : sourceFile.getLineNumber());
 	}
 
+	private static boolean isNewLine(char c) { return (c=='\n' || c=='\r'); }
+
 	public static void readNext() {
 		curC = nextC;
+
+		if(isNewLine(nextC)){
+
+		}else if(isNewLine(curC)){
+			sourceLine = "";
+			sourcePos = 0;
+		}else {
+			sourceLine = sourceLine + curC;
+			sourcePos++;
+		}
 		if (! isMoreToRead()) return;
 
 		//-- Must be changed in part 0:
