@@ -34,14 +34,23 @@ public class Scanner {
 		curLine = nextLine;	 nextLine = nextNextLine;
 
 		nextNextToken = null;
-		String curNumber = "" , curString = "";
+
 		while (nextNextToken == null) {
 			nextNextLine = CharGenerator.curLineNum();
-
 			if (! CharGenerator.isMoreToRead()) {
 				nextNextToken = eofToken;
 				//-- Must be changed in part 0:
-			}else if(CharGenerator.curC == ' ' || CharGenerator.curC == '\n' || CharGenerator.curC == '\r'){
+			}else if(CharGenerator.curC == ' '){
+				System.out.println("reading space");
+				CharGenerator.readNext();readNext();
+			}else if(CharGenerator.curC == '/' && CharGenerator.nextC == '*'){
+				CharGenerator.readNext(); CharGenerator.readNext();
+				while(!(CharGenerator.curC == '*' && CharGenerator.nextC == '/')){
+					CharGenerator.readNext();
+				} //now curC = '*' and nextC = '/'
+				CharGenerator.readNext();CharGenerator.readNext(); //read past the '*' and '/'
+			}else if(CharGenerator.curC == '\n' || CharGenerator.curC == '\r'){
+				System.out.println("reading newline or carraige return");
 				CharGenerator.readNext(); readNext();
 			}else if (CharGenerator.curC == '<' && CharGenerator.nextC == '=') {
 				nextNextToken = lessEqualToken;
@@ -99,10 +108,12 @@ public class Scanner {
 				CharGenerator.readNext();
 			}else if (isLetterAZ(CharGenerator.curC)) {
 				//Need to check for : intToken, ifToken, elseToken, forToken, whileToken and lastly nameToken
-				while(CharGenerator.isMoreToRead() && isPartOfVarName(CharGenerator.curC)){
+				String curString = "";
+				while(isLetterAZ(CharGenerator.curC)){//CharGenerator.isMoreToRead() && isPartOfVarName(CharGenerator.curC)){
 					curString = curString + CharGenerator.curC;
 					CharGenerator.readNext();
 				}
+
 				if(curString.equals("if")) {
 					nextNextToken = ifToken;
 				}else if (curString.equals("else")){
@@ -119,6 +130,7 @@ public class Scanner {
 				}
 			}else if (isDigit(CharGenerator.curC) || (CharGenerator.curC == '-' && isDigit(CharGenerator.nextC))) {
 				boolean negative = false;
+				String curNumber ="";
 				if(CharGenerator.curC == '-'){negative = true; CharGenerator.readNext();}
 				while (isDigit(CharGenerator.curC)) {
 					curNumber = curNumber + CharGenerator.curC;
@@ -132,8 +144,6 @@ public class Scanner {
 				illegal("Illegal symbol: '" + CharGenerator.curC + "'!");
 			}
 		}
-
-
 		Log.noteToken();
 	}
 

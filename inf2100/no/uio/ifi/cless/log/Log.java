@@ -20,6 +20,7 @@ public class Log {
 	private static String logName, curTreeLine = "";
 	private static int nLogLines = 0, parseLevel = 0, treeLevel = 0;
 
+
 	public static void init() {
 		logName = CLess.sourceBaseName + ".log";
 	}
@@ -29,6 +30,7 @@ public class Log {
 	}
 
 	private static void writeLogLine(String data) {
+		System.out.println (data);
 		try {
 			PrintWriter log = (nLogLines==0 ? new PrintWriter(logName) :
 							   new PrintWriter(new FileOutputStream(logName,true)));
@@ -72,7 +74,7 @@ public class Log {
 	public static void noteSourceLine(int lineNum, String line) {
 		if (! doLogParser && ! doLogScanner) return;
 
-		//-- Must be changed in part
+		//-- Must be changed in part 0
 		writeLogLine(lineNum + ": " + line);
 	}
 
@@ -90,9 +92,8 @@ public class Log {
 		if (Scanner.nextNextToken == nameToken)
 			logline = logline + Scanner.nextNextName;
 		else if (Scanner.nextNextToken == numberToken)
-		    logline = logline + Scanner.nextNextNum;
-		
-		//System.out.println(System.currentTimeMillis() + " - " + logline);
+			logline = logline + Scanner.nextNextNum;
+
 		writeLogLine(logline);
 	}
 
