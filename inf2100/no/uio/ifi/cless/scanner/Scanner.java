@@ -40,18 +40,14 @@ public class Scanner {
 			if (! CharGenerator.isMoreToRead()) {
 				nextNextToken = eofToken;
 				//-- Must be changed in part 0:
-			}else if(CharGenerator.curC == ' '){
-				System.out.println("reading space");
-				CharGenerator.readNext();readNext();
+			}else if(CharGenerator.curC == ' ' || CharGenerator.curC == '\n' || CharGenerator.curC == '\r'){
+				CharGenerator.readNext();
 			}else if(CharGenerator.curC == '/' && CharGenerator.nextC == '*'){
 				CharGenerator.readNext(); CharGenerator.readNext();
 				while(!(CharGenerator.curC == '*' && CharGenerator.nextC == '/')){
 					CharGenerator.readNext();
 				} //now curC = '*' and nextC = '/'
 				CharGenerator.readNext();CharGenerator.readNext(); //read past the '*' and '/'
-			}else if(CharGenerator.curC == '\n' || CharGenerator.curC == '\r'){
-				System.out.println("reading newline or carraige return");
-				CharGenerator.readNext(); readNext();
 			}else if (CharGenerator.curC == '<' && CharGenerator.nextC == '=') {
 				nextNextToken = lessEqualToken;
 				CharGenerator.readNext();  CharGenerator.readNext();

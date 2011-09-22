@@ -30,7 +30,6 @@ public class Log {
 	}
 
 	private static void writeLogLine(String data) {
-		System.out.println (data);
 		try {
 			PrintWriter log = (nLogLines==0 ? new PrintWriter(logName) :
 							   new PrintWriter(new FileOutputStream(logName,true)));

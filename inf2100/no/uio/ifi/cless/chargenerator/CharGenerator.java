@@ -79,7 +79,8 @@ public class CharGenerator {
 			//1. If current character is # , read past the rest of the line
 			if (isComment())  {
 				sourceFile.readLine();
-				nextC = (char) sourceFile.read();
+				nextCVal = sourceFile.read();
+				nextC = (char) nextCVal;
 			}
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
