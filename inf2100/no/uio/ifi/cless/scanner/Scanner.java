@@ -41,13 +41,13 @@ public class Scanner {
 				nextNextToken = eofToken;
 				//-- Must be changed in part 0:
 			}else if(CharGenerator.curC == ' ' || CharGenerator.curC == '\n' || CharGenerator.curC == '\r'){
-				CharGenerator.readNext();
+				CharGenerator.readNext(); 
 			}else if(CharGenerator.curC == '/' && CharGenerator.nextC == '*'){
 				CharGenerator.readNext(); CharGenerator.readNext();
 				while(!(CharGenerator.curC == '*' && CharGenerator.nextC == '/')){
 					CharGenerator.readNext();
 				} //now curC = '*' and nextC = '/'
-				CharGenerator.readNext();CharGenerator.readNext(); //read past the '*' and '/'
+				CharGenerator.readNext();CharGenerator.readNext(); //read past the '*' and '/'				
 			}else if (CharGenerator.curC == '<' && CharGenerator.nextC == '=') {
 				nextNextToken = lessEqualToken;
 				CharGenerator.readNext();  CharGenerator.readNext();
@@ -140,6 +140,7 @@ public class Scanner {
 				illegal("Illegal symbol: '" + CharGenerator.curC + "'!");
 			}
 		}
+		
 		Log.noteToken();
 	}
 

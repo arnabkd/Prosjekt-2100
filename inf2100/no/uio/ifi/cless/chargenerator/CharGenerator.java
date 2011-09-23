@@ -27,7 +27,7 @@ public class CharGenerator {
 			Error.error("Cannot read " + CLess.sourceName + "!");
 		}
 		sourceLine = "";  sourcePos = 0;  curC = nextC = ' ';
-		nextCVal = 0;
+		nextCVal = 0; 
 		readNext();	 readNext();
 	}
 
@@ -60,15 +60,17 @@ public class CharGenerator {
 
 	public static void readNext() {
 		curC = nextC;
+		if (! isMoreToRead()) return;
 
 		if(isNewLine(curC)){
+			if(!sourceLine.equals(""))
+				Log.noteSourceLine(curLineNum() , sourceLine);
 			sourceLine = "";
 			sourcePos = 0;
 		}else {
 			sourceLine = sourceLine + curC;
 			sourcePos++;
 		}
-		if (! isMoreToRead()) return;
 
 		//-- Must be changed in part 0:
 		try {
