@@ -80,7 +80,12 @@ public class CharGenerator {
 
 			//1. If current character is # , read past the rest of the line
 			if (isComment())  {
-				sourceFile.readLine();
+				sourceLine = nextC + sourceFile.readLine();
+				if(! sourceLine.equals(""))
+					Log.noteSourceLine(curLineNum() , sourceLine);
+				//sourceFile.readLine();
+				sourceLine = "";
+				sourcePos = 0;
 				nextCVal = sourceFile.read();
 				nextC = (char) nextCVal;
 			}
