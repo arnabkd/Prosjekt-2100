@@ -41,16 +41,19 @@ public class Scanner {
 				nextNextToken = eofToken;
 				//-- Must be changed in part 0:
 			}else if(CharGenerator.curC == ' ' || CharGenerator.curC == '\n' || CharGenerator.curC == '\r'){
-				CharGenerator.readNext(); 
+				CharGenerator.readNext();
 			}else if(CharGenerator.curC == '/' && CharGenerator.nextC == '*'){
 				CharGenerator.readNext(); CharGenerator.readNext();
 				while(!(CharGenerator.curC == '*' && CharGenerator.nextC == '/')){
 					CharGenerator.readNext();
 				} //now curC = '*' and nextC = '/'
-				CharGenerator.readNext();CharGenerator.readNext(); //read past the '*' and '/'				
+				CharGenerator.readNext();CharGenerator.readNext(); //read past the '*' and '/'
 			}else if (CharGenerator.curC == '<' && CharGenerator.nextC == '=') {
 				nextNextToken = lessEqualToken;
 				CharGenerator.readNext();  CharGenerator.readNext();
+			}else if(CharGenerator.curC == ','){
+				nextNextToken = commaToken;
+				CharGenerator.readNext();
 			}else if (CharGenerator.curC == '<') {
 				nextNextToken = lessToken;
 				CharGenerator.readNext();
@@ -140,7 +143,7 @@ public class Scanner {
 				illegal("Illegal symbol: '" + CharGenerator.curC + "'!");
 			}
 		}
-		
+
 		Log.noteToken();
 	}
 
@@ -162,32 +165,32 @@ public class Scanner {
 	}
 
 
-	private static Token getToken(String s){
-		if (s.equals("+")) return Token.addToken;
-		else if (s.equals("-")) return Token.subtractToken;
-		else if (s.equals("/")) return Token.divideToken;
-		else if (s.equals("*")) return Token.multiplyToken;
-		else if (s.equals("==")) return Token.equalToken;
-		else if (s.equals("!=")) return Token.notEqualToken;
-		else if (s.equals(">=")) return Token.greaterEqualToken;
-		else if (s.equals("<=")) return Token.lessEqualToken;
-		else if (s.equals(">")) return Token.greaterToken;
-		else if (s.equals("<")) return Token.lessToken;
-		else if (s.equals(";")) return Token.semicolonToken;
-		else if (s.equals(",")) return Token.commaToken;
-		else if (s.equals("(")) return Token.leftBracketToken;
-		else if (s.equals(")")) return Token.rightBracketToken;
-		else if (s.equals("{")) return Token.leftCurlToken;
-		else if (s.equals("}")) return Token.rightCurlToken;
-		else if (s.equals("int")) return Token.intToken;
-		else if (s.equals("if")) return Token.ifToken;
-		else if (s.equals("else")) return Token.elseToken;
-		else if (s.equals("for")) return Token.forToken;
-		else if (s.equals("while")) return Token.whileToken;
-		else if (s.matches("[a-z_A-Z][a-z_0-9A-Z]*")) return Token.nameToken;
-		else if (s.matches("-?[0-9]+")) return Token.numberToken;
-		else return null;
-	}
+	// private static Token getToken(String s){
+	// 	if (s.equals("+")) return Token.addToken;
+	// 	else if (s.equals("-")) return Token.subtractToken;
+	// 	else if (s.equals("/")) return Token.divideToken;
+	// 	else if (s.equals("*")) return Token.multiplyToken;
+	// 	else if (s.equals("==")) return Token.equalToken;
+	// 	else if (s.equals("!=")) return Token.notEqualToken;
+	// 	else if (s.equals(">=")) return Token.greaterEqualToken;
+	// 	else if (s.equals("<=")) return Token.lessEqualToken;
+	// 	else if (s.equals(">")) return Token.greaterToken;
+	// 	else if (s.equals("<")) return Token.lessToken;
+	// 	else if (s.equals(";")) return Token.semicolonToken;
+	// 	else if (s.equals(",")) return Token.commaToken;
+	// 	else if (s.equals("(")) return Token.leftBracketToken;
+	// 	else if (s.equals(")")) return Token.rightBracketToken;
+	// 	else if (s.equals("{")) return Token.leftCurlToken;
+	// 	else if (s.equals("}")) return Token.rightCurlToken;
+	// 	else if (s.equals("int")) return Token.intToken;
+	// 	else if (s.equals("if")) return Token.ifToken;
+	// 	else if (s.equals("else")) return Token.elseToken;
+	// 	else if (s.equals("for")) return Token.forToken;
+	// 	else if (s.equals("while")) return Token.whileToken;
+	// 	else if (s.matches("[a-z_A-Z][a-z_0-9A-Z]*")) return Token.nameToken;
+	// 	else if (s.matches("-?[0-9]+")) return Token.numberToken;
+	// 	else return null;
+	// }
 
 
 
