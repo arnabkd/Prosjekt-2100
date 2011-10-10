@@ -1,0 +1,31 @@
+1: # Test all the operators
+Scanner : intToken 
+Scanner : nameToken print
+Scanner : leftBracketToken 
+Scanner : intToken 
+Scanner : nameToken x
+Scanner : commaToken 
+Scanner : intToken 
+Scanner : nameToken op
+Scanner : numberToken 1
+Scanner : commaToken 
+Scanner : intToken 
+Scanner : nameToken op
+Scanner : numberToken 2
+Scanner : commaToken 
+Scanner : intToken 
+Scanner : nameToken y
+Scanner : commaToken 
+Scanner : intToken 
+Scanner : nameToken res
+3: int print (int x, int op1, int op2, int y, int res)
+Scanner : rightBracketToken 
+4: {
+Scanner : leftCurlToken 
+Scanner : nameToken putint
+Scanner : leftBracketToken 
+Scanner : nameToken x
+Scanner : rightBracketToken 
+Scanner : semicolonToken 
+Scanner : nameToken putchar
+Scanner : leftBracketToken 

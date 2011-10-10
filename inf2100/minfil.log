@@ -1,0 +1,5 @@
+Scanner : intToken 
+Scanner : nameToken k
+1: #kommentar
+Scanner : semicolonToken 
+3: #  Program 'gcd'

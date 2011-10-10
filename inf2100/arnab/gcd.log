@@ -1,0 +1,86 @@
+Scanner : intToken 
+Scanner : nameToken k
+Scanner : semicolonToken 
+1:  int k; /* single-line comment */
+Scanner : intToken 
+Scanner : nameToken gcd
+Scanner : leftBracketToken 
+Scanner : intToken 
+Scanner : nameToken a
+Scanner : commaToken 
+Scanner : intToken 
+Scanner : nameToken b
+Scanner : rightBracketToken 
+Scanner : leftCurlToken 
+3: int gcd (int a, int b){  
+Scanner : whileToken 
+Scanner : leftBracketToken 
+Scanner : nameToken a
+Scanner : notEqualToken 
+Scanner : nameToken b
+Scanner : rightBracketToken 
+5:    while (a != b) {
+Scanner : leftCurlToken 
+Scanner : ifToken 
+Scanner : leftBracketToken 
+Scanner : nameToken a
+Scanner : lessToken 
+Scanner : nameToken b
+Scanner : rightBracketToken 
+6:       if (a < b) {
+Scanner : leftCurlToken 
+Scanner : nameToken b
+Scanner : assignToken 
+Scanner : nameToken b
+Scanner : subtractToken 
+Scanner : nameToken a
+7: 	 b = b-a;
+Scanner : semicolonToken 
+Scanner : rightCurlToken 
+Scanner : elseToken 
+8:       } else {
+Scanner : leftCurlToken 
+Scanner : nameToken a
+Scanner : assignToken 
+Scanner : nameToken a
+Scanner : subtractToken 
+Scanner : nameToken b
+9: 	 a = a-b;
+Scanner : semicolonToken 
+10:       }
+Scanner : rightCurlToken 
+11:    }
+Scanner : rightCurlToken 
+Scanner : nameToken return
+Scanner : nameToken a
+12:    return a;
+Scanner : semicolonToken 
+13: }
+Scanner : rightCurlToken 
+Scanner : intToken 
+Scanner : nameToken main
+Scanner : leftBracketToken 
+15: int main ()
+Scanner : rightBracketToken 
+Scanner : leftCurlToken 
+16: {  
+Scanner : intToken 
+Scanner : nameToken v
+Scanner : numberToken 1
+Scanner : semicolonToken 
+Scanner : intToken 
+Scanner : nameToken v
+Scanner : numberToken 2
+17:    int v1;  int v2;
+Scanner : semicolonToken 
+Scanner : nameToken gcd
+Scanner : leftBracketToken 
+Scanner : numberToken 10
+Scanner : commaToken 
+Scanner : numberToken 12
+Scanner : rightBracketToken 
+18:    gcd (10, 12);
+Scanner : semicolonToken 
+19: }
+Scanner : rightCurlToken 
+Scanner : eofToken 
