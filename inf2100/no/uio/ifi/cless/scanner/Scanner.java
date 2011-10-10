@@ -37,8 +37,8 @@ public class Scanner {
 
 		while (nextNextToken == null) {
 			nextNextLine = CharGenerator.curLineNum();
-			
-		
+
+
 
 			if (! CharGenerator.isMoreToRead()) {
 				nextNextToken = eofToken;
@@ -49,6 +49,12 @@ public class Scanner {
 
 
 			if (CharGenerator.curC == '\r' || CharGenerator.curC == '\n' || CharGenerator.curC == '\t' || CharGenerator.curC == ' '){
+				CharGenerator.readNext();
+			}else if (CharGenerator.curC == '\''){
+				CharGenerator.readNext();
+				int val = (int) CharGenerator.curC;
+				nextNextToken = numberToken;
+				nextNextNum = val;
 				CharGenerator.readNext();
 			}else if(CharGenerator.curC == '/' && CharGenerator.nextC == '*'){
 				CharGenerator.readNext(); CharGenerator.readNext();
@@ -92,10 +98,10 @@ public class Scanner {
 			}else if (CharGenerator.curC == '/') {
 				nextNextToken = divideToken;
 				CharGenerator.readNext();
-			}else if (CharGenerator.curC == '(') {
+			}else if (CharGenerator.curC == '[') {
 				nextNextToken = leftBracketToken;
 				CharGenerator.readNext();
-			}else if (CharGenerator.curC == ')') {
+			}else if (CharGenerator.curC == ']') {
 				nextNextToken = rightBracketToken;
 				CharGenerator.readNext();
 			}else if (CharGenerator.curC == '{') {
@@ -104,10 +110,10 @@ public class Scanner {
 			}else if (CharGenerator.curC == '}') {
 				nextNextToken = rightCurlToken;
 				CharGenerator.readNext();
-			}else if (CharGenerator.curC == '[') {
+			}else if (CharGenerator.curC == '(') {
 				nextNextToken = leftParToken;
 				CharGenerator.readNext();
-			}else if (CharGenerator.curC == ']') {
+			}else if (CharGenerator.curC == ')') {
 				nextNextToken = rightParToken;
 				CharGenerator.readNext();
 			}else if (CharGenerator.curC == ';') {
@@ -156,6 +162,8 @@ public class Scanner {
 	}
 
 
+
+
 	/**Checks if character can be part of a variable
 	 */
 	private static boolean isPartOfVarName(char c){
@@ -172,33 +180,6 @@ public class Scanner {
 		return Character.isDigit(c);
 	}
 
-
-	// private static Token getToken(String s){
-	//	if (s.equals("+")) return Token.addToken;
-	//	else if (s.equals("-")) return Token.subtractToken;
-	//	else if (s.equals("/")) return Token.divideToken;
-	//	else if (s.equals("*")) return Token.multiplyToken;
-	//	else if (s.equals("==")) return Token.equalToken;
-	//	else if (s.equals("!=")) return Token.notEqualToken;
-	//	else if (s.equals(">=")) return Token.greaterEqualToken;
-	//	else if (s.equals("<=")) return Token.lessEqualToken;
-	//	else if (s.equals(">")) return Token.greaterToken;
-	//	else if (s.equals("<")) return Token.lessToken;
-	//	else if (s.equals(";")) return Token.semicolonToken;
-	//	else if (s.equals(",")) return Token.commaToken;
-	//	else if (s.equals("(")) return Token.leftBracketToken;
-	//	else if (s.equals(")")) return Token.rightBracketToken;
-	//	else if (s.equals("{")) return Token.leftCurlToken;
-	//	else if (s.equals("}")) return Token.rightCurlToken;
-	//	else if (s.equals("int")) return Token.intToken;
-	//	else if (s.equals("if")) return Token.ifToken;
-	//	else if (s.equals("else")) return Token.elseToken;
-	//	else if (s.equals("for")) return Token.forToken;
-	//	else if (s.equals("while")) return Token.whileToken;
-	//	else if (s.matches("[a-z_A-Z][a-z_0-9A-Z]*")) return Token.nameToken;
-	//	else if (s.matches("-?[0-9]+")) return Token.numberToken;
-	//	else return null;
-	// }
 
 
 

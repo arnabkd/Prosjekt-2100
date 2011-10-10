@@ -49,7 +49,7 @@ public class CharGenerator {
 	}
 
 	public static boolean isComment() {
-		return nextC == '#';
+		return curC == '#';
 	}
 
 	public static int curLineNum() {
@@ -80,7 +80,7 @@ public class CharGenerator {
 
 			//1. If current character is # , read past the rest of the line
 			if (isComment())  {
-				sourceLine = nextC + sourceFile.readLine();
+				sourceLine = sourceLine + nextC + sourceFile.readLine();
 				if(! sourceLine.equals(""))
 					Log.noteSourceLine(curLineNum() , sourceLine);
 				//sourceFile.readLine();
@@ -88,6 +88,7 @@ public class CharGenerator {
 				sourcePos = 0;
 				nextCVal = sourceFile.read();
 				nextC = (char) nextCVal;
+				readNext();
 			}
 		} catch (Exception e) {
 			System.err.println(e.getMessage());

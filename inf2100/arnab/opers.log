@@ -29,3 +29,155 @@ Scanner : rightBracketToken
 Scanner : semicolonToken 
 Scanner : nameToken putchar
 Scanner : leftBracketToken 
+Scanner : rightBracketToken 
+Scanner : semicolonToken 
+Scanner : nameToken putchar
+Scanner : leftBracketToken 
+Scanner : nameToken op
+Scanner : numberToken 1
+Scanner : rightBracketToken 
+Scanner : semicolonToken 
+5:   putint(x);  putchar(' ');  putchar(op1);  
+Scanner : ifToken 
+Scanner : leftBracketToken 
+Scanner : nameToken op
+Scanner : numberToken 2
+Scanner : notEqualToken 
+Scanner : rightBracketToken 
+Scanner : leftCurlToken 
+Scanner : nameToken putchar
+Scanner : leftBracketToken 
+Scanner : nameToken op
+Scanner : numberToken 2
+Scanner : rightBracketToken 
+Scanner : semicolonToken 
+Scanner : rightCurlToken 
+6:   if (op2 != ' ') { putchar(op2); }  
+Scanner : nameToken putchar
+Scanner : leftBracketToken 
+Scanner : rightBracketToken 
+Scanner : semicolonToken 
+Scanner : nameToken putint
+Scanner : leftBracketToken 
+Scanner : nameToken y
+Scanner : rightBracketToken 
+Scanner : semicolonToken 
+Scanner : nameToken putchar
+Scanner : leftBracketToken 
+Scanner : rightBracketToken 
+Scanner : semicolonToken 
+Scanner : nameToken putchar
+Scanner : leftBracketToken 
+Scanner : assignToken 
+Scanner : rightBracketToken 
+Scanner : semicolonToken 
+7:   putchar(' ');  putint(y);  putchar(' ');  putchar('=');  
+Scanner : nameToken putchar
+Scanner : leftBracketToken 
+Scanner : rightBracketToken 
+Scanner : semicolonToken 
+Scanner : nameToken putint
+Scanner : leftBracketToken 
+Scanner : nameToken res
+Scanner : rightBracketToken 
+Scanner : semicolonToken 
+Scanner : nameToken putchar
+Scanner : leftBracketToken 
+Scanner : numberToken 10
+Scanner : rightBracketToken 
+8:   putchar(' ');  putint(res);  putchar(10);
+Scanner : semicolonToken 
+9: }
+Scanner : rightCurlToken 
+Scanner : intToken 
+Scanner : nameToken test
+Scanner : leftBracketToken 
+Scanner : intToken 
+Scanner : nameToken a
+Scanner : commaToken 
+Scanner : intToken 
+Scanner : nameToken b
+11: int test (int a, int b)
+Scanner : rightBracketToken 
+12: {
+Scanner : leftCurlToken 
+Scanner : nameToken print
+Scanner : leftBracketToken 
+Scanner : nameToken a
+Scanner : commaToken 
+Scanner : addToken 
+Scanner : commaToken 
+Scanner : commaToken 
+Scanner : nameToken b
+Scanner : commaToken 
+Scanner : nameToken a
+Scanner : addToken 
+Scanner : nameToken b
+Scanner : rightBracketToken 
+13:   print(a, '+', ' ', b, a+b);
+Scanner : semicolonToken 
+Scanner : nameToken print
+Scanner : leftBracketToken 
+Scanner : nameToken a
+Scanner : commaToken 
+Scanner : subtractToken 
+Scanner : commaToken 
+Scanner : commaToken 
+Scanner : nameToken b
+Scanner : commaToken 
+Scanner : nameToken a
+Scanner : subtractToken 
+Scanner : nameToken b
+Scanner : rightBracketToken 
+14:   print(a, '-', ' ', b, a-b);
+Scanner : semicolonToken 
+Scanner : nameToken print
+Scanner : leftBracketToken 
+Scanner : nameToken a
+Scanner : commaToken 
+Scanner : multiplyToken 
+Scanner : commaToken 
+Scanner : commaToken 
+Scanner : nameToken b
+Scanner : commaToken 
+Scanner : nameToken a
+Scanner : multiplyToken 
+Scanner : nameToken b
+Scanner : rightBracketToken 
+15:   print(a, '*', ' ', b, a*b);
+Scanner : semicolonToken 
+Scanner : nameToken print
+Scanner : leftBracketToken 
+Scanner : nameToken a
+Scanner : commaToken 
+Scanner : divideToken 
+Scanner : commaToken 
+Scanner : commaToken 
+Scanner : nameToken b
+Scanner : commaToken 
+Scanner : nameToken a
+Scanner : divideToken 
+Scanner : nameToken b
+Scanner : rightBracketToken 
+16:   print(a, '/', ' ', b, a/b);
+Scanner : semicolonToken 
+Scanner : nameToken print
+Scanner : leftBracketToken 
+Scanner : nameToken a
+Scanner : commaToken 
+Scanner : assignToken 
+Scanner : commaToken 
+Scanner : assignToken 
+Scanner : commaToken 
+Scanner : nameToken b
+Scanner : commaToken 
+Scanner : nameToken a
+Scanner : equalToken 
+Scanner : nameToken b
+Scanner : rightBracketToken 
+17:   print(a, '=', '=', b, a==b);
+Scanner : semicolonToken 
+Scanner : nameToken print
+Scanner : leftBracketToken 
+Scanner : nameToken a
+Scanner : commaToken 
