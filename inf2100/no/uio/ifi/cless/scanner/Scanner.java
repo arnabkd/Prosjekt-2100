@@ -122,7 +122,7 @@ public class Scanner {
 			}else if (isLetterAZ(CharGenerator.curC)) {
 				//Need to check for : intToken, ifToken, elseToken, forToken, whileToken and lastly nameToken
 				String curString = "";
-				while(isLetterAZ(CharGenerator.curC)){//CharGenerator.isMoreToRead() && isPartOfVarName(CharGenerator.curC)){
+				while(isPartOfVarName(CharGenerator.curC)){//CharGenerator.isMoreToRead() && isPartOfVarName(CharGenerator.curC)){
 					curString = curString + CharGenerator.curC;
 					CharGenerator.readNext();
 				}
