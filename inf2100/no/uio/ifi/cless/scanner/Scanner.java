@@ -55,7 +55,7 @@ public class Scanner {
 				int val = (int) CharGenerator.curC;
 				nextNextToken = numberToken;
 				nextNextNum = val;
-				CharGenerator.readNext();
+				CharGenerator.readNext(); CharGenerator.readNext();
 			}else if(CharGenerator.curC == '/' && CharGenerator.nextC == '*'){
 				CharGenerator.readNext(); CharGenerator.readNext();
 				while(!(CharGenerator.curC == '*' && CharGenerator.nextC == '/')){
