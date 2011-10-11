@@ -146,7 +146,7 @@ abstract class DeclList extends SyntaxUnit {
 		if (firstDecl == null) { firstDecl = d; return; } //If declList is empty, put d as firstDecl
 				
 		if (declExists(d)) {
-			printAlreadyExistsError(d);
+			variableAlreadyDefinedError(d);
 			return; 
 		}
 		
@@ -168,7 +168,7 @@ abstract class DeclList extends SyntaxUnit {
 		return false; //Declaration d does not exist yet
 	}
 
-	protected void printAlreadyExistsError (Declaration d){
+	protected void variableAlreadyDefinedError (Declaration d){
 		if (d == null || d.name == null) return;
 		String errormessage = "Variable :";
 		errormessage += d.name; // Add variable name to error message
