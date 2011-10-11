@@ -208,16 +208,19 @@ class GlobalDeclList extends DeclList {
 	@Override void parse() {
 		while (Scanner.curToken == intToken) {
 			if (Scanner.nextToken == nameToken) {
-				if (Scanner.nextNextToken == leftParToken) {
+				if (Scanner.nextNextToken == leftParToken) { //Function declaration
 					FuncDecl fd = new FuncDecl(Scanner.nextName);
 					fd.parse();
 					addDecl(fd);
-				} else if (Scanner.nextNextToken == leftBracketToken) {
+				} else if (Scanner.nextNextToken == leftBracketToken) { //int array declaration
 					GlobalArrayDecl gad = new GlobalArrayDecl(Scanner.nextName);
 					gad.parse();
 					addDecl(gad);
-				} else {
+				} else { //int var;
 					//-- Must be changed in part 1:
+					GlobalSimpleVarDecl gsvd = new GlobalSimpleVarDecl (Scanner.nextName);
+					gsvd.parse();
+					addDecl(gsvd);
 				}
 			} else {
 				Scanner.expected("Declaration");
