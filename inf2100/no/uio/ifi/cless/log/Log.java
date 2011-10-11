@@ -86,7 +86,7 @@ public class Log {
 		if (! doLogScanner) return;
 
 		//-- Must be changed in part 0:
-		String logline = "Scanner : " + Scanner.nextNextToken + " ";
+		String logline = "Scanner:  " + Scanner.nextNextToken + " ";
 
 		if (Scanner.nextNextToken == nameToken)
 			logline = logline + Scanner.nextNextName;

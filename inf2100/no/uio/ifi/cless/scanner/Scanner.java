@@ -137,6 +137,8 @@ public class Scanner {
 					nextNextToken = forToken;
 				}else if (curString.equals("while")) {
 					nextNextToken = whileToken;
+				}else if(curString.equals("return")){
+					nextNextToken = returnToken;
 				}else {
 					nextNextToken = nameToken;
 					nextNextName = curString;
