@@ -152,7 +152,7 @@ abstract class DeclList extends SyntaxUnit {
 		
 		//Declaration does not exist yet, add it to the declList
 		d.nextDecl = firstDecl;
-		firstDecl = d.nextDecl;
+		firstDecl = d;
 	}
 	
 	protected boolean declExists (Declaration d){
@@ -170,9 +170,10 @@ abstract class DeclList extends SyntaxUnit {
 
 	protected void variableAlreadyDefinedError (Declaration d){
 		if (d == null || d.name == null) return;
+
 		String errormessage = "Variable :";
 		errormessage += d.name; // Add variable name to error message
-		errormessage += " is already defined" 
+		errormessage += " is already defined"; 
 		
 		Error.error(errormessage);
 	}
@@ -634,9 +635,11 @@ class StatmList extends SyntaxUnit {
 abstract class Statement extends SyntaxUnit {
 	Statement nextStatm = null;
 
+
 	static Statement makeNewStatement() {
-		if (Scanner.curToken==nameToken &&
-				Scanner.nextToken==leftParToken) {
+		Statement statm; 
+
+		if (Scanner.curToken==nameToken && Scanner.nextToken==leftParToken) { 
 			//-- Must be changed in part 1:
 		} else if (Scanner.curToken == nameToken) {
 			//-- Must be changed in part 1:
