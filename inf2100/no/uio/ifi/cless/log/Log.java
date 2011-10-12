@@ -18,7 +18,10 @@ public class Log {
 		doLogScanner = false, doLogTree = false;
 
 	private static String logName, curTreeLine = "";
-	private static int nLogLines = 0, parseLevel = 0, treeLevel = 0;
+	private static int nLogLines = 0, parseLevel = 0;
+
+    //Indicates the number of spaces to add whenever wTree(String s) is called
+    private static int treeLevel = 0;
 
 
 	public static void init() {
@@ -118,11 +121,19 @@ public class Log {
 		wTree(s);  wTreeLn();
 	}
 
+    /**
+     * Increases the indentation of the tree by 1 level.
+     */
 	public static void indentTree() {
 		//-- Must be changed in part 1:
+        treeLevel++;
 	}
 
+    /**
+     * Decreases the indentation of the tree by 1 level
+     */
 	public static void outdentTree() {
 		//-- Must be changed in part 1:
+        treeLevel--;
 	}
 }
