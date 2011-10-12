@@ -138,33 +138,33 @@ abstract class DeclList extends SyntaxUnit {
 		while (currentDecl != null){
 			currentDecl.printTree();
 			currentDecl = currentDecl.nextDecl;
-		}		
+		}
 	}
 
 	void addDecl(Declaration d) {
 		//-- Must be changed in part 1:
 		if (firstDecl == null) { firstDecl = d; return; } //If declList is empty, put d as firstDecl
-				
+
 		if (declExists(d)) {
 			variableAlreadyDefinedError(d);
-			return; 
+			return;
 		}
-		
+
 		//Declaration does not exist yet, add it to the declList
 		d.nextDecl = firstDecl;
 		firstDecl = d;
 	}
-	
+
 	protected boolean declExists (Declaration d){
 		if (d == null) return false; //declaration d does not exist if d is null
-		
+
 		Declaration currentDecl = firstDecl;
-		
+
 		while (currentDecl != null && currentDecl.name != null) {
 			if (currentDecl.name.compareTo(d.name) == 0) return true; //A declaration with identical name is found
 			currentDecl = currentDecl.nextDecl;
 		}
-		
+
 		return false; //Declaration d does not exist yet
 	}
 
@@ -173,12 +173,12 @@ abstract class DeclList extends SyntaxUnit {
 
 		String errormessage = "Variable :";
 		errormessage += d.name; // Add variable name to error message
-		errormessage += " is already defined"; 
-		
+		errormessage += " is already defined";
+
 		Error.error(errormessage);
 	}
-	
-	
+
+
 	int dataSize() {
 		Declaration dx = firstDecl;
 		int res = 0;
@@ -637,7 +637,7 @@ abstract class Statement extends SyntaxUnit {
 
 
 	static Statement makeNewStatement() {
-		Statement statm; 
+		Statement statm;
 
 		if (Scanner.curToken==nameToken && Scanner.nextToken==leftParToken) { //call-statm
 			//-- Must be changed in part 1:
@@ -681,12 +681,12 @@ class EmptyStatm extends Statement {
 		//-- Must be changed in part 1:
 		Log.enterParser("<empty statm>");
 		Scanner.skip(semicolonToken);
-		Log.leaveParser("</empty statm>");		
+		Log.leaveParser("</empty statm>");
 	}
 
 	@Override void printTree() {
 		//-- Must be changed in part 1:
-		
+
 	}
 }
 
@@ -712,6 +712,9 @@ class IfStatm extends Statement {
 
 	@Override void parse() {
 		//-- Must be changed in part 1:
+        Log.enterParser("<if statm>");
+        //Skip and parse the if statement inside here
+        Log.enterParser("</if statm>");
 	}
 
 	@Override void printTree() {
@@ -773,7 +776,30 @@ class WhileStatm extends Statement {
 		Log.wTreeLn("}");
 	}
 }
+/*
+* A <while-statm>.
+*/
+class ForStatm extends Statement {
+	ExprList exps = new ExprList();
+	StatmList body = new StatmList();
 
+	@Override void check(DeclList curDecls) {
+		exps.check(curDecls);
+		body.check(curDecls);
+	}
+
+	@Override void genCode(FuncDecl curFunc) {
+        //-- Must be changed in part 2
+	}
+
+	@Override void parse() {
+        //-- Must be changed in part 1
+	}
+
+	@Override void printTree() {
+        //-- Must be changed in part 2
+	}
+}
 
 //-- Must be changed in part 1+2:
 
@@ -807,9 +833,15 @@ class ExprList extends SyntaxUnit {
 		//-- Must be changed in part 1:
 	}
 
+    /**
+     *@ returns n - the size of the expression list
+     */
 	int nExprs() {
 		int n = 0;
 		//-- Must be changed in part 1:
+        for (Expression current = firstExpr; current != null; current = current.nextExpr){
+            n++;
+        }
 		return n;
 	}
 }
