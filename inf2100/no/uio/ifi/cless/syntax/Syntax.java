@@ -680,13 +680,13 @@ class EmptyStatm extends Statement {
 	@Override void parse() {
 		//-- Must be changed in part 1:
 		Log.enterParser("<empty statm>");
-		Scanner.skip(semiColonToken);
-		Log.leaveParser("</empty statm>");
-		
+		Scanner.skip(semicolonToken);
+		Log.leaveParser("</empty statm>");		
 	}
 
 	@Override void printTree() {
 		//-- Must be changed in part 1:
+		
 	}
 }
 
