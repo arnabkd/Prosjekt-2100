@@ -639,19 +639,19 @@ abstract class Statement extends SyntaxUnit {
 	static Statement makeNewStatement() {
 		Statement statm; 
 
-		if (Scanner.curToken==nameToken && Scanner.nextToken==leftParToken) { 
+		if (Scanner.curToken==nameToken && Scanner.nextToken==leftParToken) { //call-statm
 			//-- Must be changed in part 1:
-		} else if (Scanner.curToken == nameToken) {
+		} else if (Scanner.curToken == nameToken) { //assign-statm
 			//-- Must be changed in part 1:
-		} else if (Scanner.curToken == forToken) {
+		} else if (Scanner.curToken == forToken) { //for-statm
 			//-- Must be changed in part 1:
-		} else if (Scanner.curToken == ifToken) {
+		} else if (Scanner.curToken == ifToken) { //if-statm
 			return new IfStatm();
-		} else if (Scanner.curToken == returnToken) {
+		} else if (Scanner.curToken == returnToken) { //return-statm
 			//-- Must be changed in part 1:
-		} else if (Scanner.curToken == whileToken) {
+		} else if (Scanner.curToken == whileToken) { //while-statm
 			return new WhileStatm();
-		} else if (Scanner.curToken == semicolonToken) {
+		} else if (Scanner.curToken == semicolonToken) { //empty-statm
 			return new EmptyStatm();
 		} else {
 			Scanner.expected("Statement");
@@ -679,6 +679,10 @@ class EmptyStatm extends Statement {
 
 	@Override void parse() {
 		//-- Must be changed in part 1:
+		Log.enterParser("<empty statm>");
+		Scanner.skip(semiColonToken);
+		Log.leaveParser("</empty statm>");
+		
 	}
 
 	@Override void printTree() {
