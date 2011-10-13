@@ -61,7 +61,7 @@ public class Log {
         System.err.println("Entering parser..");
         parseLevel++;
 
-        String pLine = "Parser:" + charRepeater(' ', parseLevel) + symbol;
+        String pLine = "Parser:" + stringRepeater("  ", parseLevel) + symbol;
         writeLogLine(pLine);
 	}
 
@@ -69,7 +69,7 @@ public class Log {
 		if (! doLogParser) return;
 
 		//-- Must be changed in part 1:
-        String pLine = "Parser" + charRepeater(' ', parseLevel) + symbol;
+        String pLine = "Parser:" + stringRepeater("  ", parseLevel) + symbol;
         writeLogLine(pLine);
 
         parseLevel--;
@@ -78,14 +78,14 @@ public class Log {
 
 
     /**
-     * @param char c : the character to be repeated
+     * @param String rep
      * @param int count : the number of times the character should be repeated
      * @return String s
      */
-    public static String charRepeater(char c , int count){
+    public static String stringRepeater(String rep, int count){
         String s = "";
         for(int i = 0; i < count; i++)
-            s += c;
+            s += rep;
         return s;
     }
 
