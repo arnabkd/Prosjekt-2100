@@ -250,6 +250,19 @@ class LocalDeclList extends DeclList {
 
 	@Override void parse() {
 		//-- Must be changed in part 1:
+
+        //<decl list> int ..; int .... ; ...... ; </decl list>
+        while (Scanner.curToken == intToken){
+            if(Scanner.nextNextToken == leftBracketToken){ //LocalArrayDecl
+                LocalArrayDecl lad = new LocalArrayDecl(Scanner.nextName);
+                addDecl(lad);
+                lad.parse();
+            }else { //LocalSimpleVarDecl
+                LocalSimpleVarDecl lsvd = new LocalSimpleVarDecl(Scanner.nextName);
+                addDecl(lsvd);
+                lsvd.parse();
+            }
+        }
 	}
 }
 
@@ -528,7 +541,8 @@ class LocalSimpleVarDecl extends VarDecl {
 		Log.enterParser("<var decl>");
 
 		//-- Must be changed in part 1:
-
+        Scanner.skip(intToken);
+        Scanner.skip(nameToken);
 		Log.leaveParser("</var decl>");
 	}
 }
@@ -538,7 +552,7 @@ class LocalSimpleVarDecl extends VarDecl {
 * A <param decl>
 */
 class ParamDecl extends VarDecl {
-	int paramNum;
+	int paramNum = 0;
 
 	ParamDecl(String n) {
 		super(n);
@@ -582,9 +596,9 @@ class ParamDecl extends VarDecl {
 */
 class FuncDecl extends Declaration {
 	//-- Must be changed in part 1+2:
-    ParamDeclList paramList = new ParamDeclList();
-    LocalDeclList localDeclList = new LocalDeclList();
-    StatmList body = new StatmList();
+    ParamDeclList paramList;
+    LocalDeclList localVarList;
+    StatmList body;
 
 	FuncDecl(String n) {
 		// Used for user functions:
@@ -592,6 +606,9 @@ class FuncDecl extends Declaration {
 		super(n);
 		assemblerName = (CLess.underscoredGlobals() ? "_" : "") + n;
 		//-- Must be changed in part 1:
+        body = new StatmList();
+        localVarList = new LocalDeclList();
+        paramList = new ParamDeclList();
 	}
 
 	@Override void check(DeclList curDecls) {
@@ -627,13 +644,11 @@ class FuncDecl extends Declaration {
 
         //skip int, name, leftPar token - "int funcName("
         Scanner.skip(intToken); Scanner.skip(nameToken); Scanner.skip(leftParToken);
-
         paramList.parse();
 
         //skip rightPar, leftCurl token - "){"
         Scanner.skip(rightParToken); Scanner.skip(leftCurlToken);
-
-        body.parse();
+        localVarList.parse(); body.parse();
 
         //skip rightCurl token - "}"
         Scanner.skip(rightCurlToken);
