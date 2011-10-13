@@ -58,12 +58,30 @@ public class Log {
 		if (! doLogParser) return;
 
 		//-- Must be changed in part 1:
+        System.err.println("Entering parser..");
+
+        String pLine = "Parser:";
+        parseLevel++;
+
+        for (int i = 0; i < parseLevel; i++) {
+            pLine += '\t';
+        }
+        writeLogLine(pLine + symbol);
 	}
 
 	public static void leaveParser(String symbol) {
 		if (! doLogParser) return;
 
 		//-- Must be changed in part 1:
+        String pLine = "Parser:";
+
+        for (int i = 0; i < parseLevel; i++) {
+            pLine += '\t';
+        }
+
+        writeLogLine(pLine + symbol);
+        System.err.println("Leaving parser..");
+        parseLevel--;
 	}
 
 	/**

@@ -98,7 +98,7 @@ class Program extends SyntaxUnit {
 
 		progDecls.parse();
 		if (Scanner.curToken != eofToken)
-		Scanner.expected("Declaration");
+            Scanner.expected("Declaration");
 
 		Log.leaveParser("</program>");
 	}
@@ -207,6 +207,14 @@ class GlobalDeclList extends DeclList {
 	}
 
 	@Override void parse() {
+
+        /* Every line at outermost level in a .cless file starts with an int
+         * token (and is followed by a name token) : int func (...) or
+         * int var or int arr[..] etc.
+         * Case 1 : function declaration
+         * Case 2 : array declaration
+         * Case 3 : single variable declaration
+         */
 		while (Scanner.curToken == intToken) {
 			if (Scanner.nextToken == nameToken) {
 				if (Scanner.nextNextToken == leftParToken) { //Function declaration
@@ -219,9 +227,9 @@ class GlobalDeclList extends DeclList {
 					addDecl(gad);
 				} else { //int var;
 					//-- Must be changed in part 1:
-					GlobalSimpleVarDecl gsvd = new GlobalSimpleVarDecl (Scanner.nextName);
-					gsvd.parse();
-					addDecl(gsvd);
+                    GlobalSimpleVarDecl gsvd = new GlobalSimpleVarDecl(Scanner.nextName);
+                    gsvd.parse();
+                    addDecl(gsvd);
 				}
 			} else {
 				Scanner.expected("Declaration");
@@ -550,6 +558,9 @@ class ParamDecl extends VarDecl {
 */
 class FuncDecl extends Declaration {
 	//-- Must be changed in part 1+2:
+    ParamDeclList parDeclList = new ParamDeclList();
+    LocalDeclList localDeclList = new LocalDeclList();
+    StatmList body = new StatmList();
 
 	FuncDecl(String n) {
 		// Used for user functions:
@@ -637,7 +648,7 @@ abstract class Statement extends SyntaxUnit {
 
 
 	static Statement makeNewStatement() {
-		Statement statm;
+		Statement statm = null;
 
 		if (Scanner.curToken==nameToken && Scanner.nextToken==leftParToken) { //call-statm
 			//-- Must be changed in part 1:
@@ -646,17 +657,17 @@ abstract class Statement extends SyntaxUnit {
 		} else if (Scanner.curToken == forToken) { //for-statm
 			//-- Must be changed in part 1:
 		} else if (Scanner.curToken == ifToken) { //if-statm
-			return new IfStatm();
+			statm = new IfStatm();
 		} else if (Scanner.curToken == returnToken) { //return-statm
 			//-- Must be changed in part 1:
 		} else if (Scanner.curToken == whileToken) { //while-statm
-			return new WhileStatm();
+			statm = new WhileStatm();
 		} else if (Scanner.curToken == semicolonToken) { //empty-statm
-			return new EmptyStatm();
+			statm = new EmptyStatm();
 		} else {
 			Scanner.expected("Statement");
 		}
-		return null;  // Just to keep the Java compiler happy. :-)
+		return statm;  // Just to keep the Java compiler happy. :-)
 	}
 }
 
