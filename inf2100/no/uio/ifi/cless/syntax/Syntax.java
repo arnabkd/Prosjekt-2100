@@ -628,17 +628,12 @@ class FuncDecl extends Declaration {
         //skip int, name, leftPar token - "int funcName("
         Scanner.skip(intToken); Scanner.skip(nameToken); Scanner.skip(leftParToken);
 
-
-
-        paramList.parse(); //parse all parameters
+        paramList.parse();
 
         //skip rightPar, leftCurl token - "){"
         Scanner.skip(rightParToken); Scanner.skip(leftCurlToken);
 
-        //parse body
-        while(Scanner.curToken != rightCurlToken){
-
-        }
+        body.parse();
 
         //skip rightCurl token - "}"
         Scanner.skip(rightCurlToken);
