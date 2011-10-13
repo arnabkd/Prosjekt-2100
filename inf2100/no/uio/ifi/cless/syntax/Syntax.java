@@ -249,7 +249,7 @@ class LocalDeclList extends DeclList {
 	}
 
 	@Override void parse() {
-		//-- Must be changed in part 1:
+		//-- Must be changed in part 1: -- NOT COMPLETE
 
         //<decl list> int ..; int .... ; ...... ; </decl list>
         while (Scanner.curToken == intToken){
