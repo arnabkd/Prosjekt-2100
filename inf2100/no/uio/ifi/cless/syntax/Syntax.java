@@ -265,6 +265,23 @@ class ParamDeclList extends DeclList {
 
 	@Override void parse() {
 		//-- Must be changed in part 1:
+        Log.enterParser("<param declList>");
+        int paramNum = 0;
+
+        while(Scanner.curToken != rightParToken){
+            //Skip a comma token if there is one here
+            //(cannot be before first param)
+            if (Scanner.curToken == commaToken && paramNum != 0)
+                Scanner.skip(commaToken);
+
+            ParamDecl param = new ParamDecl(Scanner.curName, paramNum);
+            addDecl(param);
+            param.parse();
+
+            paramNum++;
+        }
+
+        Log.leaveParser("</param declList>");
 	}
 }
 
@@ -521,11 +538,16 @@ class LocalSimpleVarDecl extends VarDecl {
 * A <param decl>
 */
 class ParamDecl extends VarDecl {
-	int paramNum = 0;
+	int paramNum;
 
 	ParamDecl(String n) {
 		super(n);
 	}
+
+    ParamDecl(String n, int paramNum){
+        super(n);
+        this.paramNum = paramNum;
+    }
 
 	@Override void check(DeclList curDecls) {
 		//-- Must be changed in part 2:
@@ -547,6 +569,8 @@ class ParamDecl extends VarDecl {
 		Log.enterParser("<param decl>");
 
 		//-- Must be changed in part 1:
+        Scanner.skip(intToken);
+        Scanner.skip(nameToken);
 
 		Log.leaveParser("</param decl>");
 	}
@@ -558,7 +582,7 @@ class ParamDecl extends VarDecl {
 */
 class FuncDecl extends Declaration {
 	//-- Must be changed in part 1+2:
-    ParamDeclList parDeclList = new ParamDeclList();
+    ParamDeclList paramList = new ParamDeclList();
     LocalDeclList localDeclList = new LocalDeclList();
     StatmList body = new StatmList();
 
@@ -599,6 +623,26 @@ class FuncDecl extends Declaration {
 
 	@Override void parse() {
 		//-- Must be changed in part 1:
+        Log.enterParser("<func decl>");
+
+        //skip int, name, leftPar token - "int funcName("
+        Scanner.skip(intToken); Scanner.skip(nameToken); Scanner.skip(leftParToken);
+
+
+
+        paramList.parse(); //parse all parameters
+
+        //skip rightPar, leftCurl token - "){"
+        Scanner.skip(rightParToken); Scanner.skip(leftCurlToken);
+
+        //parse body
+        while(Scanner.curToken != rightCurlToken){
+
+        }
+
+        //skip rightCurl token - "}"
+        Scanner.skip(rightCurlToken);
+        Log.leaveParser("</func decl>");
 	}
 
 	@Override void printTree() {

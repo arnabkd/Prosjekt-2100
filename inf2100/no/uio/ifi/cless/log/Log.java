@@ -59,30 +59,36 @@ public class Log {
 
 		//-- Must be changed in part 1:
         System.err.println("Entering parser..");
-
-        String pLine = "Parser:";
         parseLevel++;
 
-        for (int i = 0; i < parseLevel; i++) {
-            pLine += '\t';
-        }
-        writeLogLine(pLine + symbol);
+        String pLine = "Parser:" + charRepeater(' ', parseLevel) + symbol;
+        writeLogLine(pLine);
 	}
 
 	public static void leaveParser(String symbol) {
 		if (! doLogParser) return;
 
 		//-- Must be changed in part 1:
-        String pLine = "Parser:";
+        String pLine = "Parser" + charRepeater(' ', parseLevel) + symbol;
+        writeLogLine(pLine);
 
-        for (int i = 0; i < parseLevel; i++) {
-            pLine += '\t';
-        }
-
-        writeLogLine(pLine + symbol);
-        System.err.println("Leaving parser..");
         parseLevel--;
+        System.err.println("Leaving parser..");
 	}
+
+
+    /**
+     * @param char c : the character to be repeated
+     * @param int count : the number of times the character should be repeated
+     * @return String s
+     */
+    public static String charRepeater(char c , int count){
+        String s = "";
+        for(int i = 0; i < count; i++)
+            s += c;
+        return s;
+    }
+
 
 	/**
 	 * Make a note in the log file that another source line has been read.
