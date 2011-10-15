@@ -131,7 +131,7 @@ public class Log {
 
 	public static void wTree(String s) {
 		if (curTreeLine.length() == 0) {
-			for (int i = 1;	 i <= treeLevel;  ++i) curTreeLine += "	 ";
+			for (int i = 1;	 i <= treeLevel;  ++i) curTreeLine += "	";
 		}
 		curTreeLine += s;
 	}

@@ -295,8 +295,6 @@ class ParamDeclList extends DeclList {
     @Override void parse() {
 	//-- Must be changed in part 1:
         int paramNum = 0;
-        System.err.println("parsing param declist");
-        Scanner.printDump();
         while(Scanner.curToken != rightParToken){
             //Skip a comma token if there is one here
             //(cannot be before first param)
@@ -314,7 +312,14 @@ class ParamDeclList extends DeclList {
         }
     }
 
-
+    @Override void printTree(){
+        Declaration current = firstDecl;
+        while (current != null){
+            Log.wTree("int "+ current.name);
+            current = current.nextDecl;
+            if(current != null) Log.wTree(",");
+        }
+    }
 
 
 }
@@ -398,10 +403,16 @@ abstract class VarDecl extends Declaration {
 	return 4;
     }
 
+<<<<<<< HEAD
     @Override void printTree() {
 	Log.wTree("int " + name);
         Log.wTreeLn(";");
     }
+=======
+	@Override void printTree() {
+		Log.wTreeLn("int " + name + ";");
+	}
+>>>>>>> dafa51ac3ca9298a174a3f6ebb28eaf7f1d1017a
 
     //-- Must be changed in part 1+2:
 }
@@ -443,14 +454,32 @@ class GlobalArrayDecl extends VarDecl {
     @Override void parse() {
 	Log.enterParser("<var decl>");
 
+<<<<<<< HEAD
 	//-- Must be changed in part 1:
+=======
+		//-- Must be changed in part 1:
+        Scanner.skip(intToken);
+        Scanner.skip(nameToken);
+        Scanner.skip(leftBracketToken);
+        numElems = Scanner.nextNum;
+        Scanner.skip(numberToken);
+        Scanner.skip(rightBracketToken);
+        Scanner.skip(semicolonToken);
+>>>>>>> dafa51ac3ca9298a174a3f6ebb28eaf7f1d1017a
 
 	Log.leaveParser("</var decl>");
     }
 
+<<<<<<< HEAD
     @Override void printTree() {
 	//-- Must be changed in part 1:
     }
+=======
+	@Override void printTree() {
+		//-- Must be changed in part 1:
+        Log.wTreeLn(String.format("int %s[%d];", name, numElems));
+	}
+>>>>>>> dafa51ac3ca9298a174a3f6ebb28eaf7f1d1017a
 }
 
 
@@ -528,14 +557,32 @@ class LocalArrayDecl extends VarDecl {
     @Override void parse() {
 	Log.enterParser("<var decl>");
 
+<<<<<<< HEAD
 	//-- Must be changed in part 1:
+=======
+		//-- Must be changed in part 1:
+        Scanner.skip(intToken);
+        Scanner.skip(nameToken);
+        Scanner.skip(leftBracketToken);
+        numElems = Scanner.nextNum;
+        Scanner.skip(numberToken);
+        Scanner.skip(rightBracketToken);
+        Scanner.skip(semicolonToken);
+>>>>>>> dafa51ac3ca9298a174a3f6ebb28eaf7f1d1017a
 
 	Log.leaveParser("</var decl>");
     }
 
+<<<<<<< HEAD
     @Override void printTree() {
 	//-- Must be changed in part 1:
     }
+=======
+	@Override void printTree() {
+		//-- Must be changed in part 1:
+        Log.wTreeLn(String.format("int %s[%d];", name, numElems));
+	}
+>>>>>>> dafa51ac3ca9298a174a3f6ebb28eaf7f1d1017a
 
 }
 
@@ -569,8 +616,15 @@ class LocalSimpleVarDecl extends VarDecl {
 	//-- Must be changed in part 1:
         Scanner.skip(intToken);
         Scanner.skip(nameToken);
+<<<<<<< HEAD
 	Log.leaveParser("</var decl>");
     }
+=======
+        Scanner.skip(semicolonToken);
+
+		Log.leaveParser("</var decl>");
+	}
+>>>>>>> dafa51ac3ca9298a174a3f6ebb28eaf7f1d1017a
 }
 
 
@@ -605,8 +659,13 @@ class ParamDecl extends VarDecl {
 	//-- Must be changed in part 2:
     }
 
+<<<<<<< HEAD
     @Override void parse() {
 	Log.enterParser("<param decl> -" + this.name);
+=======
+	@Override void parse() {
+		Log.enterParser("<param decl>");
+>>>>>>> dafa51ac3ca9298a174a3f6ebb28eaf7f1d1017a
 
 	//-- Must be changed in part 1:
         Scanner.skip(intToken);
@@ -678,8 +737,7 @@ class FuncDecl extends Declaration {
         Scanner.skip(rightParToken);
         Scanner.skip(leftCurlToken);
         localVarList.parse();
-        body.parse();
-
+        //body.parse();
         //skip rightCurl token - "}"
         Scanner.skip(rightCurlToken);
         Log.leaveParser("</func decl>");
@@ -691,18 +749,15 @@ class FuncDecl extends Declaration {
         //function name and leftParToken
         Log.wTree(String.format("int %s(" ,name));
 
-        //params -> rightpartoken
-        Declaration current = paramList.firstDecl;
-        while (current != null){
-            Log.wTree("int "+ current.name);
-            current = current.nextDecl;
-            if(current != null) Log.wTree(",");
-        }
-        Log.wTreeLn(")");
+        //paramlist and rightParToken
+        paramList.printTree(); Log.wTreeLn(")");
 
         //leftCurl -> body -> rightCurl
         Log.wTreeLn("{");
+        Log.indentTree();
+        localVarList.printTree();
         body.printTree();
+        Log.outdentTree();
         Log.wTreeLn("}");
     }
 
@@ -798,10 +853,17 @@ class EmptyStatm extends Statement {
 	Log.leaveParser("</empty statm>");
     }
 
+<<<<<<< HEAD
     @Override void printTree() {
 	//-- Must be changed in part 1:
 	Log.wTree(";");
     }
+=======
+	@Override void printTree() {
+		//-- Must be changed in part 1:
+		Log.wTree(";");
+	}
+>>>>>>> dafa51ac3ca9298a174a3f6ebb28eaf7f1d1017a
 }
 
 /*
@@ -893,6 +955,7 @@ class IfStatm extends Statement {
         Log.enterParser("</if-statm>");
     }
 
+<<<<<<< HEAD
     @Override void printTree() {
 	//-- Must be changed in part 1:
 	Log.wTree("if (");  eks.printTree(); Log.wTree(") {");
@@ -901,6 +964,14 @@ class IfStatm extends Statement {
 	Log.outdentTree();
 	Log.wTree("}");
     }
+=======
+	@Override void printTree() {
+		//-- Must be changed in part 1:
+		//Log.wTree("if (" + eks.printTree() + ") {")
+		st.printTree();
+		Log.wTree("}");
+	}
+>>>>>>> dafa51ac3ca9298a174a3f6ebb28eaf7f1d1017a
 }
 
 
@@ -1197,22 +1268,16 @@ class Variable extends Operand {
 	if (nextOperator != null) nextOperator.check(curDecls);
     }
 
-    @Override void genCode(FuncDecl curFunc) {
-	//-- Must be changed in part 2:
-    }
+	@Override void parse() {
+		Log.enterParser("<variable>");
 
-    @Override void parse() {
-	Log.enterParser("<variable>");
-		
-	Scanner.skip(nameToken);
-	index.parse();	
-		
-	Log.leaveParser("</variable>");
-	//-- Must be changed in part 1:
-    }
+        //-- Must be changed in part 1:
 
-    @Override void printTree() {
-	//-- Must be changed in part 1:
-	Log.wTree(varName + "["); index.printTree(); Log.wTree("]"); 
-    }
+		Log.leaveParser("</variable>");
+
+	}
+
+	@Override void printTree() {
+		//-- Must be changed in part 1:
+	}
 }
