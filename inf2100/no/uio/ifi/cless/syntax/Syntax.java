@@ -22,6 +22,9 @@ public class Syntax {
 
 	public static void init() {
 		//-- Must be changed in part 1:
+        Scanner.readNext();
+        Scanner.readNext();
+        Scanner.readNext();
 	}
 
 	public static void finish() {
@@ -215,6 +218,10 @@ class GlobalDeclList extends DeclList {
          * Case 2 : array declaration
          * Case 3 : single variable declaration
          */
+
+        //System.err.printf("curtoken: %s\nnexttoken: %s\nnextnextToken: %s\n", Scanner.curToken, Scanner.nextToken,Scanner.nextNextToken);
+
+
 		while (Scanner.curToken == intToken) {
 			if (Scanner.nextToken == nameToken) {
 				if (Scanner.nextNextToken == leftParToken) { //Function declaration
@@ -462,6 +469,9 @@ class GlobalSimpleVarDecl extends VarDecl {
 		Log.enterParser("<var decl>");
 
 		//-- Must be changed in part 1:
+        Scanner.skip(intToken);
+        Scanner.skip(nameToken);
+        Scanner.skip(semicolonToken);
 
 		Log.leaveParser("</var decl>");
 	}
@@ -643,11 +653,14 @@ class FuncDecl extends Declaration {
         Log.enterParser("<func decl>");
 
         //skip int, name, leftPar token - "int funcName("
-        Scanner.skip(intToken); Scanner.skip(nameToken); Scanner.skip(leftParToken);
+        Scanner.skip(intToken);
+        Scanner.skip(nameToken);
+        Scanner.skip(leftParToken);
         paramList.parse();
 
         //skip rightPar, leftCurl token - "){"
-        Scanner.skip(rightParToken); Scanner.skip(leftCurlToken);
+        Scanner.skip(rightParToken);
+        Scanner.skip(leftCurlToken);
         localVarList.parse(); body.parse();
 
         //skip rightCurl token - "}"
