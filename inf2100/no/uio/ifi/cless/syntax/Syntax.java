@@ -706,14 +706,18 @@ abstract class Statement extends SyntaxUnit {
 
 		if (Scanner.curToken==nameToken && Scanner.nextToken==leftParToken) { //call-statm
 			//-- Must be changed in part 1:
+			
 		} else if (Scanner.curToken == nameToken) { //assign-statm
 			//-- Must be changed in part 1:
+			statm = new AssignStatm();
 		} else if (Scanner.curToken == forToken) { //for-statm
 			//-- Must be changed in part 1:
+			statm = new ForStatm();
 		} else if (Scanner.curToken == ifToken) { //if-statm
 			statm = new IfStatm();
 		} else if (Scanner.curToken == returnToken) { //return-statm
 			//-- Must be changed in part 1:
+			statm = new ReturnStatm();
 		} else if (Scanner.curToken == whileToken) { //while-statm
 			statm = new WhileStatm();
 		} else if (Scanner.curToken == semicolonToken) { //empty-statm
@@ -724,9 +728,6 @@ abstract class Statement extends SyntaxUnit {
 		return statm;  // Just to keep the Java compiler happy. :-)
 	}
 }
-
-
-
 
 /*
 * An <empty statm>.
@@ -755,9 +756,54 @@ class EmptyStatm extends Statement {
 	}
 }
 
+/*
+ * <call statm>
+ */
+class CallStatm extends Statement{
+	//part1 + part2
+	@Override void check(DeclList curDecls) {
+		//part2
+	}
+	
+	@Override void genCode(FuncDecl curFunc) {
+		//part2
+	}
+	
+	@Override void parse() {
+		//part1 
+	}
+
+	@Override void printTree() {
+		//part1 
+	}
+}
+
 
 /*
-* A <for-statm>.
+ * <assign stam>
+ */
+class AssignStatm extends Statement {
+	//part1 + part2
+	@Override void check(DeclList curDecls){
+		//part 2
+	}
+	
+	@Override void genCode(FuncDecl curFunc) {
+		//part 2
+	}
+
+	@Override void parse() {
+		//part1
+	}
+	
+	@Override void printTree() {
+		//part 1
+	}
+}
+
+
+/*
+* A <for-statm>. ??
 */
 //-- Must be changed in part 1+2:
 
@@ -784,6 +830,11 @@ class IfStatm extends Statement {
 
 	@Override void printTree() {
 		//-- Must be changed in part 1:
+		Log.wTree("if (");   Log.wTreeLn(") {");
+		Log.indentTree();
+		//body.printTree();
+		Log.outdentTree();
+		Log.wTreeLn("}");
 	}
 }
 
@@ -792,7 +843,29 @@ class IfStatm extends Statement {
 * A <return-statm>.
 */
 //-- Must be changed in part 1+2:
-
+class ReturnStatm extends Statement {
+	//part1 + part2
+	
+	@Override void check(DeclList curDecls) {
+		//part 2
+	}
+	
+	@Override void genCode(FuncDecl curFunc) {
+		//part2
+	}
+	
+	@Override void parse() {
+		//part1
+	}
+	
+	@Override void printTree() {
+		//part1
+		Log.wTree("return ");  Log.wTreeLn(";");
+		//Log.indentTree();
+		//body.printTree();
+		//Log.outdentTree();
+	}
+}
 
 /*
 * A <while-statm>.
@@ -842,7 +915,7 @@ class WhileStatm extends Statement {
 	}
 }
 /*
-* A <while-statm>.
+* A <for-statm>.
 */
 class ForStatm extends Statement {
 	ExprList exps = new ExprList();
@@ -859,10 +932,26 @@ class ForStatm extends Statement {
 
 	@Override void parse() {
         //-- Must be changed in part 1
+		Log.enterParser("<for-statm>");
+
+		Scanner.readNext();
+		Scanner.skip(leftParToken);
+		//test.parse();
+		Scanner.skip(rightParToken);
+		Scanner.skip(leftCurlToken);
+		body.parse();
+		Scanner.skip(rightCurlToken);
+
+		Log.leaveParser("</for-statm>");
 	}
 
 	@Override void printTree() {
-        //-- Must be changed in part 2
+        //-- Must be changed in part 1
+		Log.wTree("for (");  Log.wTreeLn(") {");
+		Log.indentTree();
+		body.printTree();
+		Log.outdentTree();
+		Log.wTreeLn("}");
 	}
 }
 
