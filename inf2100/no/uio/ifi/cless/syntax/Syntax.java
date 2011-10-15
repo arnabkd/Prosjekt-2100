@@ -295,8 +295,6 @@ class ParamDeclList extends DeclList {
 	@Override void parse() {
 		//-- Must be changed in part 1:
         int paramNum = 0;
-        System.err.println("parsing param declist");
-        Scanner.printDump();
         while(Scanner.curToken != rightParToken){
             //Skip a comma token if there is one here
             //(cannot be before first param)
@@ -314,7 +312,14 @@ class ParamDeclList extends DeclList {
         }
 	}
 
-
+    @Override void printTree(){
+        Declaration current = firstDecl;
+        while (current != null){
+            Log.wTree("int "+ current.name);
+            current = current.nextDecl;
+            if(current != null) Log.wTree(",");
+        }
+    }
 
 
 }
@@ -399,8 +404,7 @@ abstract class VarDecl extends Declaration {
 	}
 
 	@Override void printTree() {
-		Log.wTree("int " + name);
-        Log.wTreeLn(";");
+		Log.wTreeLn("int " + name + ";");
 	}
 
 	//-- Must be changed in part 1+2:
@@ -444,12 +448,20 @@ class GlobalArrayDecl extends VarDecl {
 		Log.enterParser("<var decl>");
 
 		//-- Must be changed in part 1:
+        Scanner.skip(intToken);
+        Scanner.skip(nameToken);
+        Scanner.skip(leftBracketToken);
+        numElems = Scanner.nextNum;
+        Scanner.skip(numberToken);
+        Scanner.skip(rightBracketToken);
+        Scanner.skip(semicolonToken);
 
 		Log.leaveParser("</var decl>");
 	}
 
 	@Override void printTree() {
 		//-- Must be changed in part 1:
+        Log.wTreeLn(String.format("int %s[%d];", name, numElems));
 	}
 }
 
@@ -529,12 +541,20 @@ class LocalArrayDecl extends VarDecl {
 		Log.enterParser("<var decl>");
 
 		//-- Must be changed in part 1:
+        Scanner.skip(intToken);
+        Scanner.skip(nameToken);
+        Scanner.skip(leftBracketToken);
+        numElems = Scanner.nextNum;
+        Scanner.skip(numberToken);
+        Scanner.skip(rightBracketToken);
+        Scanner.skip(semicolonToken);
 
 		Log.leaveParser("</var decl>");
 	}
 
 	@Override void printTree() {
 		//-- Must be changed in part 1:
+        Log.wTreeLn(String.format("int %s[%d];", name, numElems));
 	}
 
 }
@@ -569,6 +589,8 @@ class LocalSimpleVarDecl extends VarDecl {
 		//-- Must be changed in part 1:
         Scanner.skip(intToken);
         Scanner.skip(nameToken);
+        Scanner.skip(semicolonToken);
+
 		Log.leaveParser("</var decl>");
 	}
 }
@@ -606,7 +628,7 @@ class ParamDecl extends VarDecl {
 	}
 
 	@Override void parse() {
-		Log.enterParser("<param decl> -" + this.name);
+		Log.enterParser("<param decl>");
 
 		//-- Must be changed in part 1:
         Scanner.skip(intToken);
@@ -678,8 +700,7 @@ class FuncDecl extends Declaration {
         Scanner.skip(rightParToken);
         Scanner.skip(leftCurlToken);
         localVarList.parse();
-        body.parse();
-
+        //body.parse();
         //skip rightCurl token - "}"
         Scanner.skip(rightCurlToken);
         Log.leaveParser("</func decl>");
@@ -691,18 +712,15 @@ class FuncDecl extends Declaration {
         //function name and leftParToken
         Log.wTree(String.format("int %s(" ,name));
 
-        //params -> rightpartoken
-        Declaration current = paramList.firstDecl;
-        while (current != null){
-            Log.wTree("int "+ current.name);
-            current = current.nextDecl;
-            if(current != null) Log.wTree(",");
-        }
-        Log.wTreeLn(")");
+        //paramlist and rightParToken
+        paramList.printTree(); Log.wTreeLn(")");
 
         //leftCurl -> body -> rightCurl
         Log.wTreeLn("{");
+        Log.indentTree();
+        localVarList.printTree();
         body.printTree();
+        Log.outdentTree();
         Log.wTreeLn("}");
 	}
 
@@ -800,7 +818,7 @@ class EmptyStatm extends Statement {
 
 	@Override void printTree() {
 		//-- Must be changed in part 1:
-		Log.wree(";");
+		Log.wTree(";");
 	}
 }
 
@@ -879,7 +897,7 @@ class IfStatm extends Statement {
 
 	@Override void printTree() {
 		//-- Must be changed in part 1:
-		Log.wTree("if (" + eks.printTree() + ") {")
+		//Log.wTree("if (" + eks.printTree() + ") {")
 		st.printTree();
 		Log.wTree("}");
 	}
@@ -1183,16 +1201,14 @@ class Variable extends Operand {
 
 	@Override void parse() {
 		Log.enterParser("<variable>");
-		
-		Scanner.skip(nameToken);
-		index.parse();	
-		
+
+        //-- Must be changed in part 1:
+
 		Log.leaveParser("</variable>");
-		//-- Must be changed in part 1:
+
 	}
 
 	@Override void printTree() {
 		//-- Must be changed in part 1:
-		Log.wTree(varName + "["); index.printTree() Log.wTree("]"); 
 	}
 }
