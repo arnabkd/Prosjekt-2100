@@ -20,7 +20,7 @@ public class Scanner {
 
 	public static void init() {
 		//-- Must be changed in part 0:
-        
+
 	}
 
 	public static void finish() {
@@ -190,6 +190,7 @@ public class Scanner {
 	// information found here.)
 
 	public static void illegal(String message) {
+        System.err.println(CharGenerator.sourceLine);
 		Error.error(curLine, message);
 	}
 
@@ -214,4 +215,11 @@ public class Scanner {
 	public static void skip(Token t1, Token t2) {
 		check(t1,t2);  readNext();
 	}
+
+    public static void printDump(){
+        System.err.println(String.format("Tokens : [%s][%s][%s]", curToken, nextToken, nextNextToken));
+        System.err.println(String.format("Names  : [%s][%s][%s]", curName, nextName, nextNextName));
+        System.err.println(String.format("Numbers: [%s][%s][%s]", curNum,nextNum, nextNextNum));
+        System.err.println(String.format("Lines  : [%s][%s][%s]", curLine,nextLine, nextNextLine));
+    }
 }

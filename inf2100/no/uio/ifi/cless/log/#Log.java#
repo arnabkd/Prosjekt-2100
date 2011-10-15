@@ -18,10 +18,7 @@ public class Log {
 		doLogScanner = false, doLogTree = false;
 
 	private static String logName, curTreeLine = "";
-	private static int nLogLines = 0, parseLevel = 0;
-
-    //Indicates the number of spaces to add whenever wTree(String s) is called
-    private static int treeLevel = 0;
+	private static int nLogLines = 0, parseLevel = 0, treeLevel = 0;
 
 
 	public static void init() {
@@ -56,39 +53,15 @@ public class Log {
 
 	public static void enterParser(String symbol) {
 		if (! doLogParser) return;
-
+		
 		//-- Must be changed in part 1:
-        //System.err.println("Entering parser..");
-        parseLevel++;
-
-        String pLine = "Parser:" + stringRepeater("  ", parseLevel) + symbol;
-        writeLogLine(pLine);
 	}
 
 	public static void leaveParser(String symbol) {
 		if (! doLogParser) return;
-
+		
 		//-- Must be changed in part 1:
-        String pLine = "Parser:" + stringRepeater("  ", parseLevel) + symbol;
-        writeLogLine(pLine);
-
-        parseLevel--;
-        //System.err.println("Leaving parser..");
 	}
-
-
-    /**
-     * @param String rep
-     * @param int count : the number of times the character should be repeated
-     * @return String s
-     */
-    public static String stringRepeater(String rep, int count){
-        String s = "";
-        for(int i = 0; i < count; i++)
-            s += rep;
-        return s;
-    }
-
 
 	/**
 	 * Make a note in the log file that another source line has been read.
@@ -145,19 +118,11 @@ public class Log {
 		wTree(s);  wTreeLn();
 	}
 
-    /**
-     * Increases the indentation of the tree by 1 level.
-     */
 	public static void indentTree() {
 		//-- Must be changed in part 1:
-        treeLevel++;
 	}
 
-    /**
-     * Decreases the indentation of the tree by 1 level
-     */
 	public static void outdentTree() {
 		//-- Must be changed in part 1:
-        treeLevel--;
 	}
 }
