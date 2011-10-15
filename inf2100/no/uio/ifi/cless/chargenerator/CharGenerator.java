@@ -16,7 +16,7 @@ public class CharGenerator {
 	public static char curC, nextC;
 
 	private static LineNumberReader sourceFile = null;
-	private static String sourceLine;
+	public static String sourceLine;
 	private static int sourcePos;
 	private static int nextCVal;
 
@@ -27,7 +27,7 @@ public class CharGenerator {
 			Error.error("Cannot read " + CLess.sourceName + "!");
 		}
 		sourceLine = "";  sourcePos = 0;  curC = nextC = ' ';
-		nextCVal = 0; 
+		nextCVal = 0;
 		readNext();	 readNext();
 	}
 

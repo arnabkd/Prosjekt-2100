@@ -135,6 +135,15 @@ abstract class DeclList extends SyntaxUnit {
 		}
 	}
 
+    Declaration getLastDecl(){
+        Declaration current = firstDecl;
+        while(current.nextDecl != null){
+            current = current.nextDecl;
+        }
+        return current;
+    }
+
+
 	@Override void printTree() {
 		//-- Must be changed in part 1:
 		Declaration currentDecl = firstDecl;
@@ -154,8 +163,8 @@ abstract class DeclList extends SyntaxUnit {
 		}
 
 		//Declaration does not exist yet, add it to the declList
-		d.nextDecl = firstDecl;
-		firstDecl = d;
+		Declaration last = getLastDecl();
+        last.nextDecl = d;
 	}
 
 	protected boolean declExists (Declaration d){
@@ -285,24 +294,29 @@ class ParamDeclList extends DeclList {
 
 	@Override void parse() {
 		//-- Must be changed in part 1:
-        Log.enterParser("<param declList>");
         int paramNum = 0;
-
+        System.err.println("parsing param declist");
+        Scanner.printDump();
         while(Scanner.curToken != rightParToken){
             //Skip a comma token if there is one here
             //(cannot be before first param)
             if (Scanner.curToken == commaToken && paramNum != 0)
                 Scanner.skip(commaToken);
 
-            ParamDecl param = new ParamDecl(Scanner.curName, paramNum);
+            ParamDecl param = new ParamDecl(Scanner.nextName, paramNum);
             addDecl(param);
             param.parse();
 
-            paramNum++;
-        }
 
-        Log.leaveParser("</param declList>");
+
+            paramNum++;
+
+        }
 	}
+
+
+
+
 }
 
 
@@ -386,7 +400,7 @@ abstract class VarDecl extends Declaration {
 
 	@Override void printTree() {
 		Log.wTree("int " + name);
-		Log.wTreeLn(";");
+        Log.wTreeLn(";");
 	}
 
 	//-- Must be changed in part 1+2:
@@ -475,6 +489,8 @@ class GlobalSimpleVarDecl extends VarDecl {
 
 		Log.leaveParser("</var decl>");
 	}
+
+
 }
 
 
@@ -590,7 +606,7 @@ class ParamDecl extends VarDecl {
 	}
 
 	@Override void parse() {
-		Log.enterParser("<param decl>");
+		Log.enterParser("<param decl> -" + this.name);
 
 		//-- Must be changed in part 1:
         Scanner.skip(intToken);
@@ -661,7 +677,8 @@ class FuncDecl extends Declaration {
         //skip rightPar, leftCurl token - "){"
         Scanner.skip(rightParToken);
         Scanner.skip(leftCurlToken);
-        localVarList.parse(); body.parse();
+        localVarList.parse();
+        body.parse();
 
         //skip rightCurl token - "}"
         Scanner.skip(rightCurlToken);
@@ -670,7 +687,25 @@ class FuncDecl extends Declaration {
 
 	@Override void printTree() {
 		//-- Must be changed in part 1:
+
+        //function name and leftParToken
+        Log.wTree(String.format("int %s(" ,name));
+
+        //params -> rightpartoken
+        Declaration current = paramList.firstDecl;
+        while (current != null){
+            Log.wTree("int "+ current.name);
+            current = current.nextDecl;
+            if(current != null) Log.wTree(",");
+        }
+        Log.wTreeLn(")");
+
+        //leftCurl -> body -> rightCurl
+        Log.wTreeLn("{");
+        body.printTree();
+        Log.wTreeLn("}");
 	}
+
 }
 
 
@@ -692,11 +727,11 @@ class StatmList extends SyntaxUnit {
 		Log.enterParser("<statm list>");
 
 		Statement lastStatm = null;
-		while (Scanner.curToken != rightCurlToken) {
-			Log.enterParser("<statement>");
-			//-- Must be changed in part 1:
-			Log.leaveParser("</statement>");
-		}
+//		while (Scanner.curToken != rightCurlToken) {
+//			Log.enterParser("<statement>");
+//			//-- Must be changed in part 1:
+//			Log.leaveParser("</statement>");
+//		}
 
 		Log.leaveParser("</statm list>");
 	}
@@ -719,7 +754,7 @@ abstract class Statement extends SyntaxUnit {
 
 		if (Scanner.curToken==nameToken && Scanner.nextToken==leftParToken) { //call-statm
 			//-- Must be changed in part 1:
-			
+
 		} else if (Scanner.curToken == nameToken) { //assign-statm
 			//-- Must be changed in part 1:
 			statm = new AssignStatm();
@@ -777,17 +812,17 @@ class CallStatm extends Statement{
 	@Override void check(DeclList curDecls) {
 		//part2
 	}
-	
+
 	@Override void genCode(FuncDecl curFunc) {
 		//part2
 	}
-	
+
 	@Override void parse() {
-		//part1 
+		//part1
 	}
 
 	@Override void printTree() {
-		//part1 
+		//part1
 	}
 }
 
@@ -800,7 +835,7 @@ class AssignStatm extends Statement {
 	@Override void check(DeclList curDecls){
 		//part 2
 	}
-	
+
 	@Override void genCode(FuncDecl curFunc) {
 		//part 2
 	}
@@ -808,7 +843,7 @@ class AssignStatm extends Statement {
 	@Override void parse() {
 		//part1
 	}
-	
+
 	@Override void printTree() {
 		//part 1
 	}
@@ -858,19 +893,19 @@ class IfStatm extends Statement {
 //-- Must be changed in part 1+2:
 class ReturnStatm extends Statement {
 	//part1 + part2
-	
+
 	@Override void check(DeclList curDecls) {
 		//part 2
 	}
-	
+
 	@Override void genCode(FuncDecl curFunc) {
 		//part2
 	}
-	
+
 	@Override void parse() {
 		//part1
 	}
-	
+
 	@Override void printTree() {
 		//part1
 		Log.wTree("return ");  Log.wTreeLn(";");

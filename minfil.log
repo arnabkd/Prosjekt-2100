@@ -1,0 +1,23 @@
+   1: /* Program 'mini
+   2:    -------------
+   3:    The smallest possible C< program!
+   4: */
+   5: int LF;
+Parser:   <program>
+Parser:     <var decl>
+   6: int main()
+Parser:     </var decl>
+Parser:     <func decl>
+   7: {
+   8: }
+Parser:       <func body>
+Parser:         <statm list>
+Parser:         </statm list>
+Parser:       </func body>
+Parser:     </func decl>
+Parser:   </program>
+Tree:     int LF;
+Tree:     
+Tree:     int main ()
+Tree:     {
+Tree:     }

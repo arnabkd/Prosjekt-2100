@@ -1,0 +1,8 @@
+/* Program 'mini
+   -------------
+   The smallest possible C< program!
+*/
+int LF;
+int main()
+{
+}

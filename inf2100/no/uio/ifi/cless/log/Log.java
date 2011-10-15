@@ -58,7 +58,7 @@ public class Log {
 		if (! doLogParser) return;
 
 		//-- Must be changed in part 1:
-        System.err.println("Entering parser..");
+        //System.err.println("Entering parser..");
         parseLevel++;
 
         String pLine = "Parser:" + stringRepeater("  ", parseLevel) + symbol;
@@ -73,7 +73,7 @@ public class Log {
         writeLogLine(pLine);
 
         parseLevel--;
-        System.err.println("Leaving parser..");
+        //System.err.println("Leaving parser..");
 	}
 
 
