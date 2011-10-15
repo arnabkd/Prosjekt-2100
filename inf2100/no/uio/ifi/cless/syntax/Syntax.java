@@ -22,9 +22,7 @@ public class Syntax {
 
     public static void init() {
         //-- Must be changed in part 1:
-        Scanner.readNext();
-        Scanner.readNext();
-        Scanner.readNext();
+
     }
 
     public static void finish() {
@@ -972,7 +970,7 @@ class AssignStatm extends Statement {
     @Override
 	void parse() {
         Log.enterParser("<assign-statm>");
-	
+
 	var.parse();
 	Scanner.skip(equalToken);
 	exps.parse();
@@ -985,7 +983,7 @@ class AssignStatm extends Statement {
         var.printTree();
 	Log.wTree(" = ");
 	exps.printTree();
-	
+
     }
 }
 
@@ -1403,6 +1401,6 @@ class Variable extends Operand {
 
     @Override
 	void genCode(FuncDecl curFunc) {
-        
+
     }
 }
