@@ -1183,10 +1183,16 @@ class Variable extends Operand {
 
 	@Override void parse() {
 		Log.enterParser("<variable>");
+		
+		Scanner.skip(nameToken);
+		index.parse();	
+		
+		Log.leaveParser("</variable>");
 		//-- Must be changed in part 1:
 	}
 
 	@Override void printTree() {
 		//-- Must be changed in part 1:
+		Log.wTree(varName + "["); index.printTree() Log.wTree("]"); 
 	}
 }
