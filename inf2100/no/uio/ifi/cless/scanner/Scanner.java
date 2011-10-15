@@ -219,7 +219,7 @@ public class Scanner {
     public static void printDump(){
         System.err.println(String.format("Tokens : [%s][%s][%s]", curToken, nextToken, nextNextToken));
         System.err.println(String.format("Names  : [%s][%s][%s]", curName, nextName, nextNextName));
-        System.err.println(String.format("Numbers: [%s][%s][%s]", curNum,nextNum, nextNextNum));
-        System.err.println(String.format("Lines  : [%s][%s][%s]", curLine,nextLine, nextNextLine));
+        System.err.println(String.format("Numbers: [%d][%d][%d]", curNum,nextNum, nextNextNum));
+        System.err.println(String.format("Lines  : [%d][%d][%d]", curLine,nextLine, nextNextLine));
     }
 }
