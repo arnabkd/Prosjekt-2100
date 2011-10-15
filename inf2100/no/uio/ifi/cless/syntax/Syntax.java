@@ -765,7 +765,7 @@ class EmptyStatm extends Statement {
 
 	@Override void printTree() {
 		//-- Must be changed in part 1:
-
+		Log.wree(";");
 	}
 }
 
@@ -825,7 +825,8 @@ class AssignStatm extends Statement {
 */
 class IfStatm extends Statement {
 	//-- Must be changed in part 1+2:
-
+	Expression eks = new Expression();
+	StatmList st = new StatmList();
 	@Override void check(DeclList curDecls) {
 		//-- Must be changed in part 2:
 	}
@@ -843,11 +844,9 @@ class IfStatm extends Statement {
 
 	@Override void printTree() {
 		//-- Must be changed in part 1:
-		Log.wTree("if (");   Log.wTreeLn(") {");
-		Log.indentTree();
-		//body.printTree();
-		Log.outdentTree();
-		Log.wTreeLn("}");
+		Log.wTree("if (" + eks.printTree() + ") {")
+		st.printTree();
+		Log.wTree("}");
 	}
 }
 
@@ -858,7 +857,7 @@ class IfStatm extends Statement {
 //-- Must be changed in part 1+2:
 class ReturnStatm extends Statement {
 	//part1 + part2
-	
+	Expression exps = new Expression();
 	@Override void check(DeclList curDecls) {
 		//part 2
 	}
@@ -869,14 +868,15 @@ class ReturnStatm extends Statement {
 	
 	@Override void parse() {
 		//part1
+		Log.enterParser("<return-statm>");
+		Scanner.readNext();
+		exps.parse();
+		Log.leaveParser("</return-statm>");
 	}
 	
 	@Override void printTree() {
 		//part1
-		Log.wTree("return ");  Log.wTreeLn(";");
-		//Log.indentTree();
-		//body.printTree();
-		//Log.outdentTree();
+		Log.wTree("return "); exps.printTree(); Log.wTreeLn(";");
 	}
 }
 
@@ -949,7 +949,7 @@ class ForStatm extends Statement {
 
 		Scanner.readNext();
 		Scanner.skip(leftParToken);
-		//test.parse();
+		exps.parse();
 		Scanner.skip(rightParToken);
 		Scanner.skip(leftCurlToken);
 		body.parse();
@@ -960,7 +960,7 @@ class ForStatm extends Statement {
 
 	@Override void printTree() {
         //-- Must be changed in part 1
-		Log.wTree("for (");  Log.wTreeLn(") {");
+		Log.wTree("for (");  exps.printTree(); Log.wTreeLn(") {");
 		Log.indentTree();
 		body.printTree();
 		Log.outdentTree();
