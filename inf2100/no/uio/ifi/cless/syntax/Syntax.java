@@ -811,7 +811,7 @@ class FuncDecl extends Declaration {
  */
 class StatmList extends SyntaxUnit {
     //-- Must be changed in part 1:
-
+    
     @Override
 	void check(DeclList curDecls) {
         //-- Must be changed in part 2:
@@ -827,11 +827,11 @@ class StatmList extends SyntaxUnit {
         Log.enterParser("<statm list>");
 
         Statement lastStatm = null;
-        //		while (Scanner.curToken != rightCurlToken) {
-        //			Log.enterParser("<statement>");
-        //			//-- Must be changed in part 1:
-        //			Log.leaveParser("</statement>");
-        //		}
+        while (Scanner.curToken != rightCurlToken) {
+        	Log.enterParser("<statement>");
+        	//-- Must be changed in part 1:
+        	Log.leaveParser("</statement>");
+        }
 
         Log.leaveParser("</statm list>");
     }
@@ -971,19 +971,18 @@ class AssignStatm extends Statement {
 	void parse() {
         Log.enterParser("<assign-statm>");
 
-	var.parse();
-	Scanner.skip(equalToken);
-	exps.parse();
+        var.parse();
+        Scanner.skip(equalToken);
+        exps.parse();
 
-	Log.leaveParser("</assign-statm>");
+        Log.leaveParser("</assign-statm>");
     }
 
     @Override
 	void printTree() {
         var.printTree();
-	Log.wTree(" = ");
-	exps.printTree();
-
+        Log.wTree(" = ");
+        exps.printTree();
     }
 }
 
@@ -1274,6 +1273,7 @@ class Expression extends Operand {
 
         //-- Must be changed in part 1:
 
+
         Log.leaveParser("</expression>");
     }
 
@@ -1297,6 +1297,18 @@ abstract class Operator extends SyntaxUnit {
         token = Scanner.curToken;
         Log.leaveParser("</operator>");
         Scanner.skip(token);
+
+        //Parse the operand after this operator
+        if(Scanner.nextToken == numberToken){
+            secondOp = new Number();
+        }if(Scanner.nextToken == nameToken){
+            if(Scanner.nextNextToken == leftParToken){
+                secondOp = new FunctionCall();
+            }else {
+                secondOp = new Variable();
+            }
+        }
+        secondOp.parse();
     }
 
     @Override void printTree(){
@@ -1340,8 +1352,7 @@ class FunctionCall extends Operand {
 
     @Override
 	void parse() {
-        Log.enterParser("<for-statm>");
-        Log.leaveParser("<for-statm>");
+        //-- Must be changed in part 1:
     }
 
     @Override
@@ -1374,7 +1385,11 @@ class Number extends Operand {
 
     @Override
 	void parse() {
+        Log.enterParser("<number>");
+
         //-- Must be changed in part 1:
+
+        Log.leaveParser("</number>");
     }
 
     @Override
@@ -1412,9 +1427,15 @@ class Variable extends Operand {
     @Override
 	void parse() {
         Log.enterParser("<variable>");
+        Scanner.skip(nameToken);
 
+        if(Scanner.nextToken == leftBracketToken) {
+            Scanner.skip(leftBracketToken);
+            index = new Expression();
+            index.parse();
+            Scanner.skip(rightBracketToken);
+        }
         //-- Must be changed in part 1:
-
         Log.leaveParser("</variable>");
 
     }
@@ -1422,6 +1443,8 @@ class Variable extends Operand {
     @Override
 	void printTree() {
         //-- Must be changed in part 1:
+        if(index!= null) { Log.wTree(varName); index.printTree(); Log.wTreeLn(); }
+        else Log.wTreeLn(varName);
     }
 
     @Override
