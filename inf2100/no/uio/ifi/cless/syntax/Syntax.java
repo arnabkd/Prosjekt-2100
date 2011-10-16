@@ -812,6 +812,8 @@ class FuncDecl extends Declaration {
 class StatmList extends SyntaxUnit {
     //-- Must be changed in part 1:
 
+	Statement first;
+
     @Override
 	void check(DeclList curDecls) {
         //-- Must be changed in part 2:
@@ -826,11 +828,14 @@ class StatmList extends SyntaxUnit {
 	void parse() {
         Log.enterParser("<statm list>");
 
-        Statement lastStatm = null;
-        while (Scanner.curToken != rightCurlToken) {
-        	Log.enterParser("<statement>");
+
+        first = Statement.makeNewStatement();
+        Statement current = first;
+        while (current != null) {
         	//-- Must be changed in part 1:
-        	Log.leaveParser("</statement>");
+        	current.parse();
+        	current.nextStatm = Statement.makeNewStatement();
+        	current = current.nextStatm;
         }
 
         Log.leaveParser("</statm list>");
@@ -839,6 +844,11 @@ class StatmList extends SyntaxUnit {
     @Override
 	void printTree() {
         //-- Must be changed in part 1:
+    	Statement current = first;
+    	while (current != null) {
+    		current.printTree();
+    		current = current.nextStatm;
+    	}
     }
 }
 
@@ -918,7 +928,6 @@ class EmptyStatm extends Statement {
  */
 class CallStatm extends Statement {
     //part1 + part2
-
     FunctionCall func = new FunctionCall();
 
     @Override
@@ -972,7 +981,7 @@ class AssignStatm extends Statement {
         Log.enterParser("<assign-statm>");
 
         var.parse();
-        Scanner.skip(equalToken);
+        Scanner.skip(assignToken);
         exps.parse();
 
         Log.leaveParser("</assign-statm>");
@@ -1039,10 +1048,6 @@ class AssignStatm extends Statement {
         Log.outdentTree();
         Log.wTree("}");
     }
-
-
-
-
 }
 
 
