@@ -291,14 +291,16 @@ class LocalDeclList extends DeclList {
 
         //<decl list> int ..; int .... ; ...... ; </decl list>
         while (Scanner.curToken == intToken) {
-            if (Scanner.nextNextToken == leftBracketToken) { //LocalArrayDecl
-                LocalArrayDecl lad = new LocalArrayDecl(Scanner.nextName);
-                addDecl(lad);
-                lad.parse();
-            } else { //LocalSimpleVarDecl
-                LocalSimpleVarDecl lsvd = new LocalSimpleVarDecl(Scanner.nextName);
-                addDecl(lsvd);
-                lsvd.parse();
+            if(Scanner.nextToken == nameToken){
+                if (Scanner.nextNextToken == leftBracketToken) { //LocalArrayDecl
+                    LocalArrayDecl lad = new LocalArrayDecl(Scanner.curName);
+                    addDecl(lad);
+                    lad.parse();
+                } else { //LocalSimpleVarDecl
+                    LocalSimpleVarDecl lsvd = new LocalSimpleVarDecl(Scanner.curName);
+                    addDecl(lsvd);
+                    lsvd.parse();
+                }
             }
         }
     }
@@ -831,11 +833,15 @@ class StatmList extends SyntaxUnit {
 
         first = Statement.makeNewStatement();
         Statement current = first;
-        while (current != null) {
+        while (Scanner.curToken != rightCurlToken && current != null) {
         	//-- Must be changed in part 1:
+            Scanner.printDump();
         	current.parse();
-        	current.nextStatm = Statement.makeNewStatement();
-        	current = current.nextStatm;
+            Scanner.printDump();
+            if(Scanner.curToken != rightCurlToken) {
+                current.nextStatm = Statement.makeNewStatement();
+                current = current.nextStatm;
+            }
         }
 
         Log.leaveParser("</statm list>");
@@ -963,8 +969,8 @@ class CallStatm extends Statement {
  */
 class AssignStatm extends Statement {
     //part1 + part2
-    Variable var = new Variable();
-    Expression exps = new Expression();
+    Variable var;
+    Expression exps;
 
     @Override
 	void check(DeclList curDecls) {
@@ -979,12 +985,16 @@ class AssignStatm extends Statement {
     @Override
 	void parse() {
         Log.enterParser("<assign-statm>");
-
+        Log.enterParser("<assignment>");
+        var = new Variable(Scanner.curName);
         var.parse();
         Scanner.skip(assignToken);
+        exps = new Expression();
         exps.parse();
-
+        Log.leaveParser("</assignment>");
         Log.leaveParser("</assign-statm>");
+        Scanner.skip(semicolonToken);
+
     }
 
     @Override
@@ -1275,16 +1285,29 @@ class Expression extends Operand {
     @Override
 	void parse() {
         Log.enterParser("<expression>");
+        if(Scanner.curToken == numberToken){
+            firstOp = new Number(Scanner.nextNum);
+        }else if(Scanner.curToken == nameToken){
+            if(Scanner.nextToken == leftParToken){
+                firstOp = new FunctionCall();
+            }else{
+                firstOp = new Variable(Scanner.nextName);
+            }
+        }
 
+        if(firstOp!= null)  firstOp.parse();
+        if(firstOp!= null && firstOp.nextOperator != null) firstOp.nextOperator.parse();
         //-- Must be changed in part 1:
-
-
         Log.leaveParser("</expression>");
+
     }
 
     @Override
 	void printTree() {
         //-- Must be changed in part 1:
+       if(firstOp != null) firstOp.printTree();
+       if(firstOp != null && firstOp.nextOperator != null) firstOp.nextOperator.printTree();
+       Log.wTreeLn(";");
     }
 }
 
@@ -1310,15 +1333,16 @@ abstract class Operator extends SyntaxUnit {
             if(Scanner.nextToken == leftParToken){
                 secondOp = new FunctionCall();
             }else {
-                secondOp = new Variable();
+                secondOp = new Variable(Scanner.nextName);
             }
         }
-        secondOp.parse();
+        if(secondOp !=null) secondOp.parse();
     }
 
     @Override void printTree(){
         String s = token.getOpString();
         if(s!= null) Log.wTree(s);
+        if(secondOp != null) secondOp.printTree();
     }
     //-- Must be changed in part 1+2:
 }
@@ -1330,6 +1354,11 @@ abstract class Operator extends SyntaxUnit {
 abstract class Operand extends SyntaxUnit {
 
     Operator nextOperator = null;
+
+    public void setOperator(Operator next){
+        nextOperator = next;
+    }
+
 }
 
 
@@ -1396,7 +1425,7 @@ class Number extends Operand {
 	void parse() {
         Log.enterParser("<number>");
         //-- Must be changed in part 1:
-        Scanner.readNext();
+        Scanner.skip(numberToken);
         Log.leaveParser("</number>");
     }
 
@@ -1415,6 +1444,12 @@ class Variable extends Operand {
     String varName;
     VarDecl declRef = null;
     Expression index = null;
+
+    public Variable(String varName) {
+        this.varName = varName;
+    }
+
+
 
     @Override
 	void check(DeclList curDecls) {
@@ -1437,12 +1472,13 @@ class Variable extends Operand {
         Log.enterParser("<variable>");
         Scanner.skip(nameToken);
 
-        if(Scanner.nextToken == leftBracketToken) {
+        if(Scanner.curToken == leftBracketToken) {
             Scanner.skip(leftBracketToken);
             index = new Expression();
             index.parse();
             Scanner.skip(rightBracketToken);
         }
+
         //-- Must be changed in part 1:
         Log.leaveParser("</variable>");
 
