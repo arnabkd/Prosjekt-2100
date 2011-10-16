@@ -920,7 +920,6 @@ class EmptyStatm extends Statement {
  */
 class CallStatm extends Statement {
     //part1 + part2
-
     FunctionCall func = new FunctionCall();
 
     @Override
@@ -972,19 +971,18 @@ class AssignStatm extends Statement {
     @Override
 	void parse() {
         Log.enterParser("<assign-statm>");
-	
-	var.parse();
-	Scanner.skip(equalToken);
-	exps.parse();
+        var.parse();
+        Scanner.skip(equalToken);
+        exps.parse();
 
-	Log.leaveParser("</assign-statm>");
+        Log.leaveParser("</assign-statm>");
     }
 
     @Override
 	void printTree() {
         var.printTree();
-	Log.wTree(" = ");
-	exps.printTree();
+        Log.wTree(" = ");
+        exps.printTree();
 	
     }
 }
@@ -1042,10 +1040,6 @@ class AssignStatm extends Statement {
         Log.outdentTree();
         Log.wTree("}");
     }
-
-
-
-
 }
 
 
