@@ -14,6 +14,9 @@ public enum Token { addToken, assignToken, commaToken, divideToken, elseToken,
 		numberToken, rightBracketToken, rightCurlToken, rightParToken,
 		returnToken, semicolonToken, subtractToken, whileToken;
 
+
+
+
 	public static boolean isOperand(Token t) {
 		return t==numberToken || t==nameToken || t==leftParToken;
 	}
@@ -40,4 +43,18 @@ public enum Token { addToken, assignToken, commaToken, divideToken, elseToken,
 		if(t == greaterEqualToken) return true;
 		return false;
 	}
+
+    public String getOpString() {
+        if(this == addToken) return "+";
+        else if(this == subtractToken) return "-";
+        else if(this == multiplyToken) return "*";
+        else if(this == divideToken) return "/";
+        else if(this == equalToken) return "==";
+        else if(this == notEqualToken) return "!=";
+        else if(this == lessToken) return "<";
+        else if(this == lessEqualToken) return "<=";
+        else if(this == greaterToken) return ">";
+        else if(this == greaterEqualToken) return ">=";
+        else return null;
+    }
 }

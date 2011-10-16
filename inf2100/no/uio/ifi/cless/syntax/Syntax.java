@@ -1211,9 +1211,14 @@ class ExprList extends SyntaxUnit {
     @Override
 	void parse() {
         Expression lastExpr = null;
+        Expression currentExp = firstExpr;
 
         Log.enterParser("<expr list>");
-
+        while(currentExp != null){
+            currentExp.parse();
+            if(currentExp.nextExpr != null)  Scanner.skip(commaToken);
+            currentExp = currentExp.nextExpr;
+        }
         //-- Must be changed in part 1:
 
         Log.leaveParser("</expr list>");
@@ -1222,6 +1227,13 @@ class ExprList extends SyntaxUnit {
     @Override
 	void printTree() {
         //-- Must be changed in part 1:
+        Expression currentExp = firstExpr;
+        while(currentExp != null){
+            currentExp.printTree();
+
+            currentExp = currentExp.nextExpr;
+            if(currentExp != null) Log.wTree(",");
+        }
     }
 
     /**
@@ -1278,6 +1290,19 @@ class Expression extends Operand {
 abstract class Operator extends SyntaxUnit {
 
     Operand secondOp;
+    Token token;
+
+    @Override void parse(){
+        Log.enterParser("<operator>");
+        token = Scanner.curToken;
+        Log.leaveParser("</operator>");
+        Scanner.skip(token);
+    }
+
+    @Override void printTree(){
+        String s = token.getOpString();
+        if(s!= null) Log.wTree(s);
+    }
     //-- Must be changed in part 1+2:
 }
 
