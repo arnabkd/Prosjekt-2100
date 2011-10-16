@@ -811,7 +811,7 @@ class FuncDecl extends Declaration {
  */
 class StatmList extends SyntaxUnit {
     //-- Must be changed in part 1:
-    
+
     @Override
 	void check(DeclList curDecls) {
         //-- Must be changed in part 2:
@@ -1299,10 +1299,10 @@ abstract class Operator extends SyntaxUnit {
         Scanner.skip(token);
 
         //Parse the operand after this operator
-        if(Scanner.nextToken == numberToken){
-            secondOp = new Number();
-        }if(Scanner.nextToken == nameToken){
-            if(Scanner.nextNextToken == leftParToken){
+        if(Scanner.curToken == numberToken){
+            secondOp = new Number(Scanner.nextNum);
+        }if(Scanner.curToken == nameToken){
+            if(Scanner.nextToken == leftParToken){
                 secondOp = new FunctionCall();
             }else {
                 secondOp = new Variable();
@@ -1370,6 +1370,10 @@ class Number extends Operand {
 
     int numVal;
 
+    Number(int num){
+        numVal = num;
+    }
+
     @Override
 	void check(DeclList curDecls) {
         //-- Must be changed in part 2:
@@ -1386,9 +1390,8 @@ class Number extends Operand {
     @Override
 	void parse() {
         Log.enterParser("<number>");
-
         //-- Must be changed in part 1:
-
+        Scanner.readNext();
         Log.leaveParser("</number>");
     }
 
@@ -1442,9 +1445,9 @@ class Variable extends Operand {
 
     @Override
 	void printTree() {
+        Log.wTree(varName);
         //-- Must be changed in part 1:
-        if(index!= null) { Log.wTree(varName); index.printTree(); Log.wTreeLn(); }
-        else Log.wTreeLn(varName);
+        if(index!= null) {index.printTree(); }
     }
 
     @Override
