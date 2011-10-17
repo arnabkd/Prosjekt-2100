@@ -1007,6 +1007,7 @@ class AssignStatm extends Statement {
         var.printTree();
         Log.wTree(" = ");
         exps.printTree();
+        Log.wTreeLn(";");
     }
 }
 
@@ -1315,7 +1316,7 @@ class Expression extends Operand {
 	void printTree() {
         //-- Must be changed in part 1:
        if(firstOp != null) firstOp.printTree();
-       Log.wTreeLn(";");
+
     }
 }
 
@@ -1459,6 +1460,9 @@ class FunctionCall extends Operand {
     @Override
 	void printTree() {
         //-- Must be changed in part 1:
+        Log.wTree(varName + "(");
+        exps.printTree();
+        Log.wTree(")");
     }
     //-- Must be changed in part 1+2:
 }
