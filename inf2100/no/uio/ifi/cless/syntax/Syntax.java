@@ -939,7 +939,7 @@ class EmptyStatm extends Statement {
  */
 class CallStatm extends Statement {
     //part1 + part2
-    FunctionCall func ;//= new FunctionCall();
+    FunctionCall func;// 
 
     @Override
 	void check(DeclList curDecls) {
@@ -955,6 +955,7 @@ class CallStatm extends Statement {
 	void parse() {
         //part1
         Log.enterParser("<call-statm>");
+        func = new FunctionCall(Scanner.curName); 
         func.parse();
         Scanner.skip(semicolonToken);
         Log.leaveParser("</call-statm>");
@@ -1050,6 +1051,15 @@ class AssignStatm extends Statement {
         Scanner.skip(rightCurlToken);
 
         Log.enterParser("</if-statm>");
+        
+        if (Scanner.curToken == elseToken) {
+        	ElseStatm els = new ElseStatm();
+        	while (els != null) {
+        		els.parse();
+        		if (Scanner.curToken == elseToken) els.nextElse = new ElseStatm();
+        		els = els.nextElse;
+        	}        	
+        }
     }
 
 
@@ -1063,9 +1073,39 @@ class AssignStatm extends Statement {
         st.printTree();
         Log.outdentTree();
         Log.wTree("}");
+        if (Scanner.curToken == elseToken) {
+        	ElseStatm els; 
+        }
     }
 }
 
+class ElseStatm extends Statement {
+	StatmList st = new StatmList();
+	ElseStatm nextElse = null;
+	
+	@Override 
+	void parse(){
+		Scanner.readNext();
+		Scanner.skip(leftCurlToken);
+		st.parse();
+		Scanner.skip(rightCurlToken);
+	}
+	
+	@Override 
+	void printTree(){
+		
+	}
+	
+	@Override
+	void check(DeclList curDecls){
+		
+	}
+	
+	@Override 
+	void genCode(FuncDecl curFunc){
+		
+	}
+}
 
 /*
  * A <return-statm>.
