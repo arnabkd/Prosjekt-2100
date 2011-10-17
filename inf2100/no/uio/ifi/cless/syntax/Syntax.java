@@ -4,6 +4,7 @@ package no.uio.ifi.cless.syntax;
  * module Syntax
  */
 import javax.sound.midi.SysexMessage;
+import no.uio.ifi.cless.chargenerator.CharGenerator;
 import no.uio.ifi.cless.cless.CLess;
 import no.uio.ifi.cless.code.Code;
 import no.uio.ifi.cless.error.Error;
@@ -831,9 +832,12 @@ class StatmList extends SyntaxUnit {
 	void parse() {
         Log.enterParser("<statm list>");
 
+        Statement current = null;
 
-        first = Statement.makeNewStatement();
-        Statement current = first;
+        if(Scanner.curToken != rightCurlToken){
+            first = Statement.makeNewStatement();
+            current = first;
+        }
         while (Scanner.curToken != rightCurlToken && current != null) {
         	//-- Must be changed in part 1:
 
@@ -935,7 +939,7 @@ class EmptyStatm extends Statement {
  */
 class CallStatm extends Statement {
     //part1 + part2
-    FunctionCall func = new FunctionCall();
+    FunctionCall func ;//= new FunctionCall();
 
     @Override
 	void check(DeclList curDecls) {
@@ -1226,11 +1230,13 @@ class ExprList extends SyntaxUnit {
     @Override
 	void parse() {
         Expression lastExpr = null;
+        firstExpr = new Expression();
         Expression currentExp = firstExpr;
 
         Log.enterParser("<expr list>");
         while(currentExp != null){
             currentExp.parse();
+            if (Scanner.curToken != rightParToken) currentExp.nextExpr = new Expression();
             if(currentExp.nextExpr != null)  Scanner.skip(commaToken);
             currentExp = currentExp.nextExpr;
         }
@@ -1290,7 +1296,7 @@ class Expression extends Operand {
             firstOp = new Number(Scanner.nextNum);
         }else if(Scanner.curToken == nameToken){
             if(Scanner.nextToken == leftParToken){
-                firstOp = new FunctionCall();
+                firstOp = new FunctionCall(Scanner.nextName);
             }else{
                 firstOp = new Variable(Scanner.nextName);
             }
@@ -1334,7 +1340,7 @@ abstract class Operator extends SyntaxUnit {
             secondOp = new Number(Scanner.nextNum);
         }if(Scanner.curToken == nameToken){
             if(Scanner.nextToken == leftParToken){
-                secondOp = new FunctionCall();
+                secondOp = new FunctionCall(Scanner.nextName);
             }else {
                 secondOp = new Variable(Scanner.nextName);
             }
@@ -1386,6 +1392,8 @@ class ArithmeticOperator extends Operator{
 
 
 //-- Must be changed in part 1+2:
+
+
 /*
  * An <operand>
  */
@@ -1397,6 +1405,8 @@ abstract class Operand extends SyntaxUnit {
         nextOperator = next;
     }
 
+
+
 }
 
 
@@ -1407,6 +1417,12 @@ class FunctionCall extends Operand {
     //-- Must be changed in part 1+2:
 
     String varName;
+    ExprList exps;
+
+    public FunctionCall(String varName) {
+        this.varName = varName;
+    }
+
 
     @Override
 	void check(DeclList curDecls) {
@@ -1424,6 +1440,19 @@ class FunctionCall extends Operand {
 
     @Override
 	void parse() {
+        if(!Syntax.program.progDecls.declExists(new FuncDecl(varName))){
+            System.err.println(String.format("Function %s not defined", varName));
+            System.err.println(CharGenerator.sourceLine);
+            System.exit(-1);
+        }
+        Log.enterParser("<function call>");
+        Scanner.skip(nameToken);
+        Scanner.skip(leftParToken);
+        exps = new ExprList();
+        exps.parse();
+        Log.leaveParser("</function call");
+        Scanner.skip(rightParToken);
+
         //-- Must be changed in part 1:
     }
 
