@@ -2,9 +2,12 @@
 # --------------
 # A minimal C< program!
 
+int sum(int a, int x){
+
+}
+
+
 int main (){
-int x;
-int y;
-int k;
- x = 1 + 1 + 2 + 3 + 5 + 7 + 6;
+    int x;
+    x = 1 + sum(1,4+5);
 }
