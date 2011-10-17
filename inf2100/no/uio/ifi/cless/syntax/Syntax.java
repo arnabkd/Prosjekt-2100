@@ -3,6 +3,7 @@ package no.uio.ifi.cless.syntax;
 /*
  * module Syntax
  */
+import javax.sound.midi.SysexMessage;
 import no.uio.ifi.cless.cless.CLess;
 import no.uio.ifi.cless.code.Code;
 import no.uio.ifi.cless.error.Error;
@@ -835,9 +836,9 @@ class StatmList extends SyntaxUnit {
         Statement current = first;
         while (Scanner.curToken != rightCurlToken && current != null) {
         	//-- Must be changed in part 1:
-            Scanner.printDump();
+
         	current.parse();
-            Scanner.printDump();
+
             if(Scanner.curToken != rightCurlToken) {
                 current.nextStatm = Statement.makeNewStatement();
                 current = current.nextStatm;
@@ -1295,8 +1296,10 @@ class Expression extends Operand {
             }
         }
 
-        if(firstOp!= null)  firstOp.parse();
-        if(firstOp!= null && firstOp.nextOperator != null) firstOp.nextOperator.parse();
+        if(firstOp!= null)  {
+            firstOp.parse();
+        }
+
         //-- Must be changed in part 1:
         Log.leaveParser("</expression>");
 
@@ -1306,7 +1309,6 @@ class Expression extends Operand {
 	void printTree() {
         //-- Must be changed in part 1:
        if(firstOp != null) firstOp.printTree();
-       if(firstOp != null && firstOp.nextOperator != null) firstOp.nextOperator.printTree();
        Log.wTreeLn(";");
     }
 }
@@ -1323,8 +1325,9 @@ abstract class Operator extends SyntaxUnit {
     @Override void parse(){
         Log.enterParser("<operator>");
         token = Scanner.curToken;
-        Log.leaveParser("</operator>");
         Scanner.skip(token);
+        Log.leaveParser("</operator>");
+
 
         //Parse the operand after this operator
         if(Scanner.curToken == numberToken){
@@ -1342,10 +1345,45 @@ abstract class Operator extends SyntaxUnit {
     @Override void printTree(){
         String s = token.getOpString();
         if(s!= null) Log.wTree(s);
+
         if(secondOp != null) secondOp.printTree();
     }
     //-- Must be changed in part 1+2:
 }
+
+
+//-- Must be changed in part 1+2:
+class ComparisonOperator extends Operator{
+
+    @Override
+    void check(DeclList curDecls) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    void genCode(FuncDecl curFunc) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+}
+
+
+
+//-- Must be changed in part 1+2:
+class ArithmeticOperator extends Operator{
+
+    @Override
+    void check(DeclList curDecls) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    void genCode(FuncDecl curFunc) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+}
+
 
 //-- Must be changed in part 1+2:
 /*
@@ -1427,11 +1465,17 @@ class Number extends Operand {
         //-- Must be changed in part 1:
         Scanner.skip(numberToken);
         Log.leaveParser("</number>");
+
+        if(Token.isComparisonOperator(Scanner.curToken)) nextOperator = new ComparisonOperator();
+        if(Token.isNumericalOperator(Scanner.curToken)) nextOperator = new ArithmeticOperator();
+
+        if(nextOperator != null) nextOperator.parse();
     }
 
     @Override
 	void printTree() {
-        Log.wTree("" + numVal);
+            Log.wTree("" + numVal);
+        if(nextOperator != null) nextOperator.printTree();
     }
 }
 
@@ -1482,6 +1526,8 @@ class Variable extends Operand {
         //-- Must be changed in part 1:
         Log.leaveParser("</variable>");
 
+        if(nextOperator != null) nextOperator.parse();
+
     }
 
     @Override
@@ -1489,6 +1535,7 @@ class Variable extends Operand {
         Log.wTree(varName);
         //-- Must be changed in part 1:
         if(index!= null) {index.printTree(); }
+        if(nextOperator != null) nextOperator.printTree();
     }
 
     @Override
