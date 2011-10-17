@@ -1540,6 +1540,6 @@ class Variable extends Operand {
 
     @Override
 	void genCode(FuncDecl curFunc) {
-
+    	
     }
 }
