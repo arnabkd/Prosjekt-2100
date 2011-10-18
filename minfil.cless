@@ -3,6 +3,19 @@
    The smallest possible C< program!
 */
 int LF;
+
+int sum(){
+    return 5;
+}
 int main()
 {
+	int x;
+	int y;
+	int k;
+
+	y = 2;
+	sum();
+	
+	x = 1 + y;
+	k = x + sum();
 }

@@ -939,7 +939,7 @@ class EmptyStatm extends Statement {
  */
 class CallStatm extends Statement {
     //part1 + part2
-    FunctionCall func ;//= new FunctionCall();
+    FunctionCall func ;//= new FunctionCall(); //Functioncall must have FunctionCall(String s) in constructor
 
     @Override
 	void check(DeclList curDecls) {
