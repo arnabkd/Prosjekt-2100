@@ -24,7 +24,25 @@ public class Syntax {
 
     public static void init() {
         //-- Must be changed in part 1:
-
+    	library = new GlobalDeclList();
+    	
+    	ParamDecl par = new ParamDecl("x", 0);
+    	ParamDeclList parList = new ParamDeclList();
+    	parList.addDecl(par);
+    	FuncDecl putchar = new FuncDecl("putchar");
+    	putchar.paramList = parList;    	
+    	library.addDecl(putchar);
+    	    	
+    	ParamDecl par2 = new ParamDecl("x", 0);
+    	ParamDeclList parList2 = new ParamDeclList();
+    	parList2.addDecl(par2);
+    	FuncDecl putint = new FuncDecl("putint");
+    	putint.paramList = parList2;
+    	library.addDecl(putint);
+    	    	
+    	library.addDecl(new FuncDecl("getchar"));
+    	library.addDecl(new FuncDecl("getint"));
+    	library.addDecl(new FuncDecl("exit"));
     }
 
     public static void finish() {
@@ -1026,7 +1044,8 @@ class AssignStatm extends Statement {
 
     Expression eks = new Expression();
     StatmList st = new StatmList();
-
+    ElseStatm els = null;
+    
     @Override
 	void check(DeclList curDecls) {
         //-- Must be changed in part 2:
@@ -1042,7 +1061,7 @@ class AssignStatm extends Statement {
         //-- Must be changed in part 1:
         Log.enterParser("<if-statm>");
         //Skip and parse the if statement inside here
-        Scanner.readNext();
+        Scanner.skip(ifToken);
         Scanner.skip(leftParToken);
         eks.parse();
         Scanner.skip(rightParToken);
@@ -1053,15 +1072,10 @@ class AssignStatm extends Statement {
         Log.enterParser("</if-statm>");
         
         if (Scanner.curToken == elseToken) {
-        	ElseStatm els = new ElseStatm();
-        	while (els != null) {
-        		els.parse();
-        		if (Scanner.curToken == elseToken) els.nextElse = new ElseStatm();
-        		els = els.nextElse;
+        	els = new ElseStatm();
+        	els.parse();
         	}        	
         }
-    }
-
 
     @Override
 	void printTree() {
@@ -1074,26 +1088,32 @@ class AssignStatm extends Statement {
         Log.outdentTree();
         Log.wTree("}");
         if (Scanner.curToken == elseToken) {
-        	ElseStatm els; 
+        	ElseStatm el = els;
+        	el.printTree();
         }
     }
 }
 
 class ElseStatm extends Statement {
 	StatmList st = new StatmList();
-	ElseStatm nextElse = null;
 	
 	@Override 
 	void parse(){
-		Scanner.readNext();
+		Log.enterParser("<else-statm>");
+		
+		Scanner.skip(elseToken);
 		Scanner.skip(leftCurlToken);
 		st.parse();
 		Scanner.skip(rightCurlToken);
+		
+		Log.leaveParser("</else-statm>");
 	}
 	
 	@Override 
-	void printTree(){
-		
+	void printTree() {		
+		Log.wTree("else {");
+		st.printTree();
+		Log.wTree("}");
 	}
 	
 	@Override
@@ -1152,7 +1172,7 @@ class ReturnStatm extends Statement {
  */
 class WhileStatm extends Statement {
 
-    Expression test = new Expression();
+    Expression test = null;
     StatmList body = new StatmList();
 
     @Override
@@ -1181,6 +1201,7 @@ class WhileStatm extends Statement {
 
         Scanner.readNext();
         Scanner.skip(leftParToken);
+        test = new Expression();
         test.parse();
         Scanner.skip(rightParToken);
         Scanner.skip(leftCurlToken);
@@ -1207,7 +1228,8 @@ class WhileStatm extends Statement {
 
 class ForStatm extends Statement {
 
-    ExprList exps = new ExprList();
+	ExprList exps = new ExprList();
+	ForControl cont = new ForControl();	
     StatmList body = new StatmList();
 
     @Override
@@ -1228,7 +1250,7 @@ class ForStatm extends Statement {
 
         Scanner.readNext();
         Scanner.skip(leftParToken);
-        exps.parse();
+        cont.parse();
         Scanner.skip(rightParToken);
         Scanner.skip(leftCurlToken);
         body.parse();
@@ -1241,7 +1263,7 @@ class ForStatm extends Statement {
 	void printTree() {
         //-- Must be changed in part 1
         Log.wTree("for (");
-        exps.printTree();
+        cont.printTree();
         Log.wTreeLn(") {");
         Log.indentTree();
         body.printTree();
@@ -1249,6 +1271,61 @@ class ForStatm extends Statement {
         Log.wTreeLn("}");
     }
 }
+
+
+class ForControl extends Statement {
+	
+	Variable var = null;
+	Variable var2 = null;
+	Expression eks = null;
+	Expression eks2 = null;
+	Expression eks3 = null;
+	
+	@Override
+	void parse() {
+		Log.enterParser("<for-control>");
+		
+		var = new Variable(Scanner.nextName);
+		var.parse();
+		Scanner.skip(assignToken);
+		eks = new Expression();
+		eks.parse();
+		Scanner.skip(semicolonToken);
+		eks2 = new Expression();
+		eks2.parse();
+		Scanner.skip(semicolonToken);
+		var2 = new Variable(Scanner.nextName);
+		var2.parse();
+		Scanner.skip(assignToken);
+		eks3 = new Expression();
+		eks3.parse();
+		
+		Log.leaveParser("</for-control>");
+	}
+	
+	@Override
+	void printTree() {
+		var.printTree();
+		Log.wTree("=");
+		eks.printTree();
+		Log.wTree("; ");
+		eks2.printTree();
+		Log.wTree("; ");
+		var2.printTree();
+		Log.wTree("=");
+		eks3.printTree();
+	}
+	
+	@Override
+	void genCode(FuncDecl curFunc) {
+		
+	}
+	
+	@Override
+	void check (DeclList curDecls){
+	}
+}
+
 
 //-- Must be changed in part 1+2:
 /*
@@ -1345,6 +1422,7 @@ class Expression extends Operand {
 
         if(firstOp!= null)  {
             firstOp.parse();
+            
         }
 
         //-- Must be changed in part 1:
@@ -1494,6 +1572,10 @@ class FunctionCall extends Operand {
         Log.leaveParser("</function call");
         Scanner.skip(rightParToken);
 
+        if(Token.isComparisonOperator(Scanner.curToken)) nextOperator = new ComparisonOperator();
+        if(Token.isNumericalOperator(Scanner.curToken)) nextOperator = new ArithmeticOperator();
+
+        if(nextOperator != null) nextOperator.parse();
         //-- Must be changed in part 1:
     }
 
@@ -1503,6 +1585,7 @@ class FunctionCall extends Operand {
         Log.wTree(varName + "(");
         exps.printTree();
         Log.wTree(")");
+        if(nextOperator != null) nextOperator.printTree();
     }
     //-- Must be changed in part 1+2:
 }
@@ -1598,8 +1681,13 @@ class Variable extends Operand {
 
         //-- Must be changed in part 1:
         Log.leaveParser("</variable>");
+        if(Token.isComparisonOperator(Scanner.curToken)) nextOperator = new ComparisonOperator();
+        if(Token.isNumericalOperator(Scanner.curToken)) nextOperator = new ArithmeticOperator();
 
-        if(nextOperator != null) nextOperator.parse();
+        if(nextOperator != null) { 
+        	nextOperator.parse(); 
+        	System.err.println("parsing next operator"); 
+        }
 
     }
 
@@ -1607,7 +1695,7 @@ class Variable extends Operand {
 	void printTree() {
         Log.wTree(varName);
         //-- Must be changed in part 1:
-        if(index!= null) {index.printTree(); }
+        if(index!= null) {Log.wTree("["); index.printTree(); Log.wTree("]");}
         if(nextOperator != null) nextOperator.printTree();
     }
 
