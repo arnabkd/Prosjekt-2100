@@ -221,5 +221,6 @@ public class Scanner {
         System.err.println(String.format("Names  : [%s][%s][%s]", curName, nextName, nextNextName));
         System.err.println(String.format("Numbers: [%d][%d][%d]", curNum,nextNum, nextNextNum));
         System.err.println(String.format("Lines  : [%d][%d][%d]", curLine,nextLine, nextNextLine));
+        System.err.println(String.format("CharGenerator.sourceline : %s", CharGenerator.sourceLine));
     }
 }

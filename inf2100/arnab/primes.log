@@ -1,0 +1,168 @@
+1:  # Program 'primes'
+2: # ----------------
+4: #
+# Finds all prime numbers up to 1000 (using the technique called
+5: # "the sieve of Eratosthenes") and prints them nicely formatted.
+Parser:  <program>
+Parser:    <var decl>
+7: int prime[1001];  /* The sieve */
+Parser:    </var decl>
+Parser:    <var decl>
+8: int LF;           /* LF */
+Parser:    </var decl>
+Parser:    <func decl>
+10: int find_primes ()
+11: {
+12:    /* Remove all non-primes from the sieve: */
+Parser:      <var decl>
+14:    int i1;  int i2;
+Parser:      </var decl>
+Parser:      <var decl>
+Parser:      </var decl>
+Parser:      <statm list>
+Parser:        <for-statm>
+Parser:          <for-control>
+Parser:            <variable>
+Parser:            </variable>
+Parser:            <expression>
+Parser:              <number>
+Parser:              </number>
+Parser:            </expression>
+Parser:            <expression>
+Parser:              <variable>
+Parser:                <operator>
+Parser:                </operator>
+Parser:                <number>
+Parser:                </number>
+Parser:              </variable>
+Parser:            </expression>
+Parser:            <variable>
+Parser:            </variable>
+Parser:            <expression>
+Parser:              <variable>
+Parser:                <operator>
+15:    for (i1 = 2;  i1 <= 1000;  i1 = i1+1) {
+Parser:                </operator>
+Parser:                <number>
+Parser:                </number>
+Parser:              </variable>
+Parser:            </expression>
+Parser:          </for-control>
+Parser:          <statm list>
+Parser:            <for-statm>
+Parser:              <for-control>
+Parser:                <variable>
+Parser:                </variable>
+Parser:                <expression>
+Parser:                  <number>
+Parser:                  </number>
+Parser:                  <operator>
+Parser:                  </operator>
+Parser:                  <variable>
+Parser:                  </variable>
+Parser:                </expression>
+Parser:                <expression>
+Parser:                  <variable>
+Parser:                    <operator>
+Parser:                    </operator>
+Parser:                    <number>
+Parser:                    </number>
+Parser:                  </variable>
+Parser:                </expression>
+Parser:                <variable>
+Parser:                </variable>
+Parser:                <expression>
+Parser:                  <variable>
+Parser:                    <operator>
+16:       for (i2 = 2*i1;  i2 <= 1000;  i2 = i2+i1) {
+Parser:                    </operator>
+Parser:                    <variable>
+Parser:                    </variable>
+Parser:                  </variable>
+Parser:                </expression>
+Parser:              </for-control>
+Parser:              <statm list>
+Parser:                <assign-statm>
+Parser:                  <assignment>
+Parser:                    <variable>
+Parser:                      <expression>
+Parser:                        <variable>
+Parser:                        </variable>
+Parser:                      </expression>
+17: 	 prime[i2] = 0;
+Parser:                    </variable>
+18:       }
+Parser:                    <expression>
+Parser:                      <number>
+19:    }
+Parser:                      </number>
+Parser:                    </expression>
+Parser:                  </assignment>
+Parser:                </assign-statm>
+20: }
+Parser:              </statm list>
+Parser:            </for-statm>
+Parser:          </statm list>
+Parser:        </for-statm>
+Parser:      </statm list>
+Parser:    </func decl>
+Parser:    <func decl>
+Parser:      <param decl>
+Parser:      </param decl>
+22: int mod (int a, int b)
+Parser:      <param decl>
+23: {
+24:    /* Computes a%b. */
+25:    
+26:    
+Parser:      </param decl>
+Parser:      <statm list>
+Parser:        <return-statm>
+Parser:          <expression>
+Parser:            <variable>
+Parser:              <operator>
+Parser:              </operator>
+Parser:              <expression>
+Parser:                <expression>
+Parser:                  <variable>
+Parser:                    <operator>
+Parser:                    </operator>
+Parser:                    <variable>
+Parser:                    </variable>
+Parser:                  </variable>
+Parser:                </expression>
+Parser:                <operator>
+28:    return a - ((a/b)*b);
+Parser:                </operator>
+Parser:                <variable>
+29: }
+Parser:                </variable>
+Parser:              </expression>
+Parser:            </variable>
+Parser:          </expression>
+Parser:        </return-statm>
+Parser:      </statm list>
+Parser:    </func decl>
+Parser:    <func decl>
+31: int n_chars (int a)
+Parser:      <param decl>
+32: {
+33:    /* How many positions are needed to print 'a'? */
+Parser:      </param decl>
+Parser:      <statm list>
+Parser:        <if-statm>
+Parser:          <expression>
+Parser:            <variable>
+Parser:              <operator>
+Parser:              </operator>
+Parser:              <number>
+Parser:              </number>
+Parser:            </variable>
+Parser:          </expression>
+Parser:          <statm list>
+Parser:            <return-statm>
+Parser:              <expression>
+Parser:                <number>
+Parser:                </number>
+Parser:                <operator>
+Parser:                </operator>

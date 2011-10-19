@@ -1,0 +1,832 @@
+1:  /* Test program 'easter'
+2:                 ========
+3:    Computes Easter Sunday for the years 2010-2020. 
+4: */
+Parser:  <program>
+Parser:    <func decl>
+Parser:      <param decl>
+Parser:      </param decl>
+6: int mod (int x, int y)
+Parser:      <param decl>
+7: { /* Computes x%y */
+Parser:      </param decl>
+Parser:      <statm list>
+Parser:        <return-statm>
+Parser:          <expression>
+Parser:            <variable>
+Parser:              <operator>
+Parser:              </operator>
+Parser:              <expression>
+Parser:                <variable>
+Parser:                  <operator>
+Parser:                  </operator>
+Parser:                  <variable>
+Parser:                    <operator>
+8:   return x - (x/y*y);
+Parser:                    </operator>
+Parser:                    <variable>
+9: }
+Parser:                    </variable>
+Parser:                  </variable>
+Parser:                </variable>
+Parser:              </expression>
+Parser:            </variable>
+Parser:          </expression>
+Parser:        </return-statm>
+Parser:      </statm list>
+Parser:    </func decl>
+Parser:    <func decl>
+11: int easter (int y)
+Parser:      <param decl>
+12: {
+Parser:      </param decl>
+Parser:      <var decl>
+Parser:      </var decl>
+Parser:      <var decl>
+Parser:      </var decl>
+Parser:      <var decl>
+Parser:      </var decl>
+Parser:      <var decl>
+Parser:      </var decl>
+Parser:      <var decl>
+13:   int a;  int b;  int c;  int d;  int e;  int f;
+Parser:      </var decl>
+Parser:      <var decl>
+Parser:      </var decl>
+Parser:      <var decl>
+Parser:      </var decl>
+Parser:      <var decl>
+Parser:      </var decl>
+Parser:      <var decl>
+Parser:      </var decl>
+Parser:      <var decl>
+Parser:      </var decl>
+Parser:      <var decl>
+14:   int g;  int h;  int i;  int k;  int l;  int m;
+Parser:      </var decl>
+Parser:      <var decl>
+Parser:      </var decl>
+Parser:      <var decl>
+16:   int month;  /* The date of Easter Sunday */
+Parser:      </var decl>
+Parser:      <var decl>
+17:   int m_name[5];
+18:   int day;
+Parser:      </var decl>
+Parser:      <var decl>
+20:   int ix;
+Parser:      </var decl>
+Parser:      <var decl>
+Parser:      </var decl>
+Parser:      <statm list>
+Parser:        <assign-statm>
+Parser:          <assignment>
+Parser:            <variable>
+Parser:            </variable>
+Parser:            <expression>
+Parser:              <function call>
+Parser:                <expr list>
+Parser:                  <expression>
+Parser:                    <variable>
+Parser:                    </variable>
+Parser:                  </expression>
+22:   a = mod(y,19);
+Parser:                  <expression>
+Parser:                    <number>
+Parser:                    </number>
+Parser:                  </expression>
+Parser:                </expr list>
+Parser:              </function call
+Parser:            </expression>
+Parser:          </assignment>
+Parser:        </assign-statm>
+Parser:        <assign-statm>
+Parser:          <assignment>
+Parser:            <variable>
+Parser:            </variable>
+Parser:            <expression>
+Parser:              <variable>
+23:   b = y / 100;
+Parser:                <operator>
+Parser:                </operator>
+Parser:                <number>
+Parser:                </number>
+Parser:              </variable>
+Parser:            </expression>
+Parser:          </assignment>
+Parser:        </assign-statm>
+Parser:        <assign-statm>
+Parser:          <assignment>
+Parser:            <variable>
+Parser:            </variable>
+Parser:            <expression>
+Parser:              <function call>
+Parser:                <expr list>
+Parser:                  <expression>
+Parser:                    <variable>
+Parser:                    </variable>
+Parser:                  </expression>
+24:   c = mod(y,100);
+Parser:                  <expression>
+Parser:                    <number>
+Parser:                    </number>
+Parser:                  </expression>
+Parser:                </expr list>
+Parser:              </function call
+Parser:            </expression>
+Parser:          </assignment>
+Parser:        </assign-statm>
+Parser:        <assign-statm>
+Parser:          <assignment>
+Parser:            <variable>
+Parser:            </variable>
+Parser:            <expression>
+Parser:              <variable>
+25:   d = b / 4;
+Parser:                <operator>
+Parser:                </operator>
+Parser:                <number>
+Parser:                </number>
+Parser:              </variable>
+Parser:            </expression>
+Parser:          </assignment>
+Parser:        </assign-statm>
+Parser:        <assign-statm>
+Parser:          <assignment>
+Parser:            <variable>
+Parser:            </variable>
+Parser:            <expression>
+Parser:              <function call>
+Parser:                <expr list>
+Parser:                  <expression>
+Parser:                    <variable>
+Parser:                    </variable>
+Parser:                  </expression>
+26:   e = mod(b,4);
+Parser:                  <expression>
+Parser:                    <number>
+Parser:                    </number>
+Parser:                  </expression>
+Parser:                </expr list>
+Parser:              </function call
+Parser:            </expression>
+Parser:          </assignment>
+Parser:        </assign-statm>
+Parser:        <assign-statm>
+Parser:          <assignment>
+Parser:            <variable>
+Parser:            </variable>
+Parser:            <expression>
+Parser:              <variable>
+Parser:                <operator>
+Parser:                </operator>
+Parser:                <number>
+Parser:                </number>
+Parser:              </variable>
+27:   f = (b+8) / 25;
+Parser:            </expression>
+Parser:            <operator>
+Parser:            </operator>
+Parser:            <number>
+Parser:            </number>
+Parser:          </assignment>
+Parser:        </assign-statm>
+Parser:        <assign-statm>
+Parser:          <assignment>
+Parser:            <variable>
+Parser:            </variable>
+Parser:            <expression>
+Parser:              <variable>
+Parser:                <operator>
+Parser:                </operator>
+Parser:                <variable>
+Parser:                  <operator>
+Parser:                  </operator>
+Parser:                  <number>
+Parser:                  </number>
+Parser:                </variable>
+Parser:              </variable>
+28:   g = (b-f+1) / 3;
+Parser:            </expression>
+Parser:            <operator>
+Parser:            </operator>
+Parser:            <number>
+Parser:            </number>
+Parser:          </assignment>
+Parser:        </assign-statm>
+Parser:        <assign-statm>
+Parser:          <assignment>
+Parser:            <variable>
+Parser:            </variable>
+Parser:            <expression>
+Parser:              <function call>
+Parser:                <expr list>
+Parser:                  <expression>
+Parser:                    <number>
+Parser:                    </number>
+Parser:                    <operator>
+Parser:                    </operator>
+Parser:                    <variable>
+Parser:                      <operator>
+Parser:                      </operator>
+Parser:                      <variable>
+Parser:                        <operator>
+Parser:                        </operator>
+Parser:                        <variable>
+Parser:                          <operator>
+Parser:                          </operator>
+Parser:                          <variable>
+Parser:                            <operator>
+Parser:                            </operator>
+Parser:                            <number>
+Parser:                            </number>
+Parser:                          </variable>
+Parser:                        </variable>
+Parser:                      </variable>
+Parser:                    </variable>
+Parser:                  </expression>
+29:   h = mod(19*a+b-d-g+15,30);
+Parser:                  <expression>
+Parser:                    <number>
+Parser:                    </number>
+Parser:                  </expression>
+Parser:                </expr list>
+Parser:              </function call
+Parser:            </expression>
+Parser:          </assignment>
+Parser:        </assign-statm>
+Parser:        <assign-statm>
+Parser:          <assignment>
+Parser:            <variable>
+Parser:            </variable>
+Parser:            <expression>
+Parser:              <variable>
+30:   i = c / 4;
+Parser:                <operator>
+Parser:                </operator>
+Parser:                <number>
+Parser:                </number>
+Parser:              </variable>
+Parser:            </expression>
+Parser:          </assignment>
+Parser:        </assign-statm>
+Parser:        <assign-statm>
+Parser:          <assignment>
+Parser:            <variable>
+Parser:            </variable>
+Parser:            <expression>
+Parser:              <function call>
+Parser:                <expr list>
+Parser:                  <expression>
+Parser:                    <variable>
+Parser:                    </variable>
+Parser:                  </expression>
+31:   k = mod(c,4);
+Parser:                  <expression>
+Parser:                    <number>
+Parser:                    </number>
+Parser:                  </expression>
+Parser:                </expr list>
+Parser:              </function call
+Parser:            </expression>
+Parser:          </assignment>
+Parser:        </assign-statm>
+Parser:        <assign-statm>
+Parser:          <assignment>
+Parser:            <variable>
+Parser:            </variable>
+Parser:            <expression>
+Parser:              <function call>
+Parser:                <expr list>
+Parser:                  <expression>
+Parser:                    <number>
+Parser:                    </number>
+Parser:                    <operator>
+Parser:                    </operator>
+Parser:                    <expression>
+Parser:                      <number>
+Parser:                      </number>
+Parser:                      <operator>
+Parser:                      </operator>
+Parser:                      <variable>
+Parser:                      </variable>
+Parser:                    </expression>
+Parser:                    <operator>
+Parser:                    </operator>
+Parser:                    <expression>
+Parser:                      <number>
+Parser:                      </number>
+Parser:                      <operator>
+Parser:                      </operator>
+Parser:                      <variable>
+Parser:                      </variable>
+Parser:                    </expression>
+Parser:                    <operator>
+Parser:                    </operator>
+Parser:                    <variable>
+Parser:                      <operator>
+Parser:                      </operator>
+Parser:                      <variable>
+Parser:                      </variable>
+Parser:                    </variable>
+Parser:                  </expression>
+32:   l = mod(32+(2*e)+(2*i)-h-k,7);
+Parser:                  <expression>
+Parser:                    <number>
+Parser:                    </number>
+Parser:                  </expression>
+Parser:                </expr list>
+Parser:              </function call
+Parser:            </expression>
+Parser:          </assignment>
+Parser:        </assign-statm>
+Parser:        <assign-statm>
+Parser:          <assignment>
+Parser:            <variable>
+Parser:            </variable>
+Parser:            <expression>
+Parser:              <variable>
+Parser:                <operator>
+Parser:                </operator>
+Parser:                <expression>
+Parser:                  <number>
+Parser:                  </number>
+Parser:                  <operator>
+Parser:                  </operator>
+Parser:                  <variable>
+Parser:                  </variable>
+Parser:                </expression>
+Parser:                <operator>
+Parser:                </operator>
+Parser:                <expression>
+Parser:                  <number>
+Parser:                  </number>
+Parser:                  <operator>
+Parser:                  </operator>
+Parser:                  <variable>
+Parser:                  </variable>
+Parser:                </expression>
+Parser:              </variable>
+33:   m = (a+(11*h)+(22*l)) / 451;
+Parser:            </expression>
+Parser:            <operator>
+Parser:            </operator>
+Parser:            <number>
+Parser:            </number>
+Parser:          </assignment>
+Parser:        </assign-statm>
+Parser:        <assign-statm>
+Parser:          <assignment>
+Parser:            <variable>
+Parser:            </variable>
+Parser:            <expression>
+Parser:              <variable>
+Parser:                <operator>
+Parser:                </operator>
+Parser:                <variable>
+Parser:                  <operator>
+Parser:                  </operator>
+Parser:                  <expression>
+Parser:                    <number>
+Parser:                    </number>
+Parser:                    <operator>
+Parser:                    </operator>
+Parser:                    <variable>
+Parser:                    </variable>
+Parser:                  </expression>
+Parser:                  <operator>
+Parser:                  </operator>
+Parser:                  <number>
+Parser:                  </number>
+Parser:                </variable>
+Parser:              </variable>
+35:   month = (h+l-(7*m)+114) / 31;
+Parser:            </expression>
+Parser:            <operator>
+Parser:            </operator>
+Parser:            <number>
+Parser:            </number>
+Parser:          </assignment>
+Parser:        </assign-statm>
+Parser:        <assign-statm>
+Parser:          <assignment>
+Parser:            <variable>
+Parser:            </variable>
+Parser:            <expression>
+Parser:              <function call>
+Parser:                <expr list>
+Parser:                  <expression>
+Parser:                    <variable>
+Parser:                      <operator>
+Parser:                      </operator>
+Parser:                      <variable>
+Parser:                        <operator>
+Parser:                        </operator>
+Parser:                        <expression>
+Parser:                          <number>
+Parser:                          </number>
+Parser:                          <operator>
+Parser:                          </operator>
+Parser:                          <variable>
+Parser:                          </variable>
+Parser:                        </expression>
+Parser:                        <operator>
+Parser:                        </operator>
+Parser:                        <number>
+Parser:                        </number>
+Parser:                      </variable>
+Parser:                    </variable>
+Parser:                  </expression>
+Parser:                  <expression>
+Parser:                    <number>
+Parser:                    </number>
+Parser:                  </expression>
+Parser:                </expr list>
+36:   day = mod(h+l-(7*m)+114,31) + 1;
+Parser:              </function call
+Parser:              <operator>
+Parser:              </operator>
+Parser:              <number>
+Parser:              </number>
+Parser:            </expression>
+Parser:          </assignment>
+Parser:        </assign-statm>
+Parser:        <if-statm>
+Parser:          <expression>
+Parser:            <variable>
+Parser:              <operator>
+37:   if (month == 3) {
+Parser:              </operator>
+Parser:              <number>
+Parser:              </number>
+Parser:            </variable>
+Parser:          </expression>
+Parser:          <statm list>
+Parser:            <assign-statm>
+Parser:              <assignment>
+Parser:                <variable>
+Parser:                  <expression>
+Parser:                    <number>
+Parser:                    </number>
+Parser:                  </expression>
+Parser:                </variable>
+Parser:                <expression>
+Parser:                  <number>
+Parser:                  </number>
+Parser:                </expression>
+Parser:              </assignment>
+Parser:            </assign-statm>
+Parser:            <assign-statm>
+Parser:              <assignment>
+Parser:                <variable>
+Parser:                  <expression>
+Parser:                    <number>
+Parser:                    </number>
+Parser:                  </expression>
+Parser:                </variable>
+Parser:                <expression>
+Parser:                  <number>
+Parser:                  </number>
+Parser:                </expression>
+Parser:              </assignment>
+Parser:            </assign-statm>
+Parser:            <assign-statm>
+Parser:              <assignment>
+Parser:                <variable>
+Parser:                  <expression>
+Parser:                    <number>
+Parser:                    </number>
+Parser:                  </expression>
+38:     m_name[0] = 'M';  m_name[1] = 'a';  m_name[2] = 'r';
+Parser:                </variable>
+Parser:                <expression>
+Parser:                  <number>
+Parser:                  </number>
+Parser:                </expression>
+Parser:              </assignment>
+Parser:            </assign-statm>
+Parser:            <assign-statm>
+Parser:              <assignment>
+Parser:                <variable>
+Parser:                  <expression>
+Parser:                    <number>
+Parser:                    </number>
+Parser:                  </expression>
+Parser:                </variable>
+Parser:                <expression>
+Parser:                  <number>
+Parser:                  </number>
+Parser:                </expression>
+Parser:              </assignment>
+Parser:            </assign-statm>
+Parser:            <assign-statm>
+Parser:              <assignment>
+Parser:                <variable>
+Parser:                  <expression>
+Parser:                    <number>
+Parser:                    </number>
+Parser:                  </expression>
+39:     m_name[3] = 'c';  m_name[4] = 'h';
+Parser:                </variable>
+Parser:                <expression>
+Parser:                  <number>
+Parser:                  </number>
+Parser:                </expression>
+Parser:              </assignment>
+Parser:            </assign-statm>
+40:   } else {
+Parser:          </statm list>
+Parser:          </if-statm>
+Parser:            <else-statm>
+Parser:              <statm list>
+Parser:                <assign-statm>
+Parser:                  <assignment>
+Parser:                    <variable>
+Parser:                      <expression>
+Parser:                        <number>
+Parser:                        </number>
+Parser:                      </expression>
+Parser:                    </variable>
+Parser:                    <expression>
+Parser:                      <number>
+Parser:                      </number>
+Parser:                    </expression>
+Parser:                  </assignment>
+Parser:                </assign-statm>
+Parser:                <assign-statm>
+Parser:                  <assignment>
+Parser:                    <variable>
+Parser:                      <expression>
+Parser:                        <number>
+Parser:                        </number>
+Parser:                      </expression>
+Parser:                    </variable>
+Parser:                    <expression>
+Parser:                      <number>
+Parser:                      </number>
+Parser:                    </expression>
+Parser:                  </assignment>
+Parser:                </assign-statm>
+Parser:                <assign-statm>
+Parser:                  <assignment>
+Parser:                    <variable>
+Parser:                      <expression>
+Parser:                        <number>
+Parser:                        </number>
+Parser:                      </expression>
+41:     m_name[0] = 'A';  m_name[1] = 'p';  m_name[2] = 'r';
+Parser:                    </variable>
+Parser:                    <expression>
+Parser:                      <number>
+Parser:                      </number>
+Parser:                    </expression>
+Parser:                  </assignment>
+Parser:                </assign-statm>
+Parser:                <assign-statm>
+Parser:                  <assignment>
+Parser:                    <variable>
+Parser:                      <expression>
+Parser:                        <number>
+Parser:                        </number>
+Parser:                      </expression>
+Parser:                    </variable>
+Parser:                    <expression>
+Parser:                      <number>
+Parser:                      </number>
+Parser:                    </expression>
+Parser:                  </assignment>
+Parser:                </assign-statm>
+Parser:                <assign-statm>
+Parser:                  <assignment>
+Parser:                    <variable>
+Parser:                      <expression>
+Parser:                        <number>
+Parser:                        </number>
+Parser:                      </expression>
+42:     m_name[3] = 'i';  m_name[4] = 'l';
+Parser:                    </variable>
+43:   }
+Parser:                    <expression>
+Parser:                      <number>
+45:   /* Print the answer: */
+Parser:                      </number>
+Parser:                    </expression>
+Parser:                  </assignment>
+Parser:                </assign-statm>
+Parser:              </statm list>
+Parser:            </else-statm>
+Parser:            <call-statm>
+Parser:              <function call>
+Parser:                <expr list>
+Parser:                  <expression>
+Parser:                    <variable>
+Parser:                    </variable>
+Parser:                  </expression>
+Parser:                </expr list>
+Parser:              </function call
+Parser:            </call-statm>
+Parser:            <call-statm>
+Parser:              <function call>
+46:   putint(day);  putchar(' ');
+Parser:                <expr list>
+Parser:                  <expression>
+Parser:                    <number>
+Parser:                    </number>
+Parser:                  </expression>
+Parser:                </expr list>
+Parser:              </function call
+Parser:            </call-statm>
+Parser:            <for-statm>
+Parser:              <for-control>
+Parser:                <variable>
+Parser:                </variable>
+Parser:                <expression>
+Parser:                  <number>
+Parser:                  </number>
+Parser:                </expression>
+Parser:                <expression>
+Parser:                  <variable>
+Parser:                    <operator>
+Parser:                    </operator>
+Parser:                    <number>
+Parser:                    </number>
+Parser:                  </variable>
+Parser:                </expression>
+Parser:                <variable>
+Parser:                </variable>
+Parser:                <expression>
+Parser:                  <variable>
+Parser:                    <operator>
+Parser:                    </operator>
+Parser:                    <number>
+Parser:                    </number>
+Parser:                  </variable>
+Parser:                </expression>
+Parser:              </for-control>
+Parser:              <statm list>
+Parser:                <call-statm>
+Parser:                  <function call>
+Parser:                    <expr list>
+Parser:                      <expression>
+Parser:                        <variable>
+Parser:                          <expression>
+Parser:                            <variable>
+Parser:                            </variable>
+Parser:                          </expression>
+47:   for (ix = 0;  ix < 5;  ix = ix+1) { putchar(m_name[ix]); }
+Parser:                        </variable>
+Parser:                      </expression>
+Parser:                    </expr list>
+48: }
+Parser:                  </function call
+Parser:                </call-statm>
+Parser:              </statm list>
+Parser:            </for-statm>
+Parser:          </statm list>
+Parser:        </func decl>
+Parser:        <func decl>
+50: int main () 
+51: {
+52:   int y;
+Parser:          <var decl>
+Parser:          </var decl>
+Parser:          <statm list>
+Parser:            <for-statm>
+Parser:              <for-control>
+Parser:                <variable>
+Parser:                </variable>
+Parser:                <expression>
+Parser:                  <number>
+Parser:                  </number>
+Parser:                </expression>
+Parser:                <expression>
+Parser:                  <variable>
+Parser:                    <operator>
+Parser:                    </operator>
+Parser:                    <number>
+Parser:                    </number>
+Parser:                  </variable>
+Parser:                </expression>
+Parser:                <variable>
+Parser:                </variable>
+Parser:                <expression>
+Parser:                  <variable>
+Parser:                    <operator>
+54:   for (y = 2010;  y <= 2020;  y = y+1) {
+Parser:                    </operator>
+Parser:                    <number>
+Parser:                    </number>
+Parser:                  </variable>
+Parser:                </expression>
+Parser:              </for-control>
+Parser:              <statm list>
+Parser:                <call-statm>
+Parser:                  <function call>
+Parser:                    <expr list>
+Parser:                      <expression>
+Parser:                        <variable>
+Parser:                        </variable>
+Parser:                      </expression>
+Parser:                    </expr list>
+Parser:                  </function call
+Parser:                </call-statm>
+Parser:                <call-statm>
+Parser:                  <function call>
+55:     easter(y);  putchar(' ');
+Parser:                    <expr list>
+Parser:                      <expression>
+Parser:                        <number>
+Parser:                        </number>
+Parser:                      </expression>
+Parser:                    </expr list>
+Parser:                  </function call
+Parser:                </call-statm>
+Parser:                <call-statm>
+Parser:                  <function call>
+Parser:                    <expr list>
+Parser:                      <expression>
+Parser:                        <variable>
+Parser:                        </variable>
+Parser:                      </expression>
+Parser:                    </expr list>
+Parser:                  </function call
+Parser:                </call-statm>
+Parser:                <call-statm>
+Parser:                  <function call>
+56:     putint(y);  putchar(10);
+Parser:                    <expr list>
+Parser:                      <expression>
+Parser:                        <number>
+Parser:                        </number>
+Parser:                      </expression>
+Parser:                    </expr list>
+57:   }   
+58: }
+Parser:                  </function call
+Parser:                </call-statm>
+Parser:              </statm list>
+Parser:            </for-statm>
+Parser:          </statm list>
+Parser:        </func decl>
+Parser:      </program>
+Tree:		int mod(int x,int y)
+Tree:		{
+Tree:			return x;
+Tree:		}
+Tree:		int easter(int y)
+Tree:		{
+Tree:			int y;
+Tree:			int a;
+Tree:			int b;
+Tree:			int c;
+Tree:			int d;
+Tree:			int e;
+Tree:			int f;
+Tree:			int g;
+Tree:			int h;
+Tree:			int i;
+Tree:			int k;
+Tree:			int l;
+Tree:			int m;
+Tree:			int month[5];
+Tree:			int m_name;
+Tree:			int day;
+Tree:			a = mod(y,19);
+Tree:			b = y;
+Tree:			c = mod(y,100);
+Tree:			d = b;
+Tree:			e = mod(b,4);
+Tree:			f = b;
+Tree:			g = b;
+Tree:			h = mod(19,30);
+Tree:			i = c;
+Tree:			k = mod(c,4);
+Tree:			l = mod(32,7);
+Tree:			m = a;
+Tree:			month = h;
+Tree:			day = mod(h,31);
+Tree:			if (month)
+Tree:			{
+Tree:				m_name[0] = 77;
+Tree:				m_name[1] = 97;
+Tree:				m_name[2] = 114;
+Tree:				m_name[3] = 99;
+Tree:				m_name[4] = 104;
+Tree:			}
+Tree:			else
+Tree:			{
+Tree:				m_name[0] = 65;
+Tree:				m_name[1] = 112;
+Tree:				m_name[2] = 114;
+Tree:				m_name[3] = 105;
+Tree:				m_name[4] = 108;
+Tree:			}
+Tree:			putint(day);putchar(32);for (ix=0; ix; ix=ix) {
+Tree:				putchar(m_name[ix]);}
+Tree:		}
+Tree:		int main()
+Tree:		{
+Tree:			int main;
+Tree:			for (y=2010; y; y=y) {
+Tree:				easter(y);putchar(32);putint(y);putchar(10);}
+Tree:		}

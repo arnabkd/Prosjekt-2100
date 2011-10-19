@@ -22,6 +22,8 @@ int find_primes ()
 int mod (int a, int b)
 {
    /* Computes a%b. */
+   
+   
 
    return a - ((a/b)*b);
 }

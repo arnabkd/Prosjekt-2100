@@ -1,0 +1,945 @@
+1:  /* Program 'strings'
+2:    -----------------
+3:    Implements C-like text strings, and demonstrates their use
+4:    with a palindrome checker.
+5: */
+Parser:  <program>
+Parser:    <var decl>
+7: int s[201];            /* The actual text string */
+Parser:    </var decl>
+Parser:    <var decl>
+Parser:    </var decl>
+Parser:    <var decl>
+8: int true;  int false;  /* Boolean values */
+Parser:    </var decl>
+Parser:    <var decl>
+9: int LF;                /* Line feed character */
+11: /* Reading routines: */
+Parser:    </var decl>
+Parser:    <func decl>
+13: int getstring ()
+14: {
+Parser:      <var decl>
+15:    int i;  int c;
+Parser:      </var decl>
+Parser:      <var decl>
+Parser:      </var decl>
+Parser:      <statm list>
+Parser:        <assign-statm>
+Parser:          <assignment>
+Parser:            <variable>
+17:    i = 0;
+Parser:            </variable>
+Parser:            <expression>
+Parser:              <number>
+Parser:              </number>
+Parser:            </expression>
+Parser:          </assignment>
+Parser:        </assign-statm>
+Parser:        <while-statm>
+18:    while (true) {
+Parser:          <expression>
+Parser:            <variable>
+Parser:            </variable>
+Parser:          </expression>
+Parser:          <statm list>
+Parser:            <assign-statm>
+Parser:              <assignment>
+Parser:                <variable>
+Parser:                </variable>
+Parser:                <expression>
+Parser:                  <function call>
+19:       c = getchar();
+Parser:                    <expr list>
+Parser:                      <expression>
+Parser:                      </expression>
+Parser:                    </expr list>
+Parser:                  </function call
+Parser:                </expression>
+Parser:              </assignment>
+Parser:            </assign-statm>
+Parser:            <if-statm>
+Parser:              <expression>
+Parser:                <variable>
+Parser:                  <operator>
+20:       if (c == LF) {
+Parser:                  </operator>
+Parser:                  <variable>
+Parser:                  </variable>
+Parser:                </variable>
+Parser:              </expression>
+Parser:              <statm list>
+Parser:                <assign-statm>
+Parser:                  <assignment>
+Parser:                    <variable>
+Parser:                      <expression>
+Parser:                        <variable>
+Parser:                        </variable>
+Parser:                      </expression>
+Parser:                    </variable>
+Parser:                    <expression>
+Parser:                      <number>
+Parser:                      </number>
+Parser:                    </expression>
+Parser:                  </assignment>
+Parser:                </assign-statm>
+21: 	  s[i] = 0;   return 0;
+Parser:                <return-statm>
+22:       }
+Parser:                  <expression>
+Parser:                    <number>
+Parser:                    </number>
+Parser:                  </expression>
+Parser:                </return-statm>
+Parser:              </statm list>
+Parser:              </if-statm>
+Parser:                <assign-statm>
+Parser:                  <assignment>
+Parser:                    <variable>
+Parser:                      <expression>
+Parser:                        <variable>
+Parser:                        </variable>
+Parser:                      </expression>
+Parser:                    </variable>
+Parser:                    <expression>
+Parser:                      <variable>
+Parser:                      </variable>
+Parser:                    </expression>
+Parser:                  </assignment>
+Parser:                </assign-statm>
+Parser:                <assign-statm>
+Parser:                  <assignment>
+Parser:                    <variable>
+Parser:                    </variable>
+Parser:                    <expression>
+Parser:                      <variable>
+23:       s[i] = c;   i = i+1;
+Parser:                        <operator>
+24:    }
+Parser:                        </operator>
+Parser:                        <number>
+25: }
+Parser:                        </number>
+Parser:                      </variable>
+Parser:                    </expression>
+Parser:                  </assignment>
+Parser:                </assign-statm>
+28: /* Printing routines: */
+Parser:              </statm list>
+Parser:            </while-statm>
+Parser:          </statm list>
+Parser:        </func decl>
+Parser:        <func decl>
+Parser:          <param decl>
+Parser:          </param decl>
+Parser:          <statm list>
+Parser:            <call-statm>
+Parser:              <function call>
+Parser:                <expr list>
+Parser:                  <expression>
+Parser:                    <variable>
+30: int p1 (int c1) { putchar(c1); }
+Parser:                    </variable>
+Parser:                  </expression>
+Parser:                </expr list>
+Parser:              </function call
+Parser:            </call-statm>
+Parser:          </statm list>
+Parser:        </func decl>
+Parser:        <func decl>
+Parser:          <param decl>
+Parser:          </param decl>
+Parser:          <param decl>
+Parser:          </param decl>
+Parser:          <statm list>
+Parser:            <call-statm>
+Parser:              <function call>
+Parser:                <expr list>
+Parser:                  <expression>
+Parser:                    <variable>
+Parser:                    </variable>
+Parser:                  </expression>
+Parser:                </expr list>
+Parser:              </function call
+Parser:            </call-statm>
+Parser:            <call-statm>
+Parser:              <function call>
+Parser:                <expr list>
+Parser:                  <expression>
+Parser:                    <variable>
+31: int p2 (int c1, int c2) { p1(c1); p1(c2); }
+Parser:                    </variable>
+Parser:                  </expression>
+Parser:                </expr list>
+Parser:              </function call
+Parser:            </call-statm>
+Parser:          </statm list>
+Parser:        </func decl>
+Parser:        <func decl>
+Parser:          <param decl>
+Parser:          </param decl>
+Parser:          <param decl>
+Parser:          </param decl>
+Parser:          <param decl>
+Parser:          </param decl>
+Parser:          <statm list>
+Parser:            <call-statm>
+Parser:              <function call>
+Parser:                <expr list>
+Parser:                  <expression>
+Parser:                    <variable>
+Parser:                    </variable>
+Parser:                  </expression>
+Parser:                  <expression>
+Parser:                    <variable>
+Parser:                    </variable>
+Parser:                  </expression>
+Parser:                </expr list>
+Parser:              </function call
+Parser:            </call-statm>
+Parser:            <call-statm>
+Parser:              <function call>
+Parser:                <expr list>
+Parser:                  <expression>
+Parser:                    <variable>
+32: int p3 (int c1, int c2, int c3) { p2(c1,c2); p1(c3); }
+Parser:                    </variable>
+Parser:                  </expression>
+Parser:                </expr list>
+Parser:              </function call
+Parser:            </call-statm>
+Parser:          </statm list>
+Parser:        </func decl>
+Parser:        <func decl>
+Parser:          <param decl>
+Parser:          </param decl>
+Parser:          <param decl>
+Parser:          </param decl>
+Parser:          <param decl>
+Parser:          </param decl>
+Parser:          <param decl>
+Parser:          </param decl>
+Parser:          <statm list>
+Parser:            <call-statm>
+Parser:              <function call>
+Parser:                <expr list>
+Parser:                  <expression>
+Parser:                    <variable>
+Parser:                    </variable>
+Parser:                  </expression>
+Parser:                  <expression>
+Parser:                    <variable>
+Parser:                    </variable>
+Parser:                  </expression>
+Parser:                  <expression>
+Parser:                    <variable>
+Parser:                    </variable>
+Parser:                  </expression>
+Parser:                </expr list>
+Parser:              </function call
+Parser:            </call-statm>
+Parser:            <call-statm>
+Parser:              <function call>
+Parser:                <expr list>
+Parser:                  <expression>
+Parser:                    <variable>
+33: int p4 (int c1, int c2, int c3, int c4) { p3(c1,c2,c3); p1(c4); }
+Parser:                    </variable>
+Parser:                  </expression>
+Parser:                </expr list>
+Parser:              </function call
+Parser:            </call-statm>
+Parser:          </statm list>
+Parser:        </func decl>
+Parser:        <func decl>
+Parser:          <param decl>
+Parser:          </param decl>
+Parser:          <param decl>
+Parser:          </param decl>
+Parser:          <param decl>
+Parser:          </param decl>
+Parser:          <param decl>
+Parser:          </param decl>
+Parser:          <param decl>
+Parser:          </param decl>
+Parser:          <param decl>
+34: int p12 (int c1, int c2, int c3, int c4, int c5, int c6, 
+Parser:          </param decl>
+Parser:          <param decl>
+Parser:          </param decl>
+Parser:          <param decl>
+Parser:          </param decl>
+Parser:          <param decl>
+Parser:          </param decl>
+Parser:          <param decl>
+Parser:          </param decl>
+Parser:          <param decl>
+Parser:          </param decl>
+Parser:          <param decl>
+35:   int c7, int c8, int c9, int c10, int c11, int c12) 
+36: {
+Parser:          </param decl>
+Parser:          <statm list>
+Parser:            <call-statm>
+Parser:              <function call>
+Parser:                <expr list>
+Parser:                  <expression>
+Parser:                    <variable>
+Parser:                    </variable>
+Parser:                  </expression>
+Parser:                  <expression>
+Parser:                    <variable>
+Parser:                    </variable>
+Parser:                  </expression>
+Parser:                  <expression>
+Parser:                    <variable>
+Parser:                    </variable>
+Parser:                  </expression>
+Parser:                  <expression>
+Parser:                    <variable>
+Parser:                    </variable>
+Parser:                  </expression>
+Parser:                </expr list>
+Parser:              </function call
+Parser:            </call-statm>
+Parser:            <call-statm>
+Parser:              <function call>
+Parser:                <expr list>
+Parser:                  <expression>
+Parser:                    <variable>
+Parser:                    </variable>
+Parser:                  </expression>
+Parser:                  <expression>
+Parser:                    <variable>
+Parser:                    </variable>
+Parser:                  </expression>
+Parser:                  <expression>
+Parser:                    <variable>
+Parser:                    </variable>
+Parser:                  </expression>
+Parser:                  <expression>
+Parser:                    <variable>
+Parser:                    </variable>
+Parser:                  </expression>
+Parser:                </expr list>
+Parser:              </function call
+Parser:            </call-statm>
+Parser:            <call-statm>
+Parser:              <function call>
+Parser:                <expr list>
+Parser:                  <expression>
+Parser:                    <variable>
+Parser:                    </variable>
+Parser:                  </expression>
+Parser:                  <expression>
+Parser:                    <variable>
+Parser:                    </variable>
+Parser:                  </expression>
+Parser:                  <expression>
+Parser:                    <variable>
+Parser:                    </variable>
+Parser:                  </expression>
+37:     p4(c1,c2,c3,c4);  p4(c5,c6,c7,c8);  p4(c9,c10,c11,c12);
+Parser:                  <expression>
+Parser:                    <variable>
+38: }
+Parser:                    </variable>
+Parser:                  </expression>
+Parser:                </expr list>
+Parser:              </function call
+Parser:            </call-statm>
+Parser:          </statm list>
+Parser:        </func decl>
+Parser:        <func decl>
+40: int putstring ()
+41: {
+Parser:          <var decl>
+42:    int i;  int c;
+Parser:          </var decl>
+Parser:          <var decl>
+Parser:          </var decl>
+Parser:          <statm list>
+Parser:            <assign-statm>
+Parser:              <assignment>
+Parser:                <variable>
+44:    i = 0;
+Parser:                </variable>
+Parser:                <expression>
+Parser:                  <number>
+Parser:                  </number>
+Parser:                </expression>
+Parser:              </assignment>
+Parser:            </assign-statm>
+Parser:            <while-statm>
+Parser:              <expression>
+Parser:                <variable>
+Parser:                  <expression>
+Parser:                    <variable>
+45:    while (s[i]) {
+Parser:                    </variable>
+Parser:                  </expression>
+Parser:                </variable>
+Parser:              </expression>
+Parser:              <statm list>
+Parser:                <assign-statm>
+Parser:                  <assignment>
+Parser:                    <variable>
+Parser:                    </variable>
+Parser:                    <expression>
+Parser:                      <variable>
+Parser:                        <expression>
+Parser:                          <variable>
+Parser:                          </variable>
+Parser:                        </expression>
+Parser:                      </variable>
+Parser:                    </expression>
+Parser:                  </assignment>
+Parser:                </assign-statm>
+Parser:                <assign-statm>
+Parser:                  <assignment>
+Parser:                    <variable>
+Parser:                    </variable>
+Parser:                    <expression>
+Parser:                      <variable>
+Parser:                        <operator>
+Parser:                        </operator>
+Parser:                        <number>
+Parser:                        </number>
+Parser:                      </variable>
+Parser:                    </expression>
+Parser:                  </assignment>
+Parser:                </assign-statm>
+Parser:                <call-statm>
+Parser:                  <function call>
+46:       c = s[i];  i = i+1;  p1(c);
+Parser:                    <expr list>
+Parser:                      <expression>
+Parser:                        <variable>
+47:    }
+Parser:                        </variable>
+Parser:                      </expression>
+Parser:                    </expr list>
+48: }
+Parser:                  </function call
+51: /* Utility functions */
+Parser:                </call-statm>
+Parser:              </statm list>
+Parser:            </while-statm>
+Parser:          </statm list>
+Parser:        </func decl>
+Parser:        <func decl>
+53: int strlen ()     /* How long is the text string? */
+54: {
+55:    int i;
+Parser:          <var decl>
+Parser:          </var decl>
+Parser:          <statm list>
+Parser:            <assign-statm>
+Parser:              <assignment>
+Parser:                <variable>
+57:    i = 0;
+Parser:                </variable>
+Parser:                <expression>
+Parser:                  <number>
+Parser:                  </number>
+Parser:                </expression>
+Parser:              </assignment>
+Parser:            </assign-statm>
+Parser:            <while-statm>
+Parser:              <expression>
+Parser:                <variable>
+Parser:                  <expression>
+Parser:                    <variable>
+Parser:                    </variable>
+Parser:                  </expression>
+Parser:                </variable>
+Parser:              </expression>
+Parser:              <statm list>
+Parser:                <assign-statm>
+Parser:                  <assignment>
+Parser:                    <variable>
+Parser:                    </variable>
+Parser:                    <expression>
+Parser:                      <variable>
+Parser:                        <operator>
+58:    while (s[i]) { i = i+1; }
+Parser:                        </operator>
+Parser:                        <number>
+Parser:                        </number>
+Parser:                      </variable>
+Parser:                    </expression>
+Parser:                  </assignment>
+Parser:                </assign-statm>
+Parser:              </statm list>
+59:    return i;
+Parser:            </while-statm>
+Parser:            <return-statm>
+60: }
+Parser:              <expression>
+Parser:                <variable>
+Parser:                </variable>
+Parser:              </expression>
+Parser:            </return-statm>
+Parser:          </statm list>
+Parser:        </func decl>
+Parser:        <func decl>
+62: int is_palindrome ()  /* Is the text string a palindrome? */
+63: {
+Parser:          <var decl>
+64:    int i1;  int i2;
+Parser:          </var decl>
+Parser:          <var decl>
+Parser:          </var decl>
+Parser:          <statm list>
+Parser:            <assign-statm>
+Parser:              <assignment>
+Parser:                <variable>
+Parser:                </variable>
+Parser:                <expression>
+Parser:                  <number>
+Parser:                  </number>
+Parser:                </expression>
+Parser:              </assignment>
+Parser:            </assign-statm>
+Parser:            <assign-statm>
+Parser:              <assignment>
+Parser:                <variable>
+Parser:                </variable>
+Parser:                <expression>
+Parser:                  <function call>
+Parser:                    <expr list>
+Parser:                      <expression>
+Parser:                      </expression>
+Parser:                    </expr list>
+66:    i1 = 0;  i2 = strlen() - 1;
+Parser:                  </function call
+Parser:                  <operator>
+Parser:                  </operator>
+Parser:                  <number>
+Parser:                  </number>
+Parser:                </expression>
+Parser:              </assignment>
+Parser:            </assign-statm>
+Parser:            <while-statm>
+Parser:              <expression>
+Parser:                <variable>
+Parser:                  <operator>
+67:    while (i1 < i2) {
+Parser:                  </operator>
+Parser:                  <variable>
+Parser:                  </variable>
+Parser:                </variable>
+Parser:              </expression>
+Parser:              <statm list>
+Parser:                <if-statm>
+Parser:                  <expression>
+Parser:                    <variable>
+Parser:                      <expression>
+Parser:                        <variable>
+Parser:                        </variable>
+Parser:                      </expression>
+Parser:                      <operator>
+Parser:                      </operator>
+Parser:                      <variable>
+Parser:                        <expression>
+Parser:                          <variable>
+Parser:                          </variable>
+Parser:                        </expression>
+Parser:                      </variable>
+Parser:                    </variable>
+Parser:                  </expression>
+Parser:                  <statm list>
+Parser:                    <return-statm>
+68:       if (s[i1] != s[i2]) { return false; }
+Parser:                      <expression>
+Parser:                        <variable>
+Parser:                        </variable>
+Parser:                      </expression>
+Parser:                    </return-statm>
+Parser:                  </statm list>
+Parser:                  </if-statm>
+Parser:                    <assign-statm>
+Parser:                      <assignment>
+Parser:                        <variable>
+Parser:                        </variable>
+Parser:                        <expression>
+Parser:                          <variable>
+Parser:                            <operator>
+Parser:                            </operator>
+Parser:                            <number>
+Parser:                            </number>
+Parser:                          </variable>
+Parser:                        </expression>
+Parser:                      </assignment>
+Parser:                    </assign-statm>
+Parser:                    <assign-statm>
+Parser:                      <assignment>
+Parser:                        <variable>
+Parser:                        </variable>
+Parser:                        <expression>
+Parser:                          <variable>
+69:       i1 = i1 + 1;  i2 = i2 - 1;
+Parser:                            <operator>
+70:    }
+Parser:                            </operator>
+Parser:                            <number>
+Parser:                            </number>
+Parser:                          </variable>
+Parser:                        </expression>
+Parser:                      </assignment>
+Parser:                    </assign-statm>
+Parser:                  </statm list>
+71:    return true;
+Parser:                </while-statm>
+Parser:                <return-statm>
+72: }
+Parser:                  <expression>
+Parser:                    <variable>
+75: /* The main program: */
+Parser:                    </variable>
+Parser:                  </expression>
+Parser:                </return-statm>
+Parser:              </statm list>
+Parser:            </func decl>
+Parser:            <func decl>
+77: int main ()
+78: {
+79:    int no_p;
+Parser:              <var decl>
+Parser:              </var decl>
+Parser:              <statm list>
+Parser:                <assign-statm>
+Parser:                  <assignment>
+Parser:                    <variable>
+Parser:                    </variable>
+Parser:                    <expression>
+Parser:                      <number>
+Parser:                      </number>
+Parser:                    </expression>
+Parser:                  </assignment>
+Parser:                </assign-statm>
+Parser:                <assign-statm>
+Parser:                  <assignment>
+Parser:                    <variable>
+Parser:                    </variable>
+Parser:                    <expression>
+Parser:                      <number>
+Parser:                      </number>
+Parser:                    </expression>
+Parser:                  </assignment>
+Parser:                </assign-statm>
+Parser:                <assign-statm>
+Parser:                  <assignment>
+Parser:                    <variable>
+81:    false = 0;  true = 1;  LF = 10;
+Parser:                    </variable>
+Parser:                    <expression>
+Parser:                      <number>
+Parser:                      </number>
+Parser:                    </expression>
+Parser:                  </assignment>
+Parser:                </assign-statm>
+Parser:                <while-statm>
+82:    while (true) {
+Parser:                  <expression>
+Parser:                    <variable>
+Parser:                    </variable>
+Parser:                  </expression>
+Parser:                  <statm list>
+Parser:                    <call-statm>
+Parser:                      <function call>
+Parser:                        <expr list>
+Parser:                          <expression>
+Parser:                            <number>
+Parser:                            </number>
+Parser:                          </expression>
+Parser:                          <expression>
+Parser:                            <number>
+Parser:                            </number>
+Parser:                          </expression>
+Parser:                        </expr list>
+Parser:                      </function call
+Parser:                    </call-statm>
+Parser:                    <call-statm>
+Parser:                      <function call>
+83:       p2('?', ' ');  getstring();
+Parser:                        <expr list>
+Parser:                          <expression>
+Parser:                          </expression>
+Parser:                        </expr list>
+Parser:                      </function call
+Parser:                    </call-statm>
+Parser:                    <if-statm>
+Parser:                      <expression>
+Parser:                        <function call>
+Parser:                          <expr list>
+Parser:                            <expression>
+Parser:                            </expression>
+Parser:                          </expr list>
+Parser:                        </function call
+Parser:                        <operator>
+Parser:                        </operator>
+Parser:                        <number>
+Parser:                        </number>
+Parser:                      </expression>
+Parser:                      <statm list>
+Parser:                        <call-statm>
+Parser:                          <function call>
+Parser:                            <expr list>
+Parser:                              <expression>
+Parser:                                <number>
+84:       if (strlen() == 0) { exit(0); }
+Parser:                                </number>
+Parser:                              </expression>
+Parser:                            </expr list>
+Parser:                          </function call
+Parser:                        </call-statm>
+Parser:                      </statm list>
+Parser:                      </if-statm>
+Parser:                        <call-statm>
+Parser:                          <function call>
+Parser:                            <expr list>
+Parser:                              <expression>
+Parser:                                <number>
+Parser:                                </number>
+Parser:                              </expression>
+Parser:                            </expr list>
+Parser:                          </function call
+Parser:                        </call-statm>
+Parser:                        <call-statm>
+Parser:                          <function call>
+Parser:                            <expr list>
+Parser:                              <expression>
+Parser:                              </expression>
+Parser:                            </expr list>
+Parser:                          </function call
+Parser:                        </call-statm>
+Parser:                        <call-statm>
+Parser:                          <function call>
+Parser:                            <expr list>
+Parser:                              <expression>
+Parser:                                <number>
+Parser:                                </number>
+Parser:                              </expression>
+Parser:                            </expr list>
+Parser:                          </function call
+Parser:                        </call-statm>
+Parser:                        <call-statm>
+Parser:                          <function call>
+Parser:                            <expr list>
+Parser:                              <expression>
+Parser:                                <number>
+Parser:                                </number>
+Parser:                              </expression>
+Parser:                              <expression>
+Parser:                                <number>
+Parser:                                </number>
+Parser:                              </expression>
+Parser:                              <expression>
+Parser:                                <number>
+Parser:                                </number>
+Parser:                              </expression>
+86:       putchar('"');  putstring();  putchar('"');  p4(' ','i','s',' ');
+Parser:                              <expression>
+Parser:                                <number>
+Parser:                                </number>
+Parser:                              </expression>
+Parser:                            </expr list>
+Parser:                          </function call
+Parser:                        </call-statm>
+Parser:                        <assign-statm>
+Parser:                          <assignment>
+Parser:                            <variable>
+Parser:                            </variable>
+Parser:                            <expression>
+Parser:                              <function call>
+Parser:                                <expr list>
+Parser:                                  <expression>
+Parser:                                  </expression>
+Parser:                                </expr list>
+87:       no_p = is_palindrome() == 0;
+Parser:                              </function call
+Parser:                              <operator>
+Parser:                              </operator>
+Parser:                              <number>
+Parser:                              </number>
+Parser:                            </expression>
+Parser:                          </assignment>
+Parser:                        </assign-statm>
+Parser:                        <if-statm>
+88:       if (no_p) {
+Parser:                          <expression>
+Parser:                            <variable>
+Parser:                            </variable>
+Parser:                          </expression>
+Parser:                          <statm list>
+Parser:                            <call-statm>
+Parser:                              <function call>
+Parser:                                <expr list>
+Parser:                                  <expression>
+Parser:                                    <number>
+Parser:                                    </number>
+Parser:                                  </expression>
+Parser:                                  <expression>
+Parser:                                    <number>
+Parser:                                    </number>
+Parser:                                  </expression>
+89: 	 p3('n','o',' ');
+Parser:                                  <expression>
+Parser:                                    <number>
+90:       }
+Parser:                                    </number>
+Parser:                                  </expression>
+Parser:                                </expr list>
+Parser:                              </function call
+Parser:                            </call-statm>
+Parser:                          </statm list>
+Parser:                          </if-statm>
+Parser:                            <call-statm>
+Parser:                              <function call>
+Parser:                                <expr list>
+Parser:                                  <expression>
+Parser:                                    <number>
+Parser:                                    </number>
+Parser:                                  </expression>
+Parser:                                  <expression>
+Parser:                                    <number>
+Parser:                                    </number>
+Parser:                                  </expression>
+Parser:                                  <expression>
+Parser:                                    <number>
+Parser:                                    </number>
+Parser:                                  </expression>
+Parser:                                  <expression>
+Parser:                                    <number>
+Parser:                                    </number>
+Parser:                                  </expression>
+Parser:                                  <expression>
+Parser:                                    <number>
+Parser:                                    </number>
+Parser:                                  </expression>
+Parser:                                  <expression>
+Parser:                                    <number>
+Parser:                                    </number>
+Parser:                                  </expression>
+Parser:                                  <expression>
+Parser:                                    <number>
+Parser:                                    </number>
+Parser:                                  </expression>
+Parser:                                  <expression>
+Parser:                                    <number>
+Parser:                                    </number>
+Parser:                                  </expression>
+Parser:                                  <expression>
+Parser:                                    <number>
+Parser:                                    </number>
+Parser:                                  </expression>
+Parser:                                  <expression>
+Parser:                                    <number>
+Parser:                                    </number>
+Parser:                                  </expression>
+Parser:                                  <expression>
+Parser:                                    <number>
+Parser:                                    </number>
+Parser:                                  </expression>
+91:       p12('p','a','l','i','n','d','r','o','m','e','.',LF);
+Parser:                                  <expression>
+Parser:                                    <variable>
+92:    }
+Parser:                                    </variable>
+Parser:                                  </expression>
+Parser:                                </expr list>
+93: }
+Parser:                              </function call
+Parser:                            </call-statm>
+Parser:                          </statm list>
+Parser:                        </while-statm>
+Parser:                      </statm list>
+Parser:                    </func decl>
+Parser:                  </program>
+Tree:		int s[201];
+Tree:		int true;
+Tree:		int false;
+Tree:		int LF;
+Tree:		int getstring()
+Tree:		{
+Tree:			int getstring;
+Tree:			int i;
+Tree:			i = 0;
+Tree:			while (true) {
+Tree:				c = getchar();
+Tree:				if (c)
+Tree:				{
+Tree:					s[i] = 0;
+Tree:					return 0;
+Tree:				}
+Tree:				s[i] = c;
+Tree:				i = i;
+Tree:			}
+Tree:		}
+Tree:		int p1(int c1)
+Tree:		{
+Tree:			putchar(c1);}
+Tree:		int p2(int c1,int c2)
+Tree:		{
+Tree:			p1(c1);p1(c2);}
+Tree:		int p3(int c1,int c2,int c3)
+Tree:		{
+Tree:			p2(c1,c2);p1(c3);}
+Tree:		int p4(int c1,int c2,int c3,int c4)
+Tree:		{
+Tree:			p3(c1,c2,c3);p1(c4);}
+Tree:		int p12(int c1,int c2,int c3,int c4,int c5,int c6,int c7,int c8,int c9,int c10,int c11,int c12)
+Tree:		{
+Tree:			p4(c1,c2,c3,c4);p4(c5,c6,c7,c8);p4(c9,c10,c11,c12);}
+Tree:		int putstring()
+Tree:		{
+Tree:			int putstring;
+Tree:			int i;
+Tree:			i = 0;
+Tree:			while (s[i]) {
+Tree:				c = s[i];
+Tree:				i = i;
+Tree:				p1(c);}
+Tree:		}
+Tree:		int strlen()
+Tree:		{
+Tree:			int strlen;
+Tree:			i = 0;
+Tree:			while (s[i]) {
+Tree:				i = i;
+Tree:			}
+Tree:			return i;
+Tree:		}
+Tree:		int is_palindrome()
+Tree:		{
+Tree:			int is_palindrome;
+Tree:			int i1;
+Tree:			i1 = 0;
+Tree:			i2 = strlen();
+Tree:			while (i1) {
+Tree:				if (s[i1])
+Tree:				{
+Tree:					return false;
+Tree:				}
+Tree:				i1 = i1;
+Tree:				i2 = i2;
+Tree:			}
+Tree:			return true;
+Tree:		}
+Tree:		int main()
+Tree:		{
+Tree:			int main;
+Tree:			false = 0;
+Tree:			true = 1;
+Tree:			LF = 10;
+Tree:			while (true) {
+Tree:				p2(63,32);getstring();if (strlen())
+Tree:				{
+Tree:					exit(0);}
+Tree:				putchar(34);putstring();putchar(34);p4(32,105,115,32);no_p = is_palindrome();
+Tree:				if (no_p)
+Tree:				{
+Tree:					p3(110,111,32);}
+Tree:				p12(112,97,108,105,110,100,114,111,109,101,46,LF);}
+Tree:		}
