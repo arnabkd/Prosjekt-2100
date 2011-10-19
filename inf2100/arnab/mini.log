@@ -27,4 +27,5 @@ Parser:  </program>
 Tree:		int k;
 Tree:		int main()
 Tree:		{
-Tree:			putchar(120);}
+Tree:			putchar(120);
+Tree:		}

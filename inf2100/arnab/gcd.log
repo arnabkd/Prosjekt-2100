@@ -224,6 +224,12 @@ Tree:		{
 Tree:			int main;
 Tree:			int v1;
 Tree:			LF = 10;
-Tree:			;putchar(63);putchar(32);v1 = getint();
+Tree:			;
+Tree:			putchar(63);
+Tree:			putchar(32);
+Tree:			v1 = getint();
 Tree:			v2 = getint();
-Tree:			putint(gcd(v1,v2));putchar(LF);exit(0);}
+Tree:			putint(gcd(v1,v2));
+Tree:			putchar(LF);
+Tree:			exit(0);
+Tree:		}
