@@ -207,14 +207,14 @@ Parser:      </program>
 Tree:		int LF;
 Tree:		int gcd(int a,int b)
 Tree:		{
-Tree:			while (a) {
-Tree:				if (a)
+Tree:			while (a!=b) {
+Tree:				if (a<b)
 Tree:				{
-Tree:					b = b;
+Tree:					b = b-a;
 Tree:				}
 Tree:				else
 Tree:				{
-Tree:					a = a;
+Tree:					a = a-b;
 Tree:				}
 Tree:			}
 Tree:			return a;

@@ -1457,6 +1457,9 @@ class Expression extends Operand {
         //-- Must be changed in part 1:
         if (firstOp != null) {
             firstOp.printTree();
+            if (nextOperator != null) {
+                nextOperator.printTree();
+            }
         }
 
     }
@@ -1493,6 +1496,9 @@ abstract class Operator extends SyntaxUnit {
         String s = token.getOpString();
         if (s != null) {
             Log.wTree(s);
+        }
+        if (secondOp != null) {
+            secondOp.printTree();
         }
 
 
@@ -1617,6 +1623,9 @@ class FunctionCall extends Operand {
         Log.wTree(varName + "(");
         exps.printTree();
         Log.wTree(")");
+        if (nextOperator != null) {
+            nextOperator.printTree();
+        }
 
     }
     //-- Must be changed in part 1+2:
@@ -1666,7 +1675,9 @@ class Number extends Operand {
     @Override
     void printTree() {
         Log.wTree("" + numVal);
-
+        if (nextOperator != null) {
+            nextOperator.printTree();
+        }
     }
 }
 
@@ -1733,7 +1744,9 @@ class Variable extends Operand {
             index.printTree();
             Log.wTree("]");
         }
-
+        if (nextOperator != null) {
+            nextOperator.printTree();
+        }
     }
 
     @Override

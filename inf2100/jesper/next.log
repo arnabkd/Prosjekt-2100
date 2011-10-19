@@ -60,4 +60,4 @@ Parser:    </func decl>
 Parser:  </program>
 Tree:		int main()
 Tree:		{
-Tree:			putchar(63);putchar(32);putint(getint());putchar(10);}
+Tree:			putchar(63);putchar(32);putint(getint()+1);putchar(10);}
