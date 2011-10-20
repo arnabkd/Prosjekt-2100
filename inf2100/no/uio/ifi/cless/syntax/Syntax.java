@@ -42,9 +42,14 @@ public class Syntax {
 
         library.addDecl(new FuncDecl("getchar"));
         library.addDecl(new FuncDecl("getint"));
-        library.addDecl(new FuncDecl("exit"));
 
 
+        FuncDecl exit = new FuncDecl("exit");
+        ParamDecl par3 = new ParamDecl("status" , 0);
+        ParamDeclList parList3 = new ParamDeclList();
+        parList3.addDecl(par3);
+        exit.paramList = parList3;
+        library.addDecl(exit);
     }
 
     public static void finish() {
@@ -946,7 +951,7 @@ class EmptyStatm extends Statement {
     @Override
     void printTree() {
         //-- Must be changed in part 1:
-        Log.wTree(";");
+        Log.wTreeLn(";");
     }
 }
 
@@ -982,7 +987,7 @@ class CallStatm extends Statement {
     void printTree() {
         //part1
         func.printTree();
-        Log.wTree(";");
+        Log.wTreeLn(";");
     }
 }
 
@@ -1010,7 +1015,7 @@ class AssignStatm extends Statement {
     void parse() {
         Log.enterParser("<assign-statm>");
         Log.enterParser("<assignment>");
-        var = new Variable(Scanner.curName);
+        var = new Variable(Scanner.nextName);
         var.parse();
         Scanner.skip(assignToken);
         exps = new Expression();
@@ -1018,7 +1023,6 @@ class AssignStatm extends Statement {
         Log.leaveParser("</assignment>");
         Log.leaveParser("</assign-statm>");
         Scanner.skip(semicolonToken);
-
     }
 
     @Override
@@ -1203,14 +1207,16 @@ class WhileStatm extends Statement {
     void parse() {
         Log.enterParser("<while-statm>");
 
-        Scanner.readNext();
+        Scanner.skip(whileToken);
         Scanner.skip(leftParToken);
         test = new Expression();
         test.parse();
+
         Scanner.skip(rightParToken);
         Scanner.skip(leftCurlToken);
         body.parse();
         Scanner.skip(rightCurlToken);
+
 
         Log.leaveParser("</while-statm>");
     }
@@ -1428,12 +1434,6 @@ class Expression extends Operand {
             firstOp.parse();
         }
 
-        if (Token.isOperator(Scanner.curToken)) {
-            firstOp.nextOperator = Token.isComparisonOperator(Scanner.curToken)
-                    ? new ComparisonOperator() : new ArithmeticOperator();
-            firstOp.nextOperator.parse();
-        }
-
         if (Scanner.curToken == rightParToken && level == 1) {
             Scanner.skip(rightParToken);
             level--;
@@ -1445,8 +1445,6 @@ class Expression extends Operand {
         if (Token.isOperator(Scanner.curToken)) {
             nextOperator = Token.isComparisonOperator(Scanner.curToken)
                     ? new ComparisonOperator() : new ArithmeticOperator();
-        }
-        if (nextOperator != null) {
             nextOperator.parse();
         }
 
@@ -1455,12 +1453,14 @@ class Expression extends Operand {
     @Override
     void printTree() {
         //-- Must be changed in part 1:
+        Log.wTree("(");
         if (firstOp != null) {
             firstOp.printTree();
             if (nextOperator != null) {
                 nextOperator.printTree();
             }
         }
+        Log.wTree(")");
 
     }
 }
@@ -1484,7 +1484,6 @@ abstract class Operator extends SyntaxUnit {
         secondOp = Operand.getOperand();
 
         if (secondOp == null) {
-
             Scanner.expected("Operand");
         } else {
             secondOp.parse();

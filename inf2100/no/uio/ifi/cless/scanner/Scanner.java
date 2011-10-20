@@ -190,7 +190,6 @@ public class Scanner {
 	// information found here.)
 
 	public static void illegal(String message) {
-        System.err.println(CharGenerator.sourceLine);
 		Error.error(curLine, message);
 	}
 

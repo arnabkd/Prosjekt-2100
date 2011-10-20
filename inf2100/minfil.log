@@ -1,209 +1,259 @@
-1:  # Program ’mini’
-2: # --------------
-3: # A minimal C< program!
-Parser:  <program>
-Parser:    <func decl>
-Parser:      <param decl>
-Parser:      </param decl>
-Parser:      <param decl>
-5: int sum(int a, int x){
-Parser:      </param decl>
-Parser:      <statm list>
-Parser:        <return-statm>
-Parser:          <expression>
-Parser:            <variable>
-6:     return a + x;
-Parser:            </variable>
-Parser:            <operator>
-7: }
-Parser:            </operator>
-Parser:            <variable>
-Parser:            </variable>
-Parser:          </expression>
-Parser:        </return-statm>
-Parser:      </statm list>
-Parser:    </func decl>
-Parser:    <func decl>
-10: int main (){
-11:     int x;
-Parser:      <var decl>
-12:     int i;
-Parser:      </var decl>
-Parser:      <var decl>
-Parser:      </var decl>
-Parser:      <statm list>
-Parser:        <assign-statm>
-Parser:          <assignment>
-Parser:            <variable>
-Parser:            </variable>
-Parser:            <expression>
-Parser:              <function call>
-Parser:                <expr list>
-Parser:                  <expression>
-Parser:                    <number>
-Parser:                    </number>
-Parser:                  </expression>
-13:     x = sum(5,6);
-Parser:                  <expression>
-Parser:                    <number>
-14:     
-Parser:                    </number>
-Parser:                  </expression>
-Parser:                </expr list>
-Parser:              </function call
-Parser:            </expression>
-Parser:          </assignment>
-Parser:        </assign-statm>
-Parser:        <while-statm>
-Parser:          <expression>
-Parser:            <number>
-Parser:            </number>
-Parser:            <operator>
-15:     while(1==1){
-Parser:            </operator>
-Parser:            <number>
-Parser:            </number>
-Parser:          </expression>
-Parser:          <statm list>
-Parser:            <assign-statm>
-Parser:              <assignment>
-Parser:                <variable>
-Parser:                </variable>
-Parser:                <expression>
-Parser:                  <variable>
-Parser:                  </variable>
-Parser:                  <operator>
-16: 	i = i + 1;    
-17:     }
-Parser:                  </operator>
-Parser:                  <number>
-Parser:                  </number>
-Parser:                </expression>
-Parser:              </assignment>
-Parser:            </assign-statm>
-Parser:          </statm list>
-Parser:        </while-statm>
-Parser:        <for-statm>
-Parser:          <for-control>
-Parser:            <variable>
-Parser:            </variable>
-Parser:            <expression>
-Parser:              <number>
-Parser:              </number>
-Parser:            </expression>
-Parser:            <expression>
-Parser:              <variable>
-Parser:              </variable>
-Parser:              <operator>
-Parser:              </operator>
-Parser:              <number>
-Parser:              </number>
-Parser:            </expression>
-Parser:            <variable>
-Parser:            </variable>
-Parser:            <expression>
-Parser:              <variable>
-Parser:              </variable>
-Parser:              <operator>
-19:     for(i = 0; i < 10; i = i +1){
-Parser:              </operator>
-Parser:              <number>
-Parser:              </number>
-Parser:            </expression>
-Parser:          </for-control>
-Parser:          <statm list>
-Parser:            <assign-statm>
-Parser:              <assignment>
-Parser:                <variable>
-Parser:                </variable>
-Parser:                <expression>
-Parser:                  <variable>
-20:        i = i + 1;
-Parser:                  </variable>
-Parser:                  <operator>
-21:     }
-Parser:                  </operator>
-Parser:                  <number>
-Parser:                  </number>
-Parser:                </expression>
-Parser:              </assignment>
-Parser:            </assign-statm>
-Parser:          </statm list>
-Parser:        </for-statm>
-Parser:        <if-statm>
-Parser:          <expression>
-Parser:            <variable>
-Parser:            </variable>
-Parser:            <operator>
-23:     if(x > 10) {
-Parser:            </operator>
-Parser:            <number>
-Parser:            </number>
-Parser:          </expression>
-Parser:          <statm list>
-Parser:            <assign-statm>
-Parser:              <assignment>
-Parser:                <variable>
-24:       x = 0;
-Parser:                </variable>
-Parser:                <expression>
-Parser:                  <number>
-Parser:                  </number>
-Parser:                </expression>
-Parser:              </assignment>
-Parser:            </assign-statm>
-25:     }else {
-Parser:          </statm list>
-Parser:          </if-statm>
-Parser:            <else-statm>
-Parser:              <statm list>
-Parser:                <assign-statm>
-Parser:                  <assignment>
-Parser:                    <variable>
-26:       x = 1;
-Parser:                    </variable>
-27:     }
-Parser:                    <expression>
-Parser:                      <number>
-Parser:                      </number>
-Parser:                    </expression>
-Parser:                  </assignment>
-Parser:                </assign-statm>
-Parser:              </statm list>
-29:     return x;
-Parser:            </else-statm>
-Parser:            <return-statm>
-31: }
-Parser:              <expression>
-Parser:                <variable>
-Parser:                </variable>
-Parser:              </expression>
-Parser:            </return-statm>
-Parser:          </statm list>
-Parser:        </func decl>
-Parser:      </program>
-Tree:		int sum(int a,int x)
-Tree:		{
-Tree:			return a+x;
-Tree:		}
-Tree:		int main()
-Tree:		{
-Tree:			int main;
-Tree:			int x;
-Tree:			x = sum(5,6);
-Tree:			while (1==1) {
-Tree:				i = i+1;
-Tree:			}
-Tree:			for (i=0; i<10; i=i+1) {
-Tree:				i = i+1;
-Tree:			}
-Tree:			if (x>10)
-Tree:			{
-Tree:				x = 0;
-Tree:			}
-Tree:			else
-Tree:			{
-Tree:				x = 1;
-Tree:			}
-Tree:			return x;
-Tree:		}
+   1: # Program ’mini’
+   2: # --------------
+   3: # A minimal C< program!
+   4: 
+   5: int sum(int a, int x){
+Parser:   <program>
+Parser:     <func decl>
+Parser:       <param decl>
+Parser:       </param decl>
+Parser:       <param decl>
+   6:     return a + x;
+Parser:       </param decl>
+Parser:       <func body>
+Parser:         <statm list>
+Parser:           <statement>
+Parser:             <return-statm>
+Parser:               <expression>
+Parser:                 <variable>
+Parser:                 </variable>
+Parser:                 <operator>
+   7: }
+Parser:                 </operator>
+Parser:                 <variable>
+   8: 
+   9: 
+  10: int main (){
+Parser:                 </variable>
+Parser:               </expression>
+Parser:             </return-statm>
+Parser:           </statement>
+Parser:         </statm list>
+Parser:       </func body>
+Parser:     </func decl>
+Parser:     <func decl>
+  11:     int x;
+Parser:       <func body>
+Parser:         <var decl>
+  12:     int i;
+Parser:         </var decl>
+Parser:         <var decl>
+  13:     x = sum(5,6);
+Parser:         </var decl>
+Parser:         <statm list>
+Parser:           <statement>
+Parser:             <assign-statm>
+Parser:               <assignment>
+Parser:                 <variable>
+Parser:                 </variable>
+Parser:                 <expression>
+Parser:                   <function call>
+Parser:                     <expr list>
+Parser:                       <expression>
+Parser:                         <number>
+Parser:                         </number>
+Parser:                       </expression>
+Parser:                       <expression>
+Parser:                         <number>
+  14:     
+  15:     while(1 == 1){
+Parser:                         </number>
+Parser:                       </expression>
+Parser:                     </expr list>
+Parser:                   </function call>
+Parser:                 </expression>
+Parser:               </assignment>
+Parser:             </assign statm>
+Parser:           </statement>
+Parser:           <statement>
+Parser:             <while-statm>
+Parser:               <expression>
+Parser:                 <number>
+Parser:                 </number>
+Parser:                 <operator>
+Parser:                 </operator>
+Parser:                 <number>
+  16: 	i = 1 + (2 - (1 + 1)) + 3;
+Parser:                 </number>
+Parser:               </expression>
+Parser:               <statm list>
+Parser:                 <statement>
+Parser:                   <assign-statm>
+Parser:                     <assignment>
+Parser:                       <variable>
+Parser:                       </variable>
+Parser:                       <expression>
+Parser:                         <number>
+Parser:                         </number>
+Parser:                         <operator>
+Parser:                         </operator>
+Parser:                         <expression>
+Parser:                           <number>
+Parser:                           </number>
+Parser:                           <operator>
+Parser:                           </operator>
+Parser:                           <expression>
+Parser:                             <number>
+Parser:                             </number>
+Parser:                             <operator>
+Parser:                             </operator>
+Parser:                             <number>
+Parser:                             </number>
+Parser:                           </expression>
+Parser:                         </expression>
+Parser:                         <operator>
+  17:     }
+Parser:                         </operator>
+Parser:                         <number>
+  18: 
+  19:     for(i = 0; i < 10; i = i +1){
+Parser:                         </number>
+Parser:                       </expression>
+Parser:                     </assignment>
+Parser:                   </assign statm>
+Parser:                 </statement>
+Parser:               </statm list>
+Parser:             </while-statm>
+Parser:           </statement>
+Parser:           <statement>
+Parser:             <for-statm>
+Parser:               <assignment>
+Parser:                 <variable>
+Parser:                 </variable>
+Parser:                 <expression>
+Parser:                   <number>
+Parser:                   </number>
+Parser:                 </expression>
+Parser:               </assignment>
+Parser:               <expression>
+Parser:                 <variable>
+Parser:                 </variable>
+Parser:                 <operator>
+Parser:                 </operator>
+Parser:                 <number>
+Parser:                 </number>
+Parser:               </expression>
+Parser:               <assignment>
+Parser:                 <variable>
+Parser:                 </variable>
+Parser:                 <expression>
+Parser:                   <variable>
+Parser:                   </variable>
+Parser:                   <operator>
+Parser:                   </operator>
+Parser:                   <number>
+  20:        i = i + 1;
+Parser:                   </number>
+Parser:                 </expression>
+Parser:               </assignment>
+Parser:               <statm list>
+Parser:                 <statement>
+Parser:                   <assign-statm>
+Parser:                     <assignment>
+Parser:                       <variable>
+Parser:                       </variable>
+Parser:                       <expression>
+Parser:                         <variable>
+Parser:                         </variable>
+Parser:                         <operator>
+  21:     }
+Parser:                         </operator>
+Parser:                         <number>
+  22: 
+  23:     if(x > 10) {
+Parser:                         </number>
+Parser:                       </expression>
+Parser:                     </assignment>
+Parser:                   </assign statm>
+Parser:                 </statement>
+Parser:               </statm list>
+Parser:             </for-statm>
+Parser:           </statement>
+Parser:           <statement>
+Parser:             <if-statm>
+Parser:               <expression>
+Parser:                 <variable>
+Parser:                 </variable>
+Parser:                 <operator>
+Parser:                 </operator>
+Parser:                 <number>
+  24:       x = 0;
+Parser:                 </number>
+Parser:               </expression>
+Parser:               <statm list>
+Parser:                 <statement>
+Parser:                   <assign-statm>
+Parser:                     <assignment>
+Parser:                       <variable>
+Parser:                       </variable>
+  25:     }else {
+Parser:                       <expression>
+Parser:                         <number>
+Parser:                         </number>
+Parser:                       </expression>
+Parser:                     </assignment>
+Parser:                   </assign statm>
+Parser:                 </statement>
+Parser:               </statm list>
+  26:       x = 1;
+Parser:               <else-part>
+Parser:                 <statm list>
+Parser:                   <statement>
+Parser:                     <assign-statm>
+Parser:                       <assignment>
+Parser:                         <variable>
+Parser:                         </variable>
+  27:     }
+Parser:                         <expression>
+Parser:                           <number>
+  28: 
+  29:     return x;
+Parser:                           </number>
+Parser:                         </expression>
+Parser:                       </assignment>
+Parser:                     </assign statm>
+Parser:                   </statement>
+Parser:                 </statm list>
+Parser:               </else-part>
+Parser:             </if-statm>
+Parser:           </statement>
+Parser:           <statement>
+Parser:             <return-statm>
+  30: 
+  31: }
+Parser:               <expression>
+Parser:                 <variable>
+  32: 
+  33: 
+Parser:                 </variable>
+Parser:               </expression>
+Parser:             </return-statm>
+Parser:           </statement>
+Parser:         </statm list>
+Parser:       </func body>
+Parser:     </func decl>
+Parser:   </program>
+Tree:     int sum (int a, int x)
+Tree:     {
+Tree:       return (a) + (x);
+Tree:     }
+Tree:     
+Tree:     int main ()
+Tree:     {
+Tree:       int x;
+Tree:       int i;
+Tree:     
+Tree:       x = sum(5,6);
+Tree:       while ((1) == (1)) {
+Tree:         i = (1) + ((2) - ((1) + (1))) + (3);
+Tree:       }
+Tree:       for (i = 0;  (i) < (10);  i = (i) + (1)) {
+Tree:         i = (i) + (1);
+Tree:       }
+Tree:       if ((x) > (10)) {
+Tree:         x = 0;
+Tree:       } else {
+Tree:         x = 1;
+Tree:       }
+Tree:       return x;
+Tree:     }

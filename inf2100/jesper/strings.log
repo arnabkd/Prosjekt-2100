@@ -865,81 +865,101 @@ Tree:		int getstring()
 Tree:		{
 Tree:			int getstring;
 Tree:			int i;
-Tree:			i = 0;
-Tree:			while (true) {
-Tree:				c = getchar();
-Tree:				if (c==LF)
+Tree:			i = (0);
+Tree:			while ((true)) {
+Tree:				c = (getchar(()));
+Tree:				if ((c==LF))
 Tree:				{
-Tree:					s[i] = 0;
-Tree:					return 0;
+Tree:					s[(i)] = (0);
+Tree:					return (0);
 Tree:				}
-Tree:				s[i] = c;
-Tree:				i = i+1;
+Tree:				s[(i)] = (c);
+Tree:				i = (i+1);
 Tree:			}
 Tree:		}
 Tree:		int p1(int c1)
 Tree:		{
-Tree:			putchar(c1);}
+Tree:			putchar((c1));
+Tree:		}
 Tree:		int p2(int c1,int c2)
 Tree:		{
-Tree:			p1(c1);p1(c2);}
+Tree:			p1((c1));
+Tree:			p1((c2));
+Tree:		}
 Tree:		int p3(int c1,int c2,int c3)
 Tree:		{
-Tree:			p2(c1,c2);p1(c3);}
+Tree:			p2((c1),(c2));
+Tree:			p1((c3));
+Tree:		}
 Tree:		int p4(int c1,int c2,int c3,int c4)
 Tree:		{
-Tree:			p3(c1,c2,c3);p1(c4);}
+Tree:			p3((c1),(c2),(c3));
+Tree:			p1((c4));
+Tree:		}
 Tree:		int p12(int c1,int c2,int c3,int c4,int c5,int c6,int c7,int c8,int c9,int c10,int c11,int c12)
 Tree:		{
-Tree:			p4(c1,c2,c3,c4);p4(c5,c6,c7,c8);p4(c9,c10,c11,c12);}
+Tree:			p4((c1),(c2),(c3),(c4));
+Tree:			p4((c5),(c6),(c7),(c8));
+Tree:			p4((c9),(c10),(c11),(c12));
+Tree:		}
 Tree:		int putstring()
 Tree:		{
 Tree:			int putstring;
 Tree:			int i;
-Tree:			i = 0;
-Tree:			while (s[i]) {
-Tree:				c = s[i];
-Tree:				i = i+1;
-Tree:				p1(c);}
+Tree:			i = (0);
+Tree:			while ((s[(i)])) {
+Tree:				c = (s[(i)]);
+Tree:				i = (i+1);
+Tree:				p1((c));
+Tree:			}
 Tree:		}
 Tree:		int strlen()
 Tree:		{
 Tree:			int strlen;
-Tree:			i = 0;
-Tree:			while (s[i]) {
-Tree:				i = i+1;
+Tree:			i = (0);
+Tree:			while ((s[(i)])) {
+Tree:				i = (i+1);
 Tree:			}
-Tree:			return i;
+Tree:			return (i);
 Tree:		}
 Tree:		int is_palindrome()
 Tree:		{
 Tree:			int is_palindrome;
 Tree:			int i1;
-Tree:			i1 = 0;
-Tree:			i2 = strlen()-1;
-Tree:			while (i1<i2) {
-Tree:				if (s[i1]!=s[i2])
+Tree:			i1 = (0);
+Tree:			i2 = (strlen(())-1);
+Tree:			while ((i1<i2)) {
+Tree:				if ((s[(i1)]!=s[(i2)]))
 Tree:				{
-Tree:					return false;
+Tree:					return (false);
 Tree:				}
-Tree:				i1 = i1+1;
-Tree:				i2 = i2-1;
+Tree:				i1 = (i1+1);
+Tree:				i2 = (i2-1);
 Tree:			}
-Tree:			return true;
+Tree:			return (true);
 Tree:		}
 Tree:		int main()
 Tree:		{
 Tree:			int main;
-Tree:			false = 0;
-Tree:			true = 1;
-Tree:			LF = 10;
-Tree:			while (true) {
-Tree:				p2(63,32);getstring();if (strlen()==0)
+Tree:			false = (0);
+Tree:			true = (1);
+Tree:			LF = (10);
+Tree:			while ((true)) {
+Tree:				p2((63),(32));
+Tree:				getstring(());
+Tree:				if ((strlen(())==0))
 Tree:				{
-Tree:					exit(0);}
-Tree:				putchar(34);putstring();putchar(34);p4(32,105,115,32);no_p = is_palindrome()==0;
-Tree:				if (no_p)
+Tree:					exit((0));
+Tree:				}
+Tree:				putchar((34));
+Tree:				putstring(());
+Tree:				putchar((34));
+Tree:				p4((32),(105),(115),(32));
+Tree:				no_p = (is_palindrome(())==0);
+Tree:				if ((no_p))
 Tree:				{
-Tree:					p3(110,111,32);}
-Tree:				p12(112,97,108,105,110,100,114,111,109,101,46,LF);}
+Tree:					p3((110),(111),(32));
+Tree:				}
+Tree:				p12((112),(97),(108),(105),(110),(100),(114),(111),(109),(101),(46),(LF));
+Tree:			}
 Tree:		}
