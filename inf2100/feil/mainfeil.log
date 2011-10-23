@@ -1,0 +1,32 @@
+Parser:  <program>
+Parser:    <func decl>
+Parser:      <param decl>
+1:  int main (int argc)  /* main skal ikke ha parametre! */
+2: {
+Parser:      </param decl>
+Parser:      <statm list>
+Parser:        <call-statm>
+Parser:          <function call>
+Parser:            <expr list>
+Parser:              <expression>
+Parser:                <number>
+Parser:                </number>
+Parser:              </expression>
+Parser:            </expr list>
+Parser:          </function call
+Parser:        </call-statm>
+Parser:        <call-statm>
+Parser:          <function call>
+3:    putchar('!');   putchar(10);
+Parser:            <expr list>
+Parser:              <expression>
+Parser:                <number>
+4: }
+Parser:                </number>
+Parser:              </expression>
+Parser:            </expr list>
+Parser:          </function call
+Parser:        </call-statm>
+Parser:      </statm list>
+Parser:    </func decl>
+Parser:  </program>

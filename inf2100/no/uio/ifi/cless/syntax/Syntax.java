@@ -138,6 +138,14 @@ class Program extends SyntaxUnit {
         }
 
         Log.leaveParser("</program>");
+        if (!progDecls.declExists(new FuncDecl("main"))){
+            Error.error("Missing method \"main\"");
+        }else{
+            FuncDecl main = (FuncDecl) progDecls.getDecl("main");
+            if(main.paramList.size() > 0){
+                Error.error("main cannot have arguments");
+            }
+        }
     }
 
     @Override
@@ -249,6 +257,19 @@ abstract class DeclList extends SyntaxUnit {
         //-- Must be changed in part 2:
         return null;
     }
+
+    Declaration getDecl(String name){
+       Declaration currentDecl = firstDecl;
+
+        while (currentDecl != null && currentDecl.name != null) {
+            if (currentDecl.name.compareTo(name) == 0) {
+                return currentDecl;
+            }
+            currentDecl = currentDecl.nextDecl;
+        }
+
+        return null; //Declaration d does not exist yet
+    }
 }
 
 
@@ -334,6 +355,8 @@ class LocalDeclList extends DeclList {
 }
 
 
+
+
 /*
  * A list of parameter declarations.
  * (This class is not mentioned in the syntax diagrams.)
@@ -377,6 +400,16 @@ class ParamDeclList extends DeclList {
                 Log.wTree(",");
             }
         }
+    }
+
+    int size() {
+        Declaration current = firstDecl;
+        int i = 0;
+        while(current != null){
+            i++;
+            current = current.nextDecl;
+        }
+        return i;
     }
 }
 
@@ -1258,7 +1291,7 @@ class ForStatm extends Statement {
         //-- Must be changed in part 1
         Log.enterParser("<for-statm>");
 
-        Scanner.readNext();
+        Scanner.skip(forToken);
         Scanner.skip(leftParToken);
         cont.parse();
         Scanner.skip(rightParToken);
@@ -1342,6 +1375,7 @@ class ExprList extends SyntaxUnit {
 
     Expression firstExpr = null;
 
+
     @Override
     void check(DeclList curDecls) {
         //-- Must be changed in part 2:
@@ -1358,6 +1392,7 @@ class ExprList extends SyntaxUnit {
         firstExpr = new Expression();
         Expression currentExp = firstExpr;
 
+
         Log.enterParser("<expr list>");
         while (currentExp != null) {
             currentExp.parse();
@@ -1368,6 +1403,7 @@ class ExprList extends SyntaxUnit {
                 Scanner.skip(commaToken);
             }
             currentExp = currentExp.nextExpr;
+
         }
         //-- Must be changed in part 1:
 
@@ -1380,7 +1416,6 @@ class ExprList extends SyntaxUnit {
         Expression currentExp = firstExpr;
         while (currentExp != null) {
             currentExp.printTree();
-
             currentExp = currentExp.nextExpr;
             if (currentExp != null) {
                 Log.wTree(",");
@@ -1392,12 +1427,14 @@ class ExprList extends SyntaxUnit {
      *@ returns n - the size of the expression list
      */
     int nExprs() {
-        int n = 0;
+        int i = 0;
         //-- Must be changed in part 1:
-        for (Expression current = firstExpr; current != null; current = current.nextExpr) {
-            n++;
+        Expression current = firstExpr;
+        while(current != null){
+            i++;
+            current = current.nextExpr;
         }
-        return n;
+        return i;
     }
 }
 
@@ -1453,14 +1490,22 @@ class Expression extends Operand {
     @Override
     void printTree() {
         //-- Must be changed in part 1:
-        Log.wTree("(");
+        //
         if (firstOp != null) {
-            firstOp.printTree();
+            if(firstOp instanceof Expression){
+                Log.wTree("(");
+                firstOp.printTree();
+                Log.wTree(")");
+            }else{
+                firstOp.printTree();
+            }
+
+
             if (nextOperator != null) {
                 nextOperator.printTree();
             }
         }
-        Log.wTree(")");
+        //
 
     }
 }
@@ -1497,7 +1542,13 @@ abstract class Operator extends SyntaxUnit {
             Log.wTree(s);
         }
         if (secondOp != null) {
-            secondOp.printTree();
+             if(secondOp instanceof Expression){
+                Log.wTree("(");
+                secondOp.printTree();
+                Log.wTree(")");
+            }else{
+                secondOp.printTree();
+            }
         }
 
 
@@ -1597,6 +1648,8 @@ class FunctionCall extends Operand {
             System.err.println(CharGenerator.sourceLine);
             System.exit(-1);
         }
+
+
         Log.enterParser("<function call>");
         Scanner.skip(nameToken);
         Scanner.skip(leftParToken);

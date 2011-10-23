@@ -1,0 +1,23 @@
+Parser:  <program>
+Parser:    <func decl>
+Parser:      <param decl>
+1:  int f (int x) {
+Parser:      </param decl>
+Parser:      <statm list>
+Parser:        <return-statm>
+Parser:          <expression>
+Parser:            <variable>
+2:    return x*2;
+Parser:              <operator>
+3: }
+Parser:              </operator>
+Parser:              <number>
+Parser:              </number>
+Parser:            </variable>
+Parser:          </expression>
+Parser:        </return-statm>
+Parser:      </statm list>
+Parser:    </func decl>
+Parser:    <var decl>
+5: int f;  /* NB! Dobbeltdeklarasjon! */
+Parser:    </var decl>

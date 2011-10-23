@@ -207,29 +207,29 @@ Parser:      </program>
 Tree:		int LF;
 Tree:		int gcd(int a,int b)
 Tree:		{
-Tree:			while ((a!=b)) {
-Tree:				if ((a<b))
+Tree:			while (a!=b) {
+Tree:				if (a<b)
 Tree:				{
-Tree:					b = (b-a);
+Tree:					b = b-a;
 Tree:				}
 Tree:				else
 Tree:				{
-Tree:					a = (a-b);
+Tree:					a = a-b;
 Tree:				}
 Tree:			}
-Tree:			return (a);
+Tree:			return a;
 Tree:		}
 Tree:		int main()
 Tree:		{
 Tree:			int main;
 Tree:			int v1;
-Tree:			LF = (10);
+Tree:			LF = 10;
 Tree:			;
-Tree:			putchar((63));
-Tree:			putchar((32));
-Tree:			v1 = (getint(()));
-Tree:			v2 = (getint(()));
-Tree:			putint((gcd((v1),(v2))));
-Tree:			putchar((LF));
-Tree:			exit((0));
+Tree:			putchar(63);
+Tree:			putchar(32);
+Tree:			v1 = getint();
+Tree:			v2 = getint();
+Tree:			putint(gcd(v1,v2));
+Tree:			putchar(LF);
+Tree:			exit(0);
 Tree:		}
