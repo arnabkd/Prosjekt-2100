@@ -120,6 +120,7 @@ class Program extends SyntaxUnit {
         if (!CLess.noLink) {
             // Check that 'main' has been declared properly:
             //-- Must be changed in part 2:
+ 
         }
     }
 
@@ -138,14 +139,7 @@ class Program extends SyntaxUnit {
         }
 
         Log.leaveParser("</program>");
-        if (!progDecls.declExists(new FuncDecl("main"))){
-            Error.error("Missing method \"main\"");
-        }else{
-            FuncDecl main = (FuncDecl) progDecls.getDecl("main");
-            if(main.paramList.size() > 0){
-                Error.error("main cannot have arguments");
-            }
-        }
+
     }
 
     @Override

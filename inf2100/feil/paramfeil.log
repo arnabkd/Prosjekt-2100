@@ -28,3 +28,33 @@ Parser:                      <number>
 Parser:                      </number>
 Parser:                    </expression>
 Parser:                  </expr list>
+6:    putint(f(1));  /* En parameter for mye til f! */
+Parser:                </function call
+Parser:              </expression>
+Parser:            </expr list>
+Parser:          </function call
+Parser:        </call-statm>
+Parser:        <call-statm>
+Parser:          <function call>
+7:    putchar(10);
+Parser:            <expr list>
+Parser:              <expression>
+Parser:                <number>
+8: }
+Parser:                </number>
+Parser:              </expression>
+Parser:            </expr list>
+Parser:          </function call
+Parser:        </call-statm>
+Parser:      </statm list>
+Parser:    </func decl>
+Parser:  </program>
+Tree:		int f(int a)
+Tree:		{
+Tree:			return a;
+Tree:		}
+Tree:		int main()
+Tree:		{
+Tree:			putint(f(1));
+Tree:			putchar(10);
+Tree:		}

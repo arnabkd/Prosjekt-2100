@@ -28,3 +28,8 @@ Parser:        </call-statm>
 Parser:      </statm list>
 Parser:    </func decl>
 Parser:  </program>
+Tree:		int Main()
+Tree:		{
+Tree:			putchar(33);
+Tree:			putchar(10);
+Tree:		}

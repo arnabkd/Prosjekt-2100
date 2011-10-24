@@ -656,33 +656,33 @@ Parser:        </func decl>
 Parser:      </program>
 Tree:		int print(int x,int op1,int op2,int y,int res)
 Tree:		{
-Tree:			putint((x));
-Tree:			putchar((32));
-Tree:			putchar((op1));
-Tree:			if ((op2!=32))
+Tree:			putint(x);
+Tree:			putchar(32);
+Tree:			putchar(op1);
+Tree:			if (op2!=32)
 Tree:			{
-Tree:				putchar((op2));
+Tree:				putchar(op2);
 Tree:			}
-Tree:			putchar((32));
-Tree:			putint((y));
-Tree:			putchar((32));
-Tree:			putchar((61));
-Tree:			putchar((32));
-Tree:			putint((res));
-Tree:			putchar((10));
+Tree:			putchar(32);
+Tree:			putint(y);
+Tree:			putchar(32);
+Tree:			putchar(61);
+Tree:			putchar(32);
+Tree:			putint(res);
+Tree:			putchar(10);
 Tree:		}
 Tree:		int test(int a,int b)
 Tree:		{
-Tree:			print((a),(43),(32),(b),(a+b));
-Tree:			print((a),(45),(32),(b),(a-b));
-Tree:			print((a),(42),(32),(b),(a*b));
-Tree:			print((a),(47),(32),(b),(a/b));
-Tree:			print((a),(61),(61),(b),(a==b));
-Tree:			print((a),(33),(61),(b),(a!=b));
-Tree:			print((a),(60),(32),(b),(a<b));
-Tree:			print((a),(60),(61),(b),(a<=b));
-Tree:			print((a),(62),(32),(b),(a>b));
-Tree:			print((a),(62),(61),(b),(a>=b));
+Tree:			print(a,43,32,b,a+b);
+Tree:			print(a,45,32,b,a-b);
+Tree:			print(a,42,32,b,a*b);
+Tree:			print(a,47,32,b,a/b);
+Tree:			print(a,61,61,b,a==b);
+Tree:			print(a,33,61,b,a!=b);
+Tree:			print(a,60,32,b,a<b);
+Tree:			print(a,60,61,b,a<=b);
+Tree:			print(a,62,32,b,a>b);
+Tree:			print(a,62,61,b,a>=b);
 Tree:		}
 Tree:		int main()
 Tree:		{
@@ -690,15 +690,15 @@ Tree:			int main[3];
 Tree:			int va[3];
 Tree:			int vb;
 Tree:			int ia;
-Tree:			va[(0)] = (-3);
-Tree:			va[(1)] = (0);
-Tree:			va[(2)] = (17);
-Tree:			vb[(0)] = (-32);
-Tree:			vb[(1)] = (2);
-Tree:			vb[(2)] = (17);
-Tree:			for (ia=(0); (ia<3); ia=(ia+1)) {
-Tree:				for (ib=(0); (ib<3); ib=(ib+1)) {
-Tree:					test((va[(ia)]),(vb[(ib)]));
+Tree:			va[0] = -3;
+Tree:			va[1] = 0;
+Tree:			va[2] = 17;
+Tree:			vb[0] = -32;
+Tree:			vb[1] = 2;
+Tree:			vb[2] = 17;
+Tree:			for (ia=0; ia<3; ia=ia+1) {
+Tree:				for (ib=0; ib<3; ib=ib+1) {
+Tree:					test(va[ia],vb[ib]);
 Tree:				}
 Tree:			}
 Tree:		}

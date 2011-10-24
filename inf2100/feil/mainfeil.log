@@ -30,3 +30,8 @@ Parser:        </call-statm>
 Parser:      </statm list>
 Parser:    </func decl>
 Parser:  </program>
+Tree:		int main(int argc)
+Tree:		{
+Tree:			putchar(33);
+Tree:			putchar(10);
+Tree:		}
