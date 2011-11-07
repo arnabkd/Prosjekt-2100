@@ -834,7 +834,9 @@ class FuncDecl extends Declaration {
         Scanner.skip(rightParToken);
         Scanner.skip(leftCurlToken);
         localVarList.parse();
+        Log.enterParser("<func body>");
         body.parse();
+        Log.leaveParser("</func body>");
         //skip rightCurl token - "}"
         Scanner.skip(rightCurlToken);
         Log.leaveParser("</func decl>");
@@ -892,8 +894,9 @@ class StatmList extends SyntaxUnit {
         }
         while (Scanner.curToken != rightCurlToken && current != null) {
             //-- Must be changed in part 1:
-
+            Log.enterParser("<Statement>");
             current.parse();
+            Log.leaveParser("</Statement>");
 
             if (Scanner.curToken != rightCurlToken) {
                 current.nextStatm = Statement.makeNewStatement();
@@ -1232,6 +1235,7 @@ class WhileStatm extends Statement {
 
     @Override
     void parse() {
+   
         Log.enterParser("<while-statm>");
 
         Scanner.skip(whileToken);
