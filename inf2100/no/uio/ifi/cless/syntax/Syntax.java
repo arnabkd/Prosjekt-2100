@@ -1765,6 +1765,7 @@ class Variable extends Operand {
     void parse() {
         Log.enterParser("<variable>");
         Scanner.skip(nameToken);
+        Log.leaveParser("</variable>");
 
         if (Scanner.curToken == leftBracketToken) {
             Scanner.skip(leftBracketToken);
@@ -1780,7 +1781,7 @@ class Variable extends Operand {
             nextOperator.parse();
         }
         //-- Must be changed in part 1:
-        Log.leaveParser("</variable>");
+       
 
 
     }
