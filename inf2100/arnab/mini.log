@@ -1,29 +1,3 @@
-1:  # Program 'mini'
-2: # --------------
-3: # A minimal C< program!
-5: int k;
-Parser:  <program>
-Parser:    <var decl>
-Parser:    </var decl>
-Parser:    <func decl>
-7: int main () 
-8: {
-Parser:      <statm list>
-Parser:        <call-statm>
-Parser:          <function call>
-9:   putchar('x');
-Parser:            <expr list>
-Parser:              <expression>
-Parser:                <number>
-10: }
-Parser:                </number>
-Parser:              </expression>
-Parser:            </expr list>
-Parser:          </function call
-Parser:        </call-statm>
-Parser:      </statm list>
-Parser:    </func decl>
-Parser:  </program>
 Tree:		int k;
 Tree:		int main()
 Tree:		{

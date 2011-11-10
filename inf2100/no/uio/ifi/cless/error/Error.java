@@ -4,6 +4,7 @@ package no.uio.ifi.cless.error;
  * module Error
  */
 
+import no.uio.ifi.cless.chargenerator.CharGenerator;
 import no.uio.ifi.cless.log.Log;
 
 /*
@@ -12,12 +13,12 @@ import no.uio.ifi.cless.log.Log;
 public class Error {
 	public static void error(String where, String message) {
 		//-- Must be changed in part 0:
-		System.err.println("Error at line " + where + " : " + message);
+		System.err.println("Error at line " + where + " :\n" + message);
 		System.exit(1);
 	}
 
 	public static void error(String message) {
-		error("", message);
+		error(CharGenerator.curLineNum()+"", message);
 	}
 
 	public static void error(int lineNum, String message) {

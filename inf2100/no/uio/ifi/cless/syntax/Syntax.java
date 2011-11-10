@@ -120,7 +120,8 @@ class Program extends SyntaxUnit {
         if (!CLess.noLink) {
             // Check that 'main' has been declared properly:
             //-- Must be changed in part 2:
- 
+            if(!progDecls.declExists("main"))
+                Error.error("No main method defined in file");             
         }
     }
 
@@ -208,20 +209,17 @@ abstract class DeclList extends SyntaxUnit {
         last.nextDecl = d;
     }
 
+    protected boolean declExists(String name){
+        Declaration curDeclaration = firstDecl;
+        while(curDeclaration != null){
+            if(curDeclaration.name.equals(name)) return true;
+            curDeclaration = curDeclaration.nextDecl;
+        }
+        return false;
+    }
+    
     protected boolean declExists(Declaration d) {
-        if (d == null) {
-            return false; //declaration d does not exist if d is null
-        }
-        Declaration currentDecl = firstDecl;
-
-        while (currentDecl != null && currentDecl.name != null) {
-            if (currentDecl.name.compareTo(d.name) == 0) {
-                return true; //A declaration with identical name is found
-            }
-            currentDecl = currentDecl.nextDecl;
-        }
-
-        return false; //Declaration d does not exist yet
+        return declExists(d.name);
     }
 
     protected void variableAlreadyDefinedError(Declaration d) {
@@ -1640,11 +1638,11 @@ class FunctionCall extends Operand {
 
     @Override
     void parse() {
-        if (!Syntax.library.declExists(new FuncDecl(varName))
-                && !Syntax.program.progDecls.declExists(new FuncDecl(varName))) {
-            System.err.println(String.format("Function %s not defined", varName));
-            System.err.println(CharGenerator.sourceLine);
-            System.exit(-1);
+        if (!Syntax.library.declExists(varName)
+                && !Syntax.program.progDecls.declExists(varName)) {
+            Error.error("Function "+varName + " is not defined :" 
+                    +"\nLine "+CharGenerator.curLineNum() + ": "+ 
+                    CharGenerator.sourceLine);
         }
 
 
