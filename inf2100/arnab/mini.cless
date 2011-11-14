@@ -4,7 +4,7 @@
 
 int k;
 
-int main () 
+int mai () 
 {
   putchar('x');
 }
