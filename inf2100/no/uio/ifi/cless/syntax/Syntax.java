@@ -110,12 +110,10 @@ class Program extends SyntaxUnit {
 
         if (!CLess.noLink) {
             // Check that 'main' has been declared properly:
-            Declaration main = progDecls.findDecl("main", progDecls);
-            if(main == null){
-                Error.error("Error: CLess file must have a main method");
-            }
-
             //-- Must be changed in part 2:
+
+            if(!progDecls.declExists("main"))
+                Error.error("No main method defined in file");
 
         }
     }
@@ -204,20 +202,17 @@ abstract class DeclList extends SyntaxUnit {
         last.nextDecl = d;
     }
 
+    protected boolean declExists(String name){
+        Declaration curDeclaration = firstDecl;
+        while(curDeclaration != null){
+            if(curDeclaration.name.equals(name)) return true;
+            curDeclaration = curDeclaration.nextDecl;
+        }
+        return false;
+    }
+
     protected boolean declExists(Declaration d) {
-        if (d == null) {
-            return false; //declaration d does not exist if d is null
-        }
-        Declaration currentDecl = firstDecl;
-
-        while (currentDecl != null && currentDecl.name != null) {
-            if (currentDecl.name.compareTo(d.name) == 0) {
-                return true; //A declaration with identical name is found
-            }
-            currentDecl = currentDecl.nextDecl;
-        }
-
-        return false; //Declaration d does not exist yet
+        return declExists(d.name);
     }
 
     protected void variableAlreadyDefinedError(Declaration d) {
@@ -839,7 +834,9 @@ class FuncDecl extends Declaration {
         Scanner.skip(rightParToken);
         Scanner.skip(leftCurlToken);
         localVarList.parse();
+        Log.enterParser("<func body>");
         body.parse();
+        Log.leaveParser("</func body>");
         //skip rightCurl token - "}"
         Scanner.skip(rightCurlToken);
         Log.leaveParser("</func decl>");
@@ -897,8 +894,9 @@ class StatmList extends SyntaxUnit {
         }
         while (Scanner.curToken != rightCurlToken && current != null) {
             //-- Must be changed in part 1:
-
+            Log.enterParser("<Statement>");
             current.parse();
+            Log.leaveParser("</Statement>");
 
             if (Scanner.curToken != rightCurlToken) {
                 current.nextStatm = Statement.makeNewStatement();
@@ -1237,6 +1235,7 @@ class WhileStatm extends Statement {
 
     @Override
     void parse() {
+
         Log.enterParser("<while-statm>");
 
         Scanner.skip(whileToken);
@@ -1641,11 +1640,11 @@ class FunctionCall extends Operand {
 
     @Override
     void parse() {
-        if (!Syntax.library.declExists(new FuncDecl(varName))
-                && !Syntax.program.progDecls.declExists(new FuncDecl(varName))) {
-            System.err.println(String.format("Function %s not defined", varName));
-            System.err.println(CharGenerator.sourceLine);
-            System.exit(-1);
+        if (!Syntax.library.declExists(varName)
+                && !Syntax.program.progDecls.declExists(varName)) {
+            Error.error("Function "+varName + " is not defined :"
+                    +"\nLine "+CharGenerator.curLineNum() + ": "+
+                    CharGenerator.sourceLine);
         }
 
 
@@ -1766,6 +1765,7 @@ class Variable extends Operand {
     void parse() {
         Log.enterParser("<variable>");
         Scanner.skip(nameToken);
+        Log.leaveParser("</variable>");
 
         if (Scanner.curToken == leftBracketToken) {
             Scanner.skip(leftBracketToken);
@@ -1781,7 +1781,7 @@ class Variable extends Operand {
             nextOperator.parse();
         }
         //-- Must be changed in part 1:
-        Log.leaveParser("</variable>");
+
 
 
     }
