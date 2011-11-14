@@ -25,36 +25,27 @@ public class Syntax {
     public static void init() {
         //-- Must be changed in part 1:
         library = new GlobalDeclList();
+        addLibFunc("putchar", 1);
+        addLibFunc("putint", 1);
+        addLibFunc("exit", 1);
 
-        ParamDecl par = new ParamDecl("x", 0);
-        ParamDeclList parList = new ParamDeclList();
-        parList.addDecl(par);
-        FuncDecl putchar = new FuncDecl("putchar");
-        putchar.paramList = parList;
-        library.addDecl(putchar);
-
-        ParamDecl par2 = new ParamDecl("x", 0);
-        ParamDeclList parList2 = new ParamDeclList();
-        parList2.addDecl(par2);
-        FuncDecl putint = new FuncDecl("putint");
-        putint.paramList = parList2;
-        library.addDecl(putint);
-
-        library.addDecl(new FuncDecl("getchar"));
-        library.addDecl(new FuncDecl("getint"));
-
-
-        FuncDecl exit = new FuncDecl("exit");
-        ParamDecl par3 = new ParamDecl("status" , 0);
-        ParamDeclList parList3 = new ParamDeclList();
-        parList3.addDecl(par3);
-        exit.paramList = parList3;
-        library.addDecl(exit);
+        addLibFunc("getchar", 0);
+        addLibFunc("getint", 0);
     }
 
     public static void finish() {
         //-- Must be changed in part 1:
         //Maybe not
+    }
+
+    public static void addLibFunc(String funcName, int argc){
+        ParamDeclList parList = new ParamDeclList();
+        FuncDecl f = new FuncDecl(funcName);
+        for (int i = 0; i < argc; i++){
+            parList.addDecl(new ParamDecl("x"+i , i));
+        }
+        f.paramList = parList;
+        library.addDecl(f);
     }
 
     static void error(SyntaxUnit use, String message) {
@@ -119,8 +110,13 @@ class Program extends SyntaxUnit {
 
         if (!CLess.noLink) {
             // Check that 'main' has been declared properly:
+            Declaration main = progDecls.findDecl("main", progDecls);
+            if(main == null){
+                Error.error("Error: CLess file must have a main method");
+            }
+
             //-- Must be changed in part 2:
- 
+
         }
     }
 
@@ -249,6 +245,11 @@ abstract class DeclList extends SyntaxUnit {
 
     Declaration findDecl(String name, SyntaxUnit usedIn) {
         //-- Must be changed in part 2:
+        Declaration current = firstDecl;
+        while (current != null){
+            if (current.comPareTo(name) == 0) return current;
+            current = current.nextDecl;
+        }
         return null;
     }
 
@@ -408,6 +409,8 @@ class ParamDeclList extends DeclList {
 }
 
 
+
+
 /*
  * Any kind of declaration.
  * (This class is not mentioned in the syntax diagrams.)
@@ -468,9 +471,11 @@ abstract class Declaration extends SyntaxUnit {
      * @see	  checkWhetherArray
      */
     abstract void checkWhetherSimpleVar(SyntaxUnit use);
+
+    int comPareTo(String name) {
+        return this.name.compareTo(name);
+    }
 }
-
-
 /*
  * A <var decl>
  */
