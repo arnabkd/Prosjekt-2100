@@ -4,8 +4,7 @@
 
 int k;
 
-int mai () 
+int main () 
 {
   putchar('x');
-  sum();
 }

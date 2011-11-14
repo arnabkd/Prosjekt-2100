@@ -18,7 +18,7 @@ public class Code {
 
     public static void init() {
 	String codeFileName;
-	
+
 	if (CLess.sourceBaseName == null) return;
 	codeFileName = CLess.sourceBaseName + ".s";
 	try {
@@ -50,8 +50,9 @@ public class Code {
 	}
     }
 
-    public static void genInstr(String lab, String instr, 
+    public static void genInstr(String lab, String instr,
 				String arg, String comment) {
+    System.err.println("lab : "+ lab + " - instr: "+instr + " - arg: "+arg + " - comment: "+comment);
 	if (generatingData) {
 	    codeFile.println("        .text");
 	    generatingData = false;

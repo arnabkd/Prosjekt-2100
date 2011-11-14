@@ -1,5 +1,2 @@
-Tree:		int k;
-Tree:		int mai()
-Tree:		{
-Tree:			putchar(120);
-Tree:		}
+Binding: Line 9: putchar refers to declaration in the library
+Binding: main refers to declaration in line 7

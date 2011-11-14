@@ -126,6 +126,7 @@ public class Log {
 	public static void noteBinding(String name, int lineNum, int useLineNum) {
 		if (! doLogBinding) return;
 		//-- Must be changed in part 2:
+        
 	}
 
 

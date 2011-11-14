@@ -3,7 +3,6 @@ package no.uio.ifi.cless.syntax;
 /*
  * module Syntax
  */
-import javax.sound.midi.SysexMessage;
 import no.uio.ifi.cless.chargenerator.CharGenerator;
 import no.uio.ifi.cless.cless.CLess;
 import no.uio.ifi.cless.code.Code;
@@ -272,6 +271,11 @@ class GlobalDeclList extends DeclList {
     @Override
     void genCode(FuncDecl curFunc) {
         //-- Must be changed in part 2:
+        Declaration curDeclaration = firstDecl;
+        while(curDeclaration != null){
+            curDeclaration.genCode(curFunc);
+            curDeclaration = curDeclaration.nextDecl;
+        }
     }
 
     @Override
@@ -285,9 +289,6 @@ class GlobalDeclList extends DeclList {
          * Case 3 : single variable declaration
          */
 
-        //System.err.printf("curtoken: %s\nnexttoken: %s\nnextnextToken: %s\n", Scanner.curToken, Scanner.nextToken,Scanner.nextNextToken);
-
-
         while (Scanner.curToken == intToken) {
             if (Scanner.nextToken == nameToken) {
                 if (Scanner.nextNextToken == leftParToken) { //Function declaration
@@ -300,7 +301,8 @@ class GlobalDeclList extends DeclList {
                     addDecl(gad);
                 } else { //int var;
                     //-- Must be changed in part 1:
-                    GlobalSimpleVarDecl gsvd = new GlobalSimpleVarDecl(Scanner.nextName);
+                    GlobalSimpleVarDecl gsvd = new
+                            GlobalSimpleVarDecl(Scanner.nextName);
                     gsvd.parse();
                     addDecl(gsvd);
                 }
@@ -335,7 +337,8 @@ class LocalDeclList extends DeclList {
                     addDecl(lad);
                     lad.parse();
                 } else { //LocalSimpleVarDecl
-                    LocalSimpleVarDecl lsvd = new LocalSimpleVarDecl(Scanner.curName);
+                    LocalSimpleVarDecl lsvd = new
+                            LocalSimpleVarDecl(Scanner.curName);
                     addDecl(lsvd);
                     lsvd.parse();
                 }
@@ -530,7 +533,7 @@ class GlobalArrayDecl extends VarDecl {
 
     @Override
     int dataSize() {
-        return 4 * numElems;
+        return 4 * super.dataSize();
     }
 
     @Override
@@ -576,12 +579,14 @@ class GlobalSimpleVarDecl extends VarDecl {
 
     @Override
     void check(DeclList curDecls) {
-        //-- Must be changed in part 2:
+        //-- Must be changed in part 2
+        visible = true;
     }
 
     @Override
     void checkWhetherArray(SyntaxUnit use) {
         //-- Must be changed in part 2:
+        Syntax.error(use, name + " is a simple variable, not an array");
     }
 
     @Override
@@ -622,22 +627,29 @@ class LocalArrayDecl extends VarDecl {
     @Override
     void check(DeclList curDecls) {
         //-- Must be changed in part 2:
+        visible = true;
+        if(numElems < 0){
+            Syntax.error(this,
+                    name + " cannot have negative number of elements");
+        }
     }
 
     @Override
     void checkWhetherArray(SyntaxUnit use) {
         //-- Must be changed in part 2:
+
     }
 
     @Override
     void checkWhetherSimpleVar(SyntaxUnit use) {
         //-- Must be changed in part 2:
+        Syntax.error(this, name + " is an array, not a simple variable");
     }
 
     @Override
     int dataSize() {
         //-- Must be changed in part 2:
-        return 0;
+        return numElems * super.dataSize();
     }
 
     @Override
@@ -789,21 +801,31 @@ class FuncDecl extends Declaration {
     @Override
     void check(DeclList curDecls) {
         //-- Must be changed in part 2:
+        visible = true;
+        paramList.check(curDecls);
+        localVarList.check(paramList);
+        body.check(localVarList);
     }
 
     @Override
     void checkWhetherArray(SyntaxUnit use) {
         //-- Must be changed in part 2:
+        Syntax.error(this, " is not an array");
     }
 
     @Override
     void checkWhetherFunction(int nParamsUsed, SyntaxUnit use) {
         //-- Must be changed in part 2:
+        int size = paramList.size();
+        if(size != nParamsUsed) {
+            Syntax.error(this, "illegal number of arguments");
+        }
     }
 
     @Override
     void checkWhetherSimpleVar(SyntaxUnit use) {
         //-- Must be changed in part 2:
+        Syntax.error(this, " is not a variable");
     }
 
     @Override
@@ -814,9 +836,13 @@ class FuncDecl extends Declaration {
     @Override
     void genCode(FuncDecl curFunc) {
         Code.genInstr("", ".globl", assemblerName, "");
-        Code.genInstr(assemblerName, "pushl", "%ebp", "Start function " + name);
-        Code.genInstr("", "movl", "%esp,%ebp", "");
-        //-- Must be changed in part 2:
+		Code.genInstr(assemblerName, "pushl", "%ebp", "int "+name+";");
+		Code.genInstr("", "movl", "%esp,%ebp", "");
+		//localVarList.genCode(curFunc);
+		//body.genCode(curFunc);
+        Code.genInstr(".exit$"+assemblerName, "popl", "%ebp", "");
+		Code.genInstr("", "ret", "", "end "+assemblerName);
+
     }
 
     @Override
@@ -1034,6 +1060,8 @@ class AssignStatm extends Statement {
     @Override
     void check(DeclList curDecls) {
         //part 2
+        var.check(curDecls);
+        exps.check(curDecls);
     }
 
     @Override
