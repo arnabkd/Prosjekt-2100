@@ -327,12 +327,14 @@ class LocalDeclList extends DeclList {
     @Override
     void genCode(FuncDecl curFunc) {
         //-- Must be changed in part 2:
-        int size = super.dataSize();
-        Code.genInstr("", "subl", "$"+size+"%esp", "Allocate "+size + " bytes");
+      
+        
         Declaration curDeclaration = firstDecl;
         while (curDeclaration != null) {
             curDeclaration.genCode(curFunc);
+            curDeclaration = curDeclaration.nextDecl;
         }
+        
     }
 
     @Override
@@ -547,10 +549,8 @@ class GlobalArrayDecl extends VarDecl {
 
     @Override
     void parse() {
-        Log.enterParser("<var decl>");
-
-
         //-- Must be changed in part 1:
+        Log.enterParser("<var decl>");
         Scanner.skip(intToken);
         Scanner.skip(nameToken);
         Scanner.skip(leftBracketToken);
@@ -558,8 +558,6 @@ class GlobalArrayDecl extends VarDecl {
         Scanner.skip(numberToken);
         Scanner.skip(rightBracketToken);
         Scanner.skip(semicolonToken);
-
-
         Log.leaveParser("</var decl>");
     }
 
@@ -634,8 +632,7 @@ class LocalArrayDecl extends VarDecl {
         //-- Must be changed in part 2:
         visible = true;
         if (numElems < 0) {
-            Syntax.error(this,
-                    name + " cannot have negative number of elements");
+            Syntax.error(this, name+" cannot have negative number of elements");
         }
     }
 
@@ -659,6 +656,7 @@ class LocalArrayDecl extends VarDecl {
     @Override
     void genCode(FuncDecl curFunc) {
         //-- Must be changed in part 2:
+        //no assembly code required
     }
 
     @Override
@@ -704,28 +702,28 @@ class LocalSimpleVarDecl extends VarDecl {
     @Override
     void checkWhetherArray(SyntaxUnit use) {
         //-- Must be changed in part 2:
+        Syntax.error(this, name + " is a simple variable, not an array!");
     }
 
     @Override
     void checkWhetherSimpleVar(SyntaxUnit use) {
         //-- Must be changed in part 2:
+        //no change required here
     }
 
     @Override
     void genCode(FuncDecl curFunc) {
         //-- Must be changed in part 2:
+        //No assembly code required
     }
 
     @Override
     void parse() {
-        Log.enterParser("<var decl>");
-
         //-- Must be changed in part 1:
+        Log.enterParser("<var decl>");
         Scanner.skip(intToken);
         Scanner.skip(nameToken);
-
         Scanner.skip(semicolonToken);
-
         Log.leaveParser("</var decl>");
     }
 }
@@ -846,9 +844,16 @@ class FuncDecl extends Declaration {
         Code.genInstr("", ".globl", assemblerName, "");
         Code.genInstr(assemblerName, "pushl", "%ebp", "int " + name + ";");
         Code.genInstr("", "movl", "%esp,%ebp", "");
+        int size = localVarList.dataSize();
+        if(size > 0) {
+            Code.genInstr("", "subl", "$"+size+",%esp", "Allocate "+size + " bytes");
+        }
         localVarList.genCode(this);
-        body.genCode(this);
+        body.genCode(this); 
         Code.genInstr(exitname, "", "", "");
+        if(size > 0){
+            Code.genInstr("", "addl", "$"+size+",%esp", "Free "+size + " bytes");
+        }
         Code.genInstr("", "popl", "%ebp", "");
         Code.genInstr("", "ret", "", "end " + assemblerName);
 

@@ -52,7 +52,7 @@ public class Code {
 
     public static void genInstr(String lab, String instr,
 				String arg, String comment) {
-    System.err.println("lab : "+ lab + " - instr: "+instr + " - arg: "+arg + " - comment: "+comment);
+    //System.err.println("lab : "+ lab + " - instr: "+instr + " - arg: "+arg + " - comment: "+comment);
 	if (generatingData) {
 	    codeFile.println("        .text");
 	    generatingData = false;
