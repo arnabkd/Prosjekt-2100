@@ -1,2 +1,5 @@
 *.class
 *.txt
+*.txt~
+*.tar.gz
+inf2100/*.jar
