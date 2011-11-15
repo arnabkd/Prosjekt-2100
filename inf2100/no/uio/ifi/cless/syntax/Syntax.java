@@ -37,11 +37,11 @@ public class Syntax {
         //Maybe not
     }
 
-    public static void addLibFunc(String funcName, int argc){
+    public static void addLibFunc(String funcName, int argc) {
         ParamDeclList parList = new ParamDeclList();
         FuncDecl f = new FuncDecl(funcName);
-        for (int i = 0; i < argc; i++){
-            parList.addDecl(new ParamDecl("x"+i , i));
+        for (int i = 0; i < argc; i++) {
+            parList.addDecl(new ParamDecl("x" + i, i));
         }
         f.paramList = parList;
         library.addDecl(f);
@@ -111,8 +111,9 @@ class Program extends SyntaxUnit {
             // Check that 'main' has been declared properly:
             //-- Must be changed in part 2:
 
-            if(!progDecls.declExists("main"))
+            if (!progDecls.declExists("main")) {
                 Error.error("No main method defined in file");
+            }
 
         }
     }
@@ -201,10 +202,12 @@ abstract class DeclList extends SyntaxUnit {
         last.nextDecl = d;
     }
 
-    protected boolean declExists(String name){
+    protected boolean declExists(String name) {
         Declaration curDeclaration = firstDecl;
-        while(curDeclaration != null){
-            if(curDeclaration.name.equals(name)) return true;
+        while (curDeclaration != null) {
+            if (curDeclaration.name.equals(name)) {
+                return true;
+            }
             curDeclaration = curDeclaration.nextDecl;
         }
         return false;
@@ -240,15 +243,17 @@ abstract class DeclList extends SyntaxUnit {
     Declaration findDecl(String name, SyntaxUnit usedIn) {
         //-- Must be changed in part 2:
         Declaration current = firstDecl;
-        while (current != null){
-            if (current.comPareTo(name) == 0) return current;
+        while (current != null) {
+            if (current.comPareTo(name) == 0) {
+                return current;
+            }
             current = current.nextDecl;
         }
         return null;
     }
 
-    Declaration getDecl(String name){
-       Declaration currentDecl = firstDecl;
+    Declaration getDecl(String name) {
+        Declaration currentDecl = firstDecl;
 
         while (currentDecl != null && currentDecl.name != null) {
             if (currentDecl.name.compareTo(name) == 0) {
@@ -272,7 +277,7 @@ class GlobalDeclList extends DeclList {
     void genCode(FuncDecl curFunc) {
         //-- Must be changed in part 2:
         Declaration curDeclaration = firstDecl;
-        while(curDeclaration != null){
+        while (curDeclaration != null) {
             curDeclaration.genCode(curFunc);
             curDeclaration = curDeclaration.nextDecl;
         }
@@ -301,8 +306,7 @@ class GlobalDeclList extends DeclList {
                     addDecl(gad);
                 } else { //int var;
                     //-- Must be changed in part 1:
-                    GlobalSimpleVarDecl gsvd = new
-                            GlobalSimpleVarDecl(Scanner.nextName);
+                    GlobalSimpleVarDecl gsvd = new GlobalSimpleVarDecl(Scanner.nextName);
                     gsvd.parse();
                     addDecl(gsvd);
                 }
@@ -323,6 +327,12 @@ class LocalDeclList extends DeclList {
     @Override
     void genCode(FuncDecl curFunc) {
         //-- Must be changed in part 2:
+        int size = super.dataSize();
+        Code.genInstr("", "subl", "$"+size+"%esp", "Allocate "+size + " bytes");
+        Declaration curDeclaration = firstDecl;
+        while (curDeclaration != null) {
+            curDeclaration.genCode(curFunc);
+        }
     }
 
     @Override
@@ -337,8 +347,7 @@ class LocalDeclList extends DeclList {
                     addDecl(lad);
                     lad.parse();
                 } else { //LocalSimpleVarDecl
-                    LocalSimpleVarDecl lsvd = new
-                            LocalSimpleVarDecl(Scanner.curName);
+                    LocalSimpleVarDecl lsvd = new LocalSimpleVarDecl(Scanner.curName);
                     addDecl(lsvd);
                     lsvd.parse();
                 }
@@ -346,9 +355,6 @@ class LocalDeclList extends DeclList {
         }
     }
 }
-
-
-
 
 /*
  * A list of parameter declarations.
@@ -398,16 +404,13 @@ class ParamDeclList extends DeclList {
     int size() {
         Declaration current = firstDecl;
         int i = 0;
-        while(current != null){
+        while (current != null) {
             i++;
             current = current.nextDecl;
         }
         return i;
     }
 }
-
-
-
 
 /*
  * Any kind of declaration.
@@ -477,6 +480,7 @@ abstract class Declaration extends SyntaxUnit {
 /*
  * A <var decl>
  */
+
 abstract class VarDecl extends Declaration {
 
     VarDecl(String n) {
@@ -490,7 +494,7 @@ abstract class VarDecl extends Declaration {
 
     @Override
     int dataSize() {
-        return 4;
+        return 4; //Should be overloaded when creating array subtypes
     }
 
     @Override
@@ -533,7 +537,7 @@ class GlobalArrayDecl extends VarDecl {
 
     @Override
     int dataSize() {
-        return 4 * super.dataSize();
+        return 4 * numElems;
     }
 
     @Override
@@ -580,6 +584,7 @@ class GlobalSimpleVarDecl extends VarDecl {
     @Override
     void check(DeclList curDecls) {
         //-- Must be changed in part 2
+
         visible = true;
     }
 
@@ -628,7 +633,7 @@ class LocalArrayDecl extends VarDecl {
     void check(DeclList curDecls) {
         //-- Must be changed in part 2:
         visible = true;
-        if(numElems < 0){
+        if (numElems < 0) {
             Syntax.error(this,
                     name + " cannot have negative number of elements");
         }
@@ -637,7 +642,6 @@ class LocalArrayDecl extends VarDecl {
     @Override
     void checkWhetherArray(SyntaxUnit use) {
         //-- Must be changed in part 2:
-
     }
 
     @Override
@@ -649,7 +653,7 @@ class LocalArrayDecl extends VarDecl {
     @Override
     int dataSize() {
         //-- Must be changed in part 2:
-        return numElems * super.dataSize();
+        return numElems * 4;
     }
 
     @Override
@@ -786,12 +790,15 @@ class FuncDecl extends Declaration {
     ParamDeclList paramList;
     LocalDeclList localVarList;
     StatmList body;
-
+    String exitname;
+    
     FuncDecl(String n) {
         // Used for user functions:
 
         super(n);
         assemblerName = (CLess.underscoredGlobals() ? "_" : "") + n;
+        exitname = ".exit$" +  n;
+        
         //-- Must be changed in part 1:
         body = new StatmList();
         localVarList = new LocalDeclList();
@@ -801,8 +808,8 @@ class FuncDecl extends Declaration {
     @Override
     void check(DeclList curDecls) {
         //-- Must be changed in part 2:
-        visible = true;
         paramList.check(curDecls);
+        visible = true;
         localVarList.check(paramList);
         body.check(localVarList);
     }
@@ -810,15 +817,16 @@ class FuncDecl extends Declaration {
     @Override
     void checkWhetherArray(SyntaxUnit use) {
         //-- Must be changed in part 2:
-        Syntax.error(this, " is not an array");
+        Syntax.error(this, this.name + " is a function, not an array");
     }
 
     @Override
     void checkWhetherFunction(int nParamsUsed, SyntaxUnit use) {
         //-- Must be changed in part 2:
         int size = paramList.size();
-        if(size != nParamsUsed) {
-            Syntax.error(this, "illegal number of arguments");
+        if (size != nParamsUsed) {
+            Syntax.error(this, "illegal number of arguments (Expected " + size
+                    + " but got " + nParamsUsed + ")");
         }
     }
 
@@ -836,12 +844,13 @@ class FuncDecl extends Declaration {
     @Override
     void genCode(FuncDecl curFunc) {
         Code.genInstr("", ".globl", assemblerName, "");
-		Code.genInstr(assemblerName, "pushl", "%ebp", "int "+name+";");
-		Code.genInstr("", "movl", "%esp,%ebp", "");
-		//localVarList.genCode(curFunc);
-		//body.genCode(curFunc);
-        Code.genInstr(".exit$"+assemblerName, "popl", "%ebp", "");
-		Code.genInstr("", "ret", "", "end "+assemblerName);
+        Code.genInstr(assemblerName, "pushl", "%ebp", "int " + name + ";");
+        Code.genInstr("", "movl", "%esp,%ebp", "");
+        localVarList.genCode(this);
+        body.genCode(this);
+        Code.genInstr(exitname, "", "", "");
+        Code.genInstr("", "popl", "%ebp", "");
+        Code.genInstr("", "ret", "", "end " + assemblerName);
 
     }
 
@@ -1401,7 +1410,6 @@ class ExprList extends SyntaxUnit {
 
     Expression firstExpr = null;
 
-
     @Override
     void check(DeclList curDecls) {
         //-- Must be changed in part 2:
@@ -1456,7 +1464,7 @@ class ExprList extends SyntaxUnit {
         int i = 0;
         //-- Must be changed in part 1:
         Expression current = firstExpr;
-        while(current != null){
+        while (current != null) {
             i++;
             current = current.nextExpr;
         }
@@ -1518,11 +1526,11 @@ class Expression extends Operand {
         //-- Must be changed in part 1:
         //
         if (firstOp != null) {
-            if(firstOp instanceof Expression){
+            if (firstOp instanceof Expression) {
                 Log.wTree("(");
                 firstOp.printTree();
                 Log.wTree(")");
-            }else{
+            } else {
                 firstOp.printTree();
             }
 
@@ -1568,11 +1576,11 @@ abstract class Operator extends SyntaxUnit {
             Log.wTree(s);
         }
         if (secondOp != null) {
-             if(secondOp instanceof Expression){
+            if (secondOp instanceof Expression) {
                 Log.wTree("(");
                 secondOp.printTree();
                 Log.wTree(")");
-            }else{
+            } else {
                 secondOp.printTree();
             }
         }
@@ -1670,9 +1678,9 @@ class FunctionCall extends Operand {
     void parse() {
         if (!Syntax.library.declExists(varName)
                 && !Syntax.program.progDecls.declExists(varName)) {
-            Error.error("Function "+varName + " is not defined :"
-                    +"\nLine "+CharGenerator.curLineNum() + ": "+
-                    CharGenerator.sourceLine);
+            Error.error("Function " + varName + " is not defined :"
+                    + "\nLine " + CharGenerator.curLineNum() + ": "
+                    + CharGenerator.sourceLine);
         }
 
 

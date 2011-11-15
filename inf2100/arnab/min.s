@@ -1,6 +1,8 @@
         .globl  main                    
-main:   pushl   %ebp                    # int main;
+main:   pushl   %ebp                    # Start function main
         movl    %esp,%ebp               
-.exit$main:
+        movl    $0,%eax                 # 0
+        jmp     .exit$main              # return-statement
+.exit$main:                                
         popl    %ebp                    
-        ret                             # end main
+        ret                             # End function main
