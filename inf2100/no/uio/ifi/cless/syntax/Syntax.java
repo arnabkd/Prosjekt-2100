@@ -846,17 +846,18 @@ class FuncDecl extends Declaration {
         Code.genInstr("", "movl", "%esp,%ebp", "");
         int size = localVarList.dataSize();
         if(size > 0) {
-            Code.genInstr("", "subl", "$"+size+",%esp", "Allocate "+size + " bytes");
+            Code.genInstr("", "subl", "$"+size+",%esp", "Allocate "+
+                    size + " bytes");
         }
         localVarList.genCode(this);
         body.genCode(this); 
         Code.genInstr(exitname, "", "", "");
         if(size > 0){
-            Code.genInstr("", "addl", "$"+size+",%esp", "Free "+size + " bytes");
+            Code.genInstr("", "addl", "$"+size+",%esp", "Free "+
+                    size + " bytes");
         }
         Code.genInstr("", "popl", "%ebp", "");
         Code.genInstr("", "ret", "", "end " + assemblerName);
-
     }
 
     @Override
