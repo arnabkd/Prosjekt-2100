@@ -327,14 +327,14 @@ class LocalDeclList extends DeclList {
     @Override
     void genCode(FuncDecl curFunc) {
         //-- Must be changed in part 2:
-      
-        
+
+
         Declaration curDeclaration = firstDecl;
         while (curDeclaration != null) {
             curDeclaration.genCode(curFunc);
             curDeclaration = curDeclaration.nextDecl;
         }
-        
+
     }
 
     @Override
@@ -632,7 +632,7 @@ class LocalArrayDecl extends VarDecl {
         //-- Must be changed in part 2:
         visible = true;
         if (numElems < 0) {
-            Syntax.error(this, name+" cannot have negative number of elements");
+            Syntax.error(this, name + " cannot have negative number of elements");
         }
     }
 
@@ -789,14 +789,14 @@ class FuncDecl extends Declaration {
     LocalDeclList localVarList;
     StatmList body;
     String exitname;
-    
+
     FuncDecl(String n) {
         // Used for user functions:
 
         super(n);
         assemblerName = (CLess.underscoredGlobals() ? "_" : "") + n;
-        exitname = ".exit$" +  n;
-        
+        exitname = ".exit$" + n;
+
         //-- Must be changed in part 1:
         body = new StatmList();
         localVarList = new LocalDeclList();
@@ -845,16 +845,16 @@ class FuncDecl extends Declaration {
         Code.genInstr(assemblerName, "pushl", "%ebp", "int " + name + ";");
         Code.genInstr("", "movl", "%esp,%ebp", "");
         int size = localVarList.dataSize();
-        if(size > 0) {
-            Code.genInstr("", "subl", "$"+size+",%esp", "Allocate "+
-                    size + " bytes");
+        if (size > 0) {
+            Code.genInstr("", "subl", "$" + size + ",%esp", "Allocate "
+                    + size + " bytes");
         }
         localVarList.genCode(this);
-        body.genCode(this); 
+        body.genCode(this);
         Code.genInstr(exitname, "", "", "");
-        if(size > 0){
-            Code.genInstr("", "addl", "$"+size+",%esp", "Free "+
-                    size + " bytes");
+        if (size > 0) {
+            Code.genInstr("", "addl", "$" + size + ",%esp", "Free "
+                    + size + " bytes");
         }
         Code.genInstr("", "popl", "%ebp", "");
         Code.genInstr("", "ret", "", "end " + assemblerName);
@@ -1490,11 +1490,17 @@ class Expression extends Operand {
     @Override
     void check(DeclList curDecls) {
         //-- Must be changed in part 2:
+        firstOp.check(curDecls);
     }
 
     @Override
     void genCode(FuncDecl curFunc) {
         //-- Must be changed in part 2:
+        if (firstOp != null) {
+            //Initiate gencode call for first operand. This first call will 
+            //trigger gencode for the rest of the expression as well
+            firstOp.genCode(curFunc);
+        }
     }
 
     @Override
@@ -1530,7 +1536,6 @@ class Expression extends Operand {
     @Override
     void printTree() {
         //-- Must be changed in part 1:
-        //
         if (firstOp != null) {
             if (firstOp instanceof Expression) {
                 Log.wTree("(");
@@ -1545,12 +1550,12 @@ class Expression extends Operand {
                 nextOperator.printTree();
             }
         }
-        //
-
     }
 }
 
 
+
+//-- Must be changed in part 1+2:
 /*
  * An <operator>
  */
@@ -1558,6 +1563,11 @@ abstract class Operator extends SyntaxUnit {
 
     Operand secondOp;
     Token token;
+
+    @Override
+    void check(DeclList curDecls) {
+        secondOp.check(curDecls);
+    }
 
     @Override
     void parse() {
@@ -1594,19 +1604,23 @@ abstract class Operator extends SyntaxUnit {
 
     }
     //-- Must be changed in part 1+2:
-}
 
-//-- Must be changed in part 1+2:
+    void genCodeNextOperand(FuncDecl curFunc) {
+        Code.genInstr("", "pushl", "%eax", "");
+        secondOp.genCode(curFunc);
+    }
+}
 class ComparisonOperator extends Operator {
 
     @Override
-    void check(DeclList curDecls) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
     void genCode(FuncDecl curFunc) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Code.genInstr("", "popl", "%ecx", "");
+        Code.genInstr("", "cmpl", "%eax,%ecx", "");
+        
+        String [] line = token.getAssemblerCodeComp();
+        Code.genInstr(line[0], line[1], line[2], line[3]);
+        Code.genInstr("", "movzbl", "%al,%eax", "");
+        super.genCodeNextOperand(curFunc);
     }
 }
 
@@ -1614,13 +1628,14 @@ class ComparisonOperator extends Operator {
 class ArithmeticOperator extends Operator {
 
     @Override
-    void check(DeclList curDecls) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
     void genCode(FuncDecl curFunc) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Code.genInstr("", "movl", "%eax,%ecx", "");
+        Code.genInstr("", "popl", "%eax", "");
+        
+        String [] line = token.getAssemblerCodeArith();
+        Code.genInstr(line[0], line[1], line[2], line[3]);
+        
+        super.genCodeNextOperand(curFunc);
     }
 }
 
@@ -1634,6 +1649,18 @@ abstract class Operand extends SyntaxUnit {
 
     public void setOperator(Operator next) {
         nextOperator = next;
+    }
+
+    public void genCodeNextOperator(FuncDecl curFunc) {
+        if (nextOperator != null) {
+            nextOperator.genCode(curFunc);
+        }
+    }
+
+    public void checkNextOperator(DeclList curDecl) {
+        if (nextOperator != null) {
+            nextOperator.check(curDecl);
+        }
     }
 
     public static Operand getOperand() {
