@@ -1,12 +1,6 @@
 
 int main(){
-}
-int b;
-int y[2];
-
-int a;
-int x[2];
-
-int sum(int x, int y){
-
+  int b; int x[1];
+  b = 2;
+  x[0] = 3;
 }

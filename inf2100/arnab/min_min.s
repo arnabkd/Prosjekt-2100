@@ -4,8 +4,6 @@ main:   pushl   %ebp                    # int main;
         subl    $8,%esp                 # Allocate 8 bytes
         movl    $2,%eax                 # 2
         movl    %eax,-4(%ebp)           # b being assigned
-        movl    $0,%eax                 # 0
-        pushl   %eax                    
         movl    $3,%eax                 # 3
         leal    -8(%ebp),%edx           # x[index] being assigned
         popl    %ecx                    
