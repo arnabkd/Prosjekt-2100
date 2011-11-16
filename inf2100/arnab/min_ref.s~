@@ -1,0 +1,16 @@
+        .globl  main                    
+main:   pushl   %ebp                    # int main;
+        movl    %esp,%ebp               
+        subl    $32,%esp                # Allocate 32 bytes
+.exit$main:                                
+        addl    $32,%esp                # Free 32 bytes
+        popl    %ebp                    
+        ret                             # end main
+        .globl  sum                     
+sum:    pushl   %ebp                    # int sum;
+        movl    %esp,%ebp               
+        subl    $32,%esp                # Allocate 32 bytes
+.exit$sum:                                
+        addl    $32,%esp                # Free 32 bytes
+        popl    %ebp                    
+        ret                             # end sum
