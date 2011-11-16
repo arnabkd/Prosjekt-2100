@@ -1,16 +1,17 @@
         .globl  main                    
-main:   pushl   %ebp                    # int main;
+main:   pushl   %ebp                    # Start function main
         movl    %esp,%ebp               
-        subl    $8,%esp                 # Allocate 8 bytes
+        subl    $8,%esp                 # Get 8 bytes local data space
         movl    $2,%eax                 # 2
-        movl    %eax,-4(%ebp)           # b being assigned
-        movl    $0,%eax                 # 0
+        movl    %eax,-4(%ebp)           # b =
+        movl    -4(%ebp),%eax           # b
         pushl   %eax                    
-        movl    $3,%eax                 # 3
-        leal    -8(%ebp),%edx           # x[index] being assigned
-        popl    %ecx                    
-        movl    %eax,(%edx,%ecx,4)      
-.exit$main:                                
-        addl    $8,%esp                 # Free 8 bytes
+        movl    $1,%eax                 # 1
+        movl    %eax,%ecx               
+        popl    %eax                    
+        addl    %ecx,%eax               # Compute +
+        movl    %eax,-8(%ebp)           # c =
+.exit$main:
+        addl    $8,%esp                 # Release local data space
         popl    %ebp                    
-        ret                             # end main
+        ret                             # End function main

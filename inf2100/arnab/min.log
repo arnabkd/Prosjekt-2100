@@ -1,3 +1,4 @@
 Binding: Line 4: b refers to declaration in line 3
-Binding: Line 5: x refers to declaration in line 3
+Binding: Line 5: c refers to declaration in line 3
+Binding: Line 5: b refers to declaration in line 3
 Binding: main refers to declaration in line 2

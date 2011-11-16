@@ -924,7 +924,7 @@ class StatmList extends SyntaxUnit {
     void check(DeclList curDecls) {
         //-- Must be changed in part 2:
         Statement curStatement = first;
-        while(curStatement != null){
+        while (curStatement != null) {
             curStatement.check(curDecls);
             curStatement = curStatement.nextStatm;
         }
@@ -934,7 +934,7 @@ class StatmList extends SyntaxUnit {
     void genCode(FuncDecl curFunc) {
         //-- Must be changed in part 2:
         Statement curStatement = first;
-        while(curStatement != null){
+        while (curStatement != null) {
             curStatement.genCode(curFunc);
             curStatement = curStatement.nextStatm;
         }
@@ -1099,7 +1099,7 @@ class AssignStatm extends Statement {
     @Override
     void genCode(FuncDecl curFunc) {
         //part 2
-        if(var.isArrayVar()){
+        if (var.isArrayVar()) {
             var.index.genCode(curFunc);
             Code.genInstr("", "pushl", "%eax", "");
         }
@@ -1576,8 +1576,6 @@ class Expression extends Operand {
     }
 }
 
-
-
 //-- Must be changed in part 1+2:
 /*
  * An <operator>
@@ -1630,20 +1628,24 @@ abstract class Operator extends SyntaxUnit {
 
     void genCodeNextOperand(FuncDecl curFunc) {
         Code.genInstr("", "pushl", "%eax", "");
-        secondOp.genCode(curFunc);
+        if(secondOp != null){
+            secondOp.genCode(curFunc);
+        }
     }
 }
+
 class ComparisonOperator extends Operator {
 
     @Override
     void genCode(FuncDecl curFunc) {
+        super.genCodeNextOperand(curFunc);
+
         Code.genInstr("", "popl", "%ecx", "");
         Code.genInstr("", "cmpl", "%eax,%ecx", "");
 
-        String [] line = token.getAssemblerCodeComp();
+        String[] line = token.getAssemblerCodeComp();
         Code.genInstr(line[0], line[1], line[2], line[3]);
         Code.genInstr("", "movzbl", "%al,%eax", "");
-        super.genCodeNextOperand(curFunc);
     }
 }
 
@@ -1652,13 +1654,13 @@ class ArithmeticOperator extends Operator {
 
     @Override
     void genCode(FuncDecl curFunc) {
+        super.genCodeNextOperand(curFunc);
+
         Code.genInstr("", "movl", "%eax,%ecx", "");
         Code.genInstr("", "popl", "%eax", "");
 
-        String [] line = token.getAssemblerCodeArith();
+        String[] line = token.getAssemblerCodeArith();
         Code.genInstr(line[0], line[1], line[2], line[3]);
-
-        super.genCodeNextOperand(curFunc);
     }
 }
 
@@ -1728,6 +1730,9 @@ class FunctionCall extends Operand {
     @Override
     void genCode(FuncDecl curFunc) {
         //-- Must be changed in part 2:
+        if (nextOperator != null) {
+            nextOperator.genCode(curFunc);
+        }
     }
 
     @Override
@@ -1796,6 +1801,9 @@ class Number extends Operand {
     @Override
     void genCode(FuncDecl curFunc) {
         Code.genInstr("", "movl", "$" + numVal + ",%eax", "" + numVal);
+        if (nextOperator != null) {
+            nextOperator.genCode(curFunc);
+        }
     }
 
     @Override
@@ -1892,14 +1900,14 @@ class Variable extends Operand {
         }
     }
 
-    void genCodeForStoring(FuncDecl curDecl){
-        if(index!=null){
+    void genCodeForStoring(FuncDecl curDecl) {
+        if (index != null) {
 //            Code.genInstr("", "pushl", "%eax", "");
             Code.genInstr("", "leal", declRef.assemblerName + ",%edx", varName
                     + "[index] being assigned");
             Code.genInstr("", "popl", "%ecx", "");
             Code.genInstr("", "movl", "%eax,(%edx,%ecx,4)", "");
-        }else{
+        } else {
             Code.genInstr("", "movl", "%eax," + declRef.assemblerName,
                     varName + " being assigned");
         }
@@ -1913,14 +1921,17 @@ class Variable extends Operand {
     @Override
     void genCode(FuncDecl curFunc) {
 
-        if(index != null){
+        if (index != null) {
             index.genCode(curFunc);
-            Code.genInstr("", "leal", declRef.assemblerName+",%edx",
+            Code.genInstr("", "leal", declRef.assemblerName + ",%edx",
                     "Putting" + varName + "[index] in %eax");
             Code.genInstr("", "movl", "(%edx,%eax,4),%eax", "");
-        }else{
-            Code.genInstr("", "movl", declRef.assemblerName+",%eax",
-                    "Putting "+varName + " in %eax");
+        } else {
+            Code.genInstr("", "movl", declRef.assemblerName + ",%eax",
+                    "Putting " + varName + " in %eax");
+        }
+        if (nextOperator != null) {
+            nextOperator.genCode(curFunc);
         }
     }
 

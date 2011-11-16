@@ -1,9 +1,23 @@
         .globl  main                    
 main:   pushl   %ebp                    # Start function main
         movl    %esp,%ebp               
-        subl    $8,%esp                 # Get 8 bytes local data space
+        subl    $12,%esp                # Get 12 bytes local data space
         movl    $2,%eax                 # 2
+        pushl   %eax                    
+        movl    $4,%eax                 # 4
+        movl    %eax,%ecx               
+        popl    %eax                    
+        addl    %ecx,%eax               # Compute +
         movl    %eax,-4(%ebp)           # b =
+        movl    -4(%ebp),%eax           # b
+        movl    %eax,-12(%ebp)          # c =
+        movl    -4(%ebp),%eax           # b
+        pushl   %eax                    
+        movl    $1,%eax                 # 1
+        movl    %eax,%ecx               
+        popl    %eax                    
+        addl    %ecx,%eax               # Compute +
+        movl    %eax,-12(%ebp)          # c =
         movl    $0,%eax                 # 0
         pushl   %eax                    
         movl    $3,%eax                 # 3
@@ -11,7 +25,6 @@ main:   pushl   %ebp                    # Start function main
         popl    %ecx                    
         movl    %eax,(%edx,%ecx,4)      
 .exit$main:
-        addl    $8,%esp                 # Release local data space
+        addl    $12,%esp                # Release local data space
         popl    %ebp                    
         ret                             # End function main
-

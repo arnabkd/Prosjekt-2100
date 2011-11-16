@@ -4,10 +4,13 @@ main:   pushl   %ebp                    # int main;
         subl    $8,%esp                 # Allocate 8 bytes
         movl    $2,%eax                 # 2
         movl    %eax,-4(%ebp)           # b being assigned
-        movl    $3,%eax                 # 3
-        leal    -8(%ebp),%edx           # x[index] being assigned
-        popl    %ecx                    
-        movl    %eax,(%edx,%ecx,4)      
+        movl    -4(%ebp),%eax           # Putting b in %eax
+        pushl   %eax                    
+        movl    $1,%eax                 # 1
+        movl    %eax,%ecx               
+        popl    %eax                    
+        addl    %ecx,%eax               # Adding
+        movl    %eax,-8(%ebp)           # c being assigned
 .exit$main:                                
         addl    $8,%esp                 # Free 8 bytes
         popl    %ebp                    
