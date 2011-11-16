@@ -1126,11 +1126,23 @@ class IfStatm extends Statement {
     @Override
     void check(DeclList curDecls) {
         //-- Must be changed in part 2:
+    		eks.check(curDecls);
+    		st.check(curDecls); 
     }
 
     @Override
     void genCode(FuncDecl curFunc) {
         //-- Must be changed in part 2:
+    	String label = Code.getLocalLabel();
+    	
+    	//Code.genInstr(testLabel, "", "", "Start if-statement");
+    	
+    	eks.genCode(curFunc);
+    	Code.genInstr("", "cmpl", "$0,%eax", "");
+    	Code.genInstr("", "je", label, "");
+    	st.genCode(curFunc);
+    	Code.genInstr(label, "", "", "if-statmement");
+    	
     }
 
     @Override
@@ -1308,7 +1320,7 @@ class WhileStatm extends Statement {
 }
 /*
  * A <for-statm>.
- */
+ */  //for-statm, if statm, else-statm, call statm
 
 class ForStatm extends Statement {
 
