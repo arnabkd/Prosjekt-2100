@@ -386,9 +386,6 @@ class ParamDeclList extends DeclList {
             ParamDecl param = new ParamDecl(Scanner.nextName, paramNum);
             addDecl(param);
             param.parse();
-
-
-
             paramNum++;
 
         }

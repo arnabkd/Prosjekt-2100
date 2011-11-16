@@ -1,6 +1,9 @@
-
+int f(){
+  return 3;
+}
 int main(){
   int b; int c;
-  b = 2;
+  b = f();
   c = b + 1;
 }
+
