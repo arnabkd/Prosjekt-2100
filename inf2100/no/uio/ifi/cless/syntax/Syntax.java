@@ -255,6 +255,8 @@ abstract class DeclList extends SyntaxUnit {
         Declaration current = firstDecl;
         while (current != null) {
             if (current.comPareTo(name) == 0) {
+                System.err.println("Found declaration with assemblername : \n"
+                        +current.assemblerName);
                 return current;
             }
             current = current.nextDecl;
@@ -1520,6 +1522,12 @@ class ExprList extends SyntaxUnit {
     @Override
     void check(DeclList curDecls) {
         //-- Must be changed in part 2:
+        Expression curExpression = this.firstExpr;
+
+        while (curExpression != null) {
+            curExpression.check(curDecls);
+            curExpression = curExpression.nextExpr;
+        }
     }
 
     @Override

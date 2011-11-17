@@ -17,6 +17,33 @@ main:   pushl   %ebp                    # int main;
         call    one                     # call one
         popl    %ecx                    # Pop param #0
         popl    %ecx                    # Pop param #1
+        pushl   %eax                    # Push parameter #1
+        movl    $2,%eax                 # 2
+        pushl   %eax                    # Push parameter #1
+        movl    $1,%eax                 # 1
+        pushl   %eax                    # Push parameter #0
+        call    one                     # call one
+        popl    %ecx                    # Pop param #0
+        popl    %ecx                    # Pop param #1
+        pushl   %eax                    
+        movl    $2,%eax                 # 2
+        movl    %eax,%ecx               
+        popl    %eax                    
+        addl    %ecx,%eax               # Adding
+        pushl   %eax                    
+        movl    $4,%eax                 # 4
+        movl    %eax,%ecx               
+        popl    %eax                    
+        addl    %ecx,%eax               # Adding
+        pushl   %eax                    
+        movl    $5,%eax                 # 5
+        movl    %eax,%ecx               
+        popl    %eax                    
+        addl    %ecx,%eax               # Adding
+        pushl   %eax                    # Push parameter #0
+        call    one                     # call one
+        popl    %ecx                    # Pop param #0
+        popl    %ecx                    # Pop param #1
         movl    %eax,-4(%ebp)           # k being assigned
 .exit$main:                                
         addl    $4,%esp                 # Free 4 bytes

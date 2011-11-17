@@ -17,6 +17,33 @@ main:   pushl   %ebp                    # Start function main
         call    one                     # Call one
         popl    %ecx                    # Pop parameter #1
         popl    %ecx                    # Pop parameter #2
+        pushl   %eax                    # Push parameter #2
+        movl    $2,%eax                 # 2
+        pushl   %eax                    # Push parameter #2
+        movl    $1,%eax                 # 1
+        pushl   %eax                    # Push parameter #1
+        call    one                     # Call one
+        popl    %ecx                    # Pop parameter #1
+        popl    %ecx                    # Pop parameter #2
+        pushl   %eax                    
+        movl    $2,%eax                 # 2
+        movl    %eax,%ecx               
+        popl    %eax                    
+        addl    %ecx,%eax               # Compute +
+        pushl   %eax                    
+        movl    $4,%eax                 # 4
+        movl    %eax,%ecx               
+        popl    %eax                    
+        addl    %ecx,%eax               # Compute +
+        pushl   %eax                    
+        movl    $5,%eax                 # 5
+        movl    %eax,%ecx               
+        popl    %eax                    
+        addl    %ecx,%eax               # Compute +
+        pushl   %eax                    # Push parameter #1
+        call    one                     # Call one
+        popl    %ecx                    # Pop parameter #1
+        popl    %ecx                    # Pop parameter #2
         movl    %eax,-4(%ebp)           # k =
 .exit$main:
         addl    $4,%esp                 # Release local data space

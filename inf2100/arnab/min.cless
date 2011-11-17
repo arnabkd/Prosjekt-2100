@@ -6,5 +6,5 @@ int one(int a, int b){
 
 int main(){
    int k;
-   k = one(1,2);
+   k = one(one(1,2) + 2 + 4 + 5,one(1,2));
 }
