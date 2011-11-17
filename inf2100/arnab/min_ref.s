@@ -1,7 +1,12 @@
         .globl  one                     
 one:    pushl   %ebp                    # Start function one
         movl    %esp,%ebp               
-        movl    $1,%eax                 # 1
+        movl    8(%ebp),%eax            # a
+        pushl   %eax                    
+        movl    12(%ebp),%eax           # b
+        movl    %eax,%ecx               
+        popl    %eax                    
+        imull   %ecx,%eax               # Compute *
         jmp     .exit$one               # return-statement
 .exit$one:                                
         popl    %ebp                    
@@ -9,43 +14,37 @@ one:    pushl   %ebp                    # Start function one
         .globl  main                    
 main:   pushl   %ebp                    # Start function main
         movl    %esp,%ebp               
-        subl    $4,%esp                 # Get 4 bytes local data space
-        movl    $2,%eax                 # 2
-        pushl   %eax                    # Push parameter #2
+        subl    $12,%esp                # Get 12 bytes local data space
         movl    $1,%eax                 # 1
-        pushl   %eax                    # Push parameter #1
-        call    one                     # Call one
-        popl    %ecx                    # Pop parameter #1
-        popl    %ecx                    # Pop parameter #2
-        pushl   %eax                    # Push parameter #2
-        movl    $2,%eax                 # 2
-        pushl   %eax                    # Push parameter #2
-        movl    $1,%eax                 # 1
-        pushl   %eax                    # Push parameter #1
-        call    one                     # Call one
-        popl    %ecx                    # Pop parameter #1
-        popl    %ecx                    # Pop parameter #2
-        pushl   %eax                    
-        movl    $2,%eax                 # 2
-        movl    %eax,%ecx               
-        popl    %eax                    
-        addl    %ecx,%eax               # Compute +
-        pushl   %eax                    
-        movl    $4,%eax                 # 4
-        movl    %eax,%ecx               
-        popl    %eax                    
-        addl    %ecx,%eax               # Compute +
-        pushl   %eax                    
-        movl    $5,%eax                 # 5
-        movl    %eax,%ecx               
-        popl    %eax                    
-        addl    %ecx,%eax               # Compute +
-        pushl   %eax                    # Push parameter #1
-        call    one                     # Call one
-        popl    %ecx                    # Pop parameter #1
-        popl    %ecx                    # Pop parameter #2
         movl    %eax,-4(%ebp)           # k =
+        movl    -4(%ebp),%eax           # k
+        pushl   %eax                    # Push parameter #2
+        movl    -4(%ebp),%eax           # k
+        pushl   %eax                    # Push parameter #1
+        call    one                     # Call one
+        popl    %ecx                    # Pop parameter #1
+        popl    %ecx                    # Pop parameter #2
+        movl    %eax,-8(%ebp)           # x =
+        movl    -8(%ebp),%eax           # x
+        pushl   %eax                    # Push parameter #2
+        movl    -8(%ebp),%eax           # x
+        pushl   %eax                    
+        movl    -4(%ebp),%eax           # k
+        movl    %eax,%ecx               
+        popl    %eax                    
+        addl    %ecx,%eax               # Compute +
+        pushl   %eax                    # Push parameter #1
+        call    one                     # Call one
+        popl    %ecx                    # Pop parameter #1
+        popl    %ecx                    # Pop parameter #2
+        pushl   %eax                    # Push parameter #2
+        movl    -8(%ebp),%eax           # x
+        pushl   %eax                    # Push parameter #1
+        call    one                     # Call one
+        popl    %ecx                    # Pop parameter #1
+        popl    %ecx                    # Pop parameter #2
+        movl    %eax,-12(%ebp)          # f =
 .exit$main:
-        addl    $4,%esp                 # Release local data space
+        addl    $12,%esp                # Release local data space
         popl    %ebp                    
         ret                             # End function main

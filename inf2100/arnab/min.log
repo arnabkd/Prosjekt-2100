@@ -1,5 +1,15 @@
+Binding: Line 2: a refers to declaration in line 1
+Binding: Line 2: b refers to declaration in line 1
 Binding: Line 9: k refers to declaration in line 8
-Binding: Line 9: one refers to declaration in line 1
-Binding: Line 9: one refers to declaration in line 1
-Binding: Line 9: one refers to declaration in line 1
+Binding: Line 10: x refers to declaration in line 8
+Binding: Line 10: one refers to declaration in line 1
+Binding: Line 10: k refers to declaration in line 8
+Binding: Line 10: k refers to declaration in line 8
+Binding: Line 12: f refers to declaration in line 8
+Binding: Line 12: one refers to declaration in line 1
+Binding: Line 12: x refers to declaration in line 8
+Binding: Line 12: one refers to declaration in line 1
+Binding: Line 12: x refers to declaration in line 8
+Binding: Line 12: k refers to declaration in line 8
+Binding: Line 12: x refers to declaration in line 8
 Binding: main refers to declaration in line 7

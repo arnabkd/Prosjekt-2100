@@ -15,9 +15,8 @@ int main ()
    int v1;  int v2;
 
    LF = 10; ;
-   #putchar('?');  putchar(' ');
+   putchar('?');  putchar(' ');
    v1 = getint();   v2 = getint();
-   #putint(gcd(v1,v2)); 
-   putchar(LF);
+   putint(gcd(v1,v2));  putchar(LF);
    exit(0);
 }

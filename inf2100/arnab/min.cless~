@@ -1,10 +1,13 @@
 int one(int a, int b){
-  return 1;
+  return a*b;
 }
 
 
 
 int main(){
-   int k;
-   k = one(one(1,2) ,one(1,2));
+   int k; int x; int f;
+   k = 1;
+   x = one(k,k);
+
+   f = one(x,one(x+k, x));
 }
