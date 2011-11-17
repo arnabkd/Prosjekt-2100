@@ -1,17 +1,10 @@
-int x;
+int one(int a, int b){
+  return 1;
+}
+
+
 
 int main(){
- 	int k;
+   int k;
+   k = one(1,2,3);
 }
-
-int y;
-
-int m(){
- 	int x;
-}
-int y2;
-
-int m2(){
- 	int y;
-}
-int y3;

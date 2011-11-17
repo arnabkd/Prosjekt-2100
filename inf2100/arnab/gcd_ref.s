@@ -5,6 +5,45 @@ LF:     .fill   4                       # int LF;
         .globl  gcd                     
 gcd:    pushl   %ebp                    # Start function gcd
         movl    %esp,%ebp               
+.L0001:                                 # Start while-statement
+        movl    8(%ebp),%eax            # a
+        pushl   %eax                    
+        movl    12(%ebp),%eax           # b
+        popl    %ecx                    
+        cmpl    %eax,%ecx               
+        setne   %al                     # Test !=
+        movzbl  %al,%eax                
+        cmpl    $0,%eax                 
+        je      .L0002                  
+                                        # Start if-statement
+        movl    8(%ebp),%eax            # a
+        pushl   %eax                    
+        movl    12(%ebp),%eax           # b
+        popl    %ecx                    
+        cmpl    %eax,%ecx               
+        setl    %al                     # Test <
+        movzbl  %al,%eax                
+        cmpl    $0,%eax                 
+        je      .L0004                  
+        movl    12(%ebp),%eax           # b
+        pushl   %eax                    
+        movl    8(%ebp),%eax            # a
+        movl    %eax,%ecx               
+        popl    %eax                    
+        subl    %ecx,%eax               # Compute -
+        movl    %eax,12(%ebp)           # b =
+        jmp     .L0003                  
+.L0004:                                 #   else-part
+        movl    8(%ebp),%eax            # a
+        pushl   %eax                    
+        movl    12(%ebp),%eax           # b
+        movl    %eax,%ecx               
+        popl    %eax                    
+        subl    %ecx,%eax               # Compute -
+        movl    %eax,8(%ebp)            # a =
+.L0003:                                 # End if-statement
+        jmp     .L0001                  
+.L0002:                                 # End while-statement
         movl    8(%ebp),%eax            # a
         jmp     .exit$gcd               # return-statement
 .exit$gcd:                                

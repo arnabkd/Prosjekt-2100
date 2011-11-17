@@ -279,9 +279,6 @@ abstract class DeclList extends SyntaxUnit {
     }
 }
 
-
-
-
 /*
  * A list of global declarations.
  * (This class is not mentioned in the syntax diagrams.)
@@ -292,7 +289,7 @@ class GlobalDeclList extends DeclList {
     void genCode(FuncDecl curFunc) {
         //-- Must be changed in part 2:
         Declaration curDeclaration = firstDecl;
-        if(! (firstDecl instanceof FuncDecl)){
+        if (!(firstDecl instanceof FuncDecl)) {
             Code.genInstr("", ".data", "", "");
         }
         while (curDeclaration != null) {
@@ -336,17 +333,17 @@ class GlobalDeclList extends DeclList {
     }
 
     private void genCodeForMemoryChange(Declaration curDeclaration, Declaration nextDecl) {
-         if(nextDecl == null){
-             return;
-         }
+        if (nextDecl == null) {
+            return;
+        }
 
-         if(curDeclaration instanceof VarDecl && nextDecl instanceof FuncDecl) {
-             Code.genInstr("", ".text", "", "");
-         }
+        if (curDeclaration instanceof VarDecl && nextDecl instanceof FuncDecl) {
+            Code.genInstr("", ".text", "", "");
+        }
 
-         if(curDeclaration instanceof FuncDecl && nextDecl instanceof VarDecl){
-             Code.genInstr("", ".data", "", "");
-         }
+        if (curDeclaration instanceof FuncDecl && nextDecl instanceof VarDecl) {
+            Code.genInstr("", ".data", "", "");
+        }
     }
 }
 
@@ -403,29 +400,38 @@ class ParamDeclList extends DeclList {
     @Override
     void genCode(FuncDecl curFunc) {
         //-- Must be changed in part 2:
+        int i = 8;
+        Declaration localDeclaration = this.firstDecl;
+        while (localDeclaration != null) {
+            localDeclaration.assemblerName = (i + "(%ebp)");
+            localDeclaration.genCode(curFunc);
+            i += 4;
+            localDeclaration = localDeclaration.nextDecl;
+        }
     }
 
     @Override
     void parse() {
         //-- Must be changed in part 1:
         int paramNum = 0;
+        Log.enterParser("<paramDeclList>");
         while (Scanner.curToken != rightParToken) {
             //Skip a comma token if there is one here
             //(cannot be before first param)
             if (Scanner.curToken == commaToken && paramNum != 0) {
                 Scanner.skip(commaToken);
             }
-
             ParamDecl param = new ParamDecl(Scanner.nextName, paramNum);
             addDecl(param);
             param.parse();
             paramNum++;
-
         }
+        Log.leaveParser("</paramDeclList>");
     }
 
     @Override
     void printTree() {
+
         Declaration current = firstDecl;
         while (current != null) {
             Log.wTree("int " + current.name);
@@ -434,6 +440,7 @@ class ParamDeclList extends DeclList {
                 Log.wTree(",");
             }
         }
+
     }
 
     int size() {
@@ -580,7 +587,7 @@ class GlobalArrayDecl extends VarDecl {
     void genCode(FuncDecl curFunc) {
         //-- Must be changed in part 2:
         Code.genInstr("", ".globl", assemblerName, "");
-        Code.genInstr(assemblerName, ".fill", dataSize()+"", "");
+        Code.genInstr(assemblerName, ".fill", dataSize() + "", "");
     }
 
     @Override
@@ -794,6 +801,7 @@ class ParamDecl extends VarDecl {
     @Override
     void checkWhetherArray(SyntaxUnit use) {
         //-- Must be changed in part 2:
+        Syntax.error(this, name + " cannot be an array");
     }
 
     @Override
@@ -890,6 +898,7 @@ class FuncDecl extends Declaration {
             Code.genInstr("", "subl", "$" + size + ",%esp", "Allocate "
                     + size + " bytes");
         }
+        paramList.genCode(this);
         localVarList.genCode(this);
         body.genCode(this);
         Code.genInstr(exitname, "", "", "");
@@ -1183,35 +1192,35 @@ class IfStatm extends Statement {
     @Override
     void check(DeclList curDecls) {
         //-- Must be changed in part 2:
-    		eks.check(curDecls);
-    		st.check(curDecls);
-    		if(els != null){
-    			els.check(curDecls);
-    		}
+        eks.check(curDecls);
+        st.check(curDecls);
+        if (els != null) {
+            els.check(curDecls);
+        }
     }
 
     @Override
     void genCode(FuncDecl curFunc) {
         //-- Must be changed in part 2:
-    	String label = Code.getLocalLabel(),
-	    label2 = Code.getLocalLabel();
+        String label = Code.getLocalLabel(),
+                label2 = Code.getLocalLabel();
 
-    	//Code.genInstr(testLabel, "", "", "Start if-statement");
+        //Code.genInstr(testLabel, "", "", "Start if-statement");
 
-    	Code.genInstr("", "", "", "Start if-statement");
-    	eks.genCode(curFunc);
-    	Code.genInstr("", "cmpl", "$0,%eax", "");
-    	Code.genInstr("", "je", label2, "");
-    	st.genCode(curFunc);
-    	if(els == null) {
-    		Code.genInstr(label2, "", "", "End if-statmement");
-    	} else {
-	    //String label2 = Code.getLocalLabel();
-	    Code.genInstr("", "jmp", label, "End if-statement");
-	    Code.genInstr(label2, "", "", "Start else-statement");
-	    els.genCode(curFunc);
-	    Code.genInstr(label, "", "", "End else-statement");
-    	}
+        Code.genInstr("", "", "", "Start if-statement");
+        eks.genCode(curFunc);
+        Code.genInstr("", "cmpl", "$0,%eax", "");
+        Code.genInstr("", "je", label2, "");
+        st.genCode(curFunc);
+        if (els == null) {
+            Code.genInstr(label2, "", "", "End if-statmement");
+        } else {
+            //String label2 = Code.getLocalLabel();
+            Code.genInstr("", "jmp", label, "End if-statement");
+            Code.genInstr(label2, "", "", "Start else-statement");
+            els.genCode(curFunc);
+            Code.genInstr(label, "", "", "End else-statement");
+        }
 
 
     }
@@ -1282,12 +1291,12 @@ class ElseStatm extends Statement {
 
     @Override
     void check(DeclList curDecls) {
-    	st.check(curDecls);
+        st.check(curDecls);
     }
 
     @Override
     void genCode(FuncDecl curFunc) {
-    	st.genCode(curFunc);
+        st.genCode(curFunc);
     }
 }
 
@@ -1456,7 +1465,6 @@ class ForControl extends Statement {
     Expression eks2 = null;
     Expression eks3 = null;
 
-
     @Override
     void parse() {
         Log.enterParser("<for-control>");
@@ -1498,7 +1506,6 @@ class ForControl extends Statement {
 
     @Override
     void check(DeclList curDecls) {
-
     }
 }
 
@@ -1533,7 +1540,6 @@ class ExprList extends SyntaxUnit {
         firstExpr = new Expression();
         Expression currentExp = firstExpr;
 
-
         Log.enterParser("<expr list>");
         while (currentExp != null) {
             currentExp.parse();
@@ -1546,6 +1552,7 @@ class ExprList extends SyntaxUnit {
             currentExp = currentExp.nextExpr;
 
         }
+
         //-- Must be changed in part 1:
 
         Log.leaveParser("</expr list>");
@@ -1733,7 +1740,6 @@ abstract class Operator extends SyntaxUnit {
 //            secondOp.genCode(curFunc);
 //        }
 //        Code.genInstr("", "pushl", "%eax", "");
-
     }
 }
 
@@ -1778,7 +1784,6 @@ abstract class Operand extends SyntaxUnit {
     public void setOperator(Operator next) {
         nextOperator = next;
     }
-
 
     public void checkNextOperator(DeclList curDecl) {
         if (nextOperator != null) {
@@ -1834,8 +1839,9 @@ class FunctionCall extends Operand {
     void genCode(FuncDecl curFunc) {
         //-- Must be changed in part 2:
         Expression[] expTab = exps.toArray();
-        for (int i = exps.size(); i > 0; i--) {
-            genParamCall(expTab[i - 1], i, curFunc);
+        System.err.println("exptab has length: "+ expTab.length);
+        for (int i = exps.size()-1; i >= 0; i--) {
+            genParamCall(expTab[i], i, curFunc);
         }
 
         Code.genInstr("", "call", func_assemblerName, "call " + varName);
@@ -1847,7 +1853,7 @@ class FunctionCall extends Operand {
         }
 
         //if (nextOperator != null) {
-            //nextOperator.genCode(curFunc);
+        //nextOperator.genCode(curFunc);
         //}
     }
 
@@ -1923,7 +1929,7 @@ class Number extends Operand {
     void genCode(FuncDecl curFunc) {
         Code.genInstr("", "movl", "$" + numVal + ",%eax", "" + numVal);
         //if (nextOperator != null) {
-            //nextOperator.genCode(curFunc);
+        //nextOperator.genCode(curFunc);
         //}
     }
 
@@ -2053,7 +2059,7 @@ class Variable extends Operand {
                     "Putting " + varName + " in %eax");
         }
         //if (nextOperator != null) {
-            //nextOperator.genCode(curFunc);
+        //nextOperator.genCode(curFunc);
         //}
     }
 
