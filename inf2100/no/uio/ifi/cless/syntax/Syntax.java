@@ -1169,23 +1169,24 @@ class IfStatm extends Statement {
     @Override
     void genCode(FuncDecl curFunc) {
         //-- Must be changed in part 2:
-    	String label = Code.getLocalLabel();
+    	String label = Code.getLocalLabel(),
+	    label2 = Code.getLocalLabel();
     	
     	//Code.genInstr(testLabel, "", "", "Start if-statement");
     	
     	Code.genInstr("", "", "", "Start if-statement");
     	eks.genCode(curFunc);
     	Code.genInstr("", "cmpl", "$0,%eax", "");
-    	Code.genInstr("", "je", label, "");
+    	Code.genInstr("", "je", label2, "");
     	st.genCode(curFunc);
     	if(els == null) {
-    		Code.genInstr(label, "", "", "End if-statmement");
+    		Code.genInstr(label2, "", "", "End if-statmement");
     	} else {
-    		String label2 = Code.getLocalLabel();
-    		Code.genInstr("", "jmp", label2, "End if-statement");
-    		Code.genInstr(label, "", "", "Start else-statement");
-    		els.genCode(curFunc);
-    		Code.genInstr(label2, "", "", "End else-statement");
+	    //String label2 = Code.getLocalLabel();
+	    Code.genInstr("", "jmp", label, "End if-statement");
+	    Code.genInstr(label2, "", "", "Start else-statement");
+	    els.genCode(curFunc);
+	    Code.genInstr(label, "", "", "End else-statement");
     	}
     	
     	
