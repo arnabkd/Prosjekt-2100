@@ -280,6 +280,8 @@ abstract class DeclList extends SyntaxUnit {
 }
 
 
+
+
 /*
  * A list of global declarations.
  * (This class is not mentioned in the syntax diagrams.)
@@ -290,8 +292,12 @@ class GlobalDeclList extends DeclList {
     void genCode(FuncDecl curFunc) {
         //-- Must be changed in part 2:
         Declaration curDeclaration = firstDecl;
+        if(! (firstDecl instanceof FuncDecl)){
+            Code.genInstr("", ".data", "", "");
+        }
         while (curDeclaration != null) {
             curDeclaration.genCode(curFunc);
+            genCodeForMemoryChange(curDeclaration, curDeclaration.nextDecl);
             curDeclaration = curDeclaration.nextDecl;
         }
     }
@@ -327,6 +333,20 @@ class GlobalDeclList extends DeclList {
                 Scanner.expected("Declaration");
             }
         }
+    }
+
+    private void genCodeForMemoryChange(Declaration curDeclaration, Declaration nextDecl) {
+         if(nextDecl == null){
+             return;
+         }
+
+         if(curDeclaration instanceof VarDecl && nextDecl instanceof FuncDecl) {
+             Code.genInstr("", ".text", "", "");
+         }
+
+         if(curDeclaration instanceof FuncDecl && nextDecl instanceof VarDecl){
+             Code.genInstr("", ".data", "", "");
+         }
     }
 }
 
@@ -559,6 +579,8 @@ class GlobalArrayDecl extends VarDecl {
     @Override
     void genCode(FuncDecl curFunc) {
         //-- Must be changed in part 2:
+        Code.genInstr("", ".globl", assemblerName, "");
+        Code.genInstr(assemblerName, ".fill", dataSize()+"", "");
     }
 
     @Override
@@ -614,6 +636,8 @@ class GlobalSimpleVarDecl extends VarDecl {
     @Override
     void genCode(FuncDecl curFunc) {
         //-- Must be changed in part 2:
+        Code.genInstr("", ".globl", assemblerName, "");
+        Code.genInstr(assemblerName, ".fill", "4", "");
     }
 
     @Override
@@ -1171,9 +1195,9 @@ class IfStatm extends Statement {
         //-- Must be changed in part 2:
     	String label = Code.getLocalLabel(),
 	    label2 = Code.getLocalLabel();
-    	
+
     	//Code.genInstr(testLabel, "", "", "Start if-statement");
-    	
+
     	Code.genInstr("", "", "", "Start if-statement");
     	eks.genCode(curFunc);
     	Code.genInstr("", "cmpl", "$0,%eax", "");
@@ -1188,8 +1212,8 @@ class IfStatm extends Statement {
 	    els.genCode(curFunc);
 	    Code.genInstr(label, "", "", "End else-statement");
     	}
-    	
-    	
+
+
     }
 
     @Override
@@ -1263,7 +1287,7 @@ class ElseStatm extends Statement {
 
     @Override
     void genCode(FuncDecl curFunc) {
-    	st.genCode(curFunc);    	
+    	st.genCode(curFunc);
     }
 }
 
@@ -1431,8 +1455,8 @@ class ForControl extends Statement {
     Expression eks = null;
     Expression eks2 = null;
     Expression eks3 = null;
-    
-	
+
+
     @Override
     void parse() {
         Log.enterParser("<for-control>");
@@ -1451,7 +1475,7 @@ class ForControl extends Statement {
         Scanner.skip(assignToken);
         eks3 = new Expression();
         eks3.parse();
-        
+
         Log.leaveParser("</for-control>");
     }
 
@@ -1474,7 +1498,7 @@ class ForControl extends Statement {
 
     @Override
     void check(DeclList curDecls) {
-    
+
     }
 }
 

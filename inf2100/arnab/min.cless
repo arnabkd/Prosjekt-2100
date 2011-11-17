@@ -1,11 +1,4 @@
-int one(){
-  return 1;
-}
-/*
-  Problemer med 1+1+1+1 , k+k+k+k+k , one() + one() + one()
-*/
-int main(){
-  int k;
-  k = one() + one() + one() + 1 + k + 2 + k;
-}
+int e[2];
 
+int main(){
+}
