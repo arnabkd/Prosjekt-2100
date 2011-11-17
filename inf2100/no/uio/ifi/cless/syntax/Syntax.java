@@ -196,7 +196,7 @@ abstract class DeclList extends SyntaxUnit {
             variableAlreadyDefinedError(d);
             return;
         }
-
+//        System.err.println("adding " + d.name +" to declaration list");
         //Declaration does not exist yet, add it to the declList
         Declaration last = getLastDecl();
         last.nextDecl = d;
@@ -240,6 +240,16 @@ abstract class DeclList extends SyntaxUnit {
         return res;
     }
 
+    void printList() {
+        Declaration d = firstDecl;
+        System.err.println("**Start of " + this);
+        while (d != null) {
+            System.err.println("- " + d.name);
+            d = d.nextDecl;
+        }
+        System.err.println("**End of " + this);
+    }
+
     Declaration findDecl(String name, SyntaxUnit usedIn) {
         //-- Must be changed in part 2:
         Declaration current = firstDecl;
@@ -249,7 +259,10 @@ abstract class DeclList extends SyntaxUnit {
             }
             current = current.nextDecl;
         }
-        return null;
+        if (outerScope == null) {
+            Syntax.error(usedIn, name + " is not defined.");
+        }
+        return outerScope.findDecl(name, usedIn);
     }
 
     Declaration getDecl(String name) {
@@ -327,10 +340,13 @@ class LocalDeclList extends DeclList {
     @Override
     void genCode(FuncDecl curFunc) {
         //-- Must be changed in part 2:
-
-
         Declaration curDeclaration = firstDecl;
+        int i = 0;
         while (curDeclaration != null) {
+            //Beregner hvor i stakken deklarasjonen er
+            i = i - curDeclaration.dataSize();
+            curDeclaration.assemblerName = (i + "(%ebp)");
+
             curDeclaration.genCode(curFunc);
             curDeclaration = curDeclaration.nextDecl;
         }
@@ -345,11 +361,11 @@ class LocalDeclList extends DeclList {
         while (Scanner.curToken == intToken) {
             if (Scanner.nextToken == nameToken) {
                 if (Scanner.nextNextToken == leftBracketToken) { //LocalArrayDecl
-                    LocalArrayDecl lad = new LocalArrayDecl(Scanner.curName);
+                    LocalArrayDecl lad = new LocalArrayDecl(Scanner.nextName);
                     addDecl(lad);
                     lad.parse();
                 } else { //LocalSimpleVarDecl
-                    LocalSimpleVarDecl lsvd = new LocalSimpleVarDecl(Scanner.curName);
+                    LocalSimpleVarDecl lsvd = new LocalSimpleVarDecl(Scanner.nextName);
                     addDecl(lsvd);
                     lsvd.parse();
                 }
@@ -383,9 +399,6 @@ class ParamDeclList extends DeclList {
             ParamDecl param = new ParamDecl(Scanner.nextName, paramNum);
             addDecl(param);
             param.parse();
-
-
-
             paramNum++;
 
         }
@@ -426,6 +439,7 @@ abstract class Declaration extends SyntaxUnit {
 
     Declaration(String n) {
         name = n;
+        //System.err.println(this + " has name : " + name);
     }
 
     abstract int dataSize();
@@ -697,6 +711,8 @@ class LocalSimpleVarDecl extends VarDecl {
     @Override
     void check(DeclList curDecls) {
         //-- Must be changed in part 2:
+        visible = true;
+        //System.err.println("Setting " + this.name + " to visible");
     }
 
     @Override
@@ -748,6 +764,7 @@ class ParamDecl extends VarDecl {
     @Override
     void check(DeclList curDecls) {
         //-- Must be changed in part 2:
+        visible = true;
     }
 
     @Override
@@ -916,11 +933,21 @@ class StatmList extends SyntaxUnit {
     @Override
     void check(DeclList curDecls) {
         //-- Must be changed in part 2:
+        Statement curStatement = first;
+        while (curStatement != null) {
+            curStatement.check(curDecls);
+            curStatement = curStatement.nextStatm;
+        }
     }
 
     @Override
     void genCode(FuncDecl curFunc) {
         //-- Must be changed in part 2:
+        Statement curStatement = first;
+        while (curStatement != null) {
+            curStatement.genCode(curFunc);
+            curStatement = curStatement.nextStatm;
+        }
     }
 
     @Override
@@ -1082,6 +1109,12 @@ class AssignStatm extends Statement {
     @Override
     void genCode(FuncDecl curFunc) {
         //part 2
+        if (var.isArrayVar()) {
+            var.index.genCode(curFunc);
+            Code.genInstr("", "pushl", "%eax", "");
+        }
+        exps.genCode(curFunc);
+        var.genCodeForStoring(curFunc);
     }
 
     @Override
@@ -1231,16 +1264,24 @@ class ElseStatm extends Statement {
 class ReturnStatm extends Statement {
     //part1 + part2
 
-    Expression exps = null;
+    Expression exp = null;
 
     @Override
     void check(DeclList curDecls) {
         //part 2
+        if (exp != null) {
+            exp.check(curDecls);
+        }
     }
 
     @Override
     void genCode(FuncDecl curFunc) {
         //part2
+        if (exp != null) {
+            exp.genCode(curFunc);
+        }
+        Code.genInstr("", "jmp", ".exit$" + curFunc.assemblerName,
+                "return-statement for " + curFunc.name);
     }
 
     @Override
@@ -1249,8 +1290,8 @@ class ReturnStatm extends Statement {
         Log.enterParser("<return-statm>");
 
         Scanner.skip(returnToken);
-        exps = new Expression();
-        exps.parse();
+        exp = new Expression();
+        exp.parse();
 
         Scanner.skip(semicolonToken);
 
@@ -1261,7 +1302,7 @@ class ReturnStatm extends Statement {
     void printTree() {
         //part1
         Log.wTree("return ");
-        exps.printTree();
+        exp.printTree();
         Log.wTreeLn(";");
     }
 }
@@ -1447,6 +1488,13 @@ class ExprList extends SyntaxUnit {
 
     @Override
     void parse() {
+        //Special case if there are no arguments
+        if (Scanner.curToken == rightParToken) {
+            Log.enterParser("<expr list>");
+            Log.leaveParser("</expr list>");
+            return;
+        }
+
         Expression lastExpr = null;
         firstExpr = new Expression();
         Expression currentExp = firstExpr;
@@ -1467,6 +1515,7 @@ class ExprList extends SyntaxUnit {
         //-- Must be changed in part 1:
 
         Log.leaveParser("</expr list>");
+
     }
 
     @Override
@@ -1495,6 +1544,26 @@ class ExprList extends SyntaxUnit {
         }
         return i;
     }
+
+    int size() {
+        int size = 0;
+        Expression curExpression = firstExpr;
+        while (curExpression != null) {
+            size++;
+            curExpression = curExpression.nextExpr;
+        }
+        return size;
+    }
+
+    Expression[] toArray() {
+        Expression[] expTab = new Expression[size()];
+        int i = 0;
+        for (Expression e = firstExpr; e != null; e = e.nextExpr) {
+            expTab[i] = e;
+            i++;
+        }
+        return expTab;
+    }
 }
 
 
@@ -1515,10 +1584,13 @@ class Expression extends Operand {
     @Override
     void genCode(FuncDecl curFunc) {
         //-- Must be changed in part 2:
-        if (firstOp != null) {
-            //Initiate gencode call for first operand. This first call will 
-            //trigger gencode for the rest of the expression as well
-            firstOp.genCode(curFunc);
+        firstOp.genCode(curFunc);
+        Operator curOperator = firstOp.nextOperator;
+        while (curOperator != null) {
+            Code.genInstr("", "pushl", "%eax", "");
+            curOperator.secondOp.genCode(curFunc);
+            curOperator.genCode(curFunc);
+            curOperator = curOperator.secondOp.nextOperator;
         }
     }
 
@@ -1572,8 +1644,6 @@ class Expression extends Operand {
     }
 }
 
-
-
 //-- Must be changed in part 1+2:
 /*
  * An <operator>
@@ -1624,22 +1694,27 @@ abstract class Operator extends SyntaxUnit {
     }
     //-- Must be changed in part 1+2:
 
-    void genCodeNextOperand(FuncDecl curFunc) {
-        Code.genInstr("", "pushl", "%eax", "");
-        secondOp.genCode(curFunc);
+    void genCodeBeforeNextOperand(FuncDecl curFunc) {
+//        if (secondOp != null) {
+//            secondOp.genCode(curFunc);
+//        }
+//        Code.genInstr("", "pushl", "%eax", "");
+
     }
 }
+
 class ComparisonOperator extends Operator {
 
     @Override
     void genCode(FuncDecl curFunc) {
+        super.genCodeBeforeNextOperand(curFunc);
+
         Code.genInstr("", "popl", "%ecx", "");
         Code.genInstr("", "cmpl", "%eax,%ecx", "");
-        
-        String [] line = token.getAssemblerCodeComp();
+
+        String[] line = token.getAssemblerCodeComp();
         Code.genInstr(line[0], line[1], line[2], line[3]);
         Code.genInstr("", "movzbl", "%al,%eax", "");
-        super.genCodeNextOperand(curFunc);
     }
 }
 
@@ -1648,13 +1723,13 @@ class ArithmeticOperator extends Operator {
 
     @Override
     void genCode(FuncDecl curFunc) {
+        super.genCodeBeforeNextOperand(curFunc);
+
         Code.genInstr("", "movl", "%eax,%ecx", "");
         Code.genInstr("", "popl", "%eax", "");
-        
-        String [] line = token.getAssemblerCodeArith();
+
+        String[] line = token.getAssemblerCodeArith();
         Code.genInstr(line[0], line[1], line[2], line[3]);
-        
-        super.genCodeNextOperand(curFunc);
     }
 }
 
@@ -1670,11 +1745,6 @@ abstract class Operand extends SyntaxUnit {
         nextOperator = next;
     }
 
-    public void genCodeNextOperator(FuncDecl curFunc) {
-        if (nextOperator != null) {
-            nextOperator.genCode(curFunc);
-        }
-    }
 
     public void checkNextOperator(DeclList curDecl) {
         if (nextOperator != null) {
@@ -1705,6 +1775,7 @@ abstract class Operand extends SyntaxUnit {
 class FunctionCall extends Operand {
     //-- Must be changed in part 1+2:
 
+    String func_assemblerName;
     String varName;
     ExprList exps;
 
@@ -1715,6 +1786,10 @@ class FunctionCall extends Operand {
     @Override
     void check(DeclList curDecls) {
         //-- Must be changed in part 2:
+        FuncDecl func = (FuncDecl) curDecls.findDecl(varName, this);
+        func.checkWhetherFunction(exps.size(), this);
+        func_assemblerName = func.assemblerName;
+        exps.check(curDecls);
 
         if (nextOperator != null) {
             nextOperator.check(curDecls);
@@ -1724,6 +1799,27 @@ class FunctionCall extends Operand {
     @Override
     void genCode(FuncDecl curFunc) {
         //-- Must be changed in part 2:
+        Expression[] expTab = exps.toArray();
+        for (int i = exps.size(); i > 0; i--) {
+            genParamCall(expTab[i - 1], i, curFunc);
+        }
+
+        Code.genInstr("", "call", func_assemblerName, "call " + varName);
+
+        int i = 0;
+        for (Expression e = exps.firstExpr; e != null; e = e.nextExpr) {
+            Code.genInstr("", "popl", "%ecx", "Pop param #" + i);
+            i++;
+        }
+
+        //if (nextOperator != null) {
+            //nextOperator.genCode(curFunc);
+        //}
+    }
+
+    private void genParamCall(Expression e, int num, FuncDecl func) {
+        e.genCode(func);
+        Code.genInstr("", "pushl", "%eax", "Push parameter #" + num);
     }
 
     @Override
@@ -1792,6 +1888,9 @@ class Number extends Operand {
     @Override
     void genCode(FuncDecl curFunc) {
         Code.genInstr("", "movl", "$" + numVal + ",%eax", "" + numVal);
+        //if (nextOperator != null) {
+            //nextOperator.genCode(curFunc);
+        //}
     }
 
     @Override
@@ -1836,6 +1935,7 @@ class Variable extends Operand {
     @Override
     void check(DeclList curDecls) {
         Declaration d = curDecls.findDecl(varName, this);
+
         if (index == null) {
             d.checkWhetherSimpleVar(this);
         } else {
@@ -1888,7 +1988,42 @@ class Variable extends Operand {
         }
     }
 
+    void genCodeForStoring(FuncDecl curDecl) {
+        if (index != null) {
+//            Code.genInstr("", "pushl", "%eax", "");
+            Code.genInstr("", "leal", declRef.assemblerName + ",%edx", varName
+                    + "[index] being assigned");
+            Code.genInstr("", "popl", "%ecx", "");
+            Code.genInstr("", "movl", "%eax,(%edx,%ecx,4)", "");
+        } else {
+            Code.genInstr("", "movl", "%eax," + declRef.assemblerName,
+                    varName + " being assigned");
+        }
+    }
+
+    /** This method is ONLY for storing the variable in %eax
+     *  (i.e this will be used when the value of this variable is returned).
+     *  This will NOT be used for assigning a value to this variable. Index can
+     *  be calculated for variables in arrays, but that'll maybe be done later.
+     */
     @Override
     void genCode(FuncDecl curFunc) {
+
+        if (index != null) {
+            index.genCode(curFunc);
+            Code.genInstr("", "leal", declRef.assemblerName + ",%edx",
+                    "Putting" + varName + "[index] in %eax");
+            Code.genInstr("", "movl", "(%edx,%eax,4),%eax", "");
+        } else {
+            Code.genInstr("", "movl", declRef.assemblerName + ",%eax",
+                    "Putting " + varName + " in %eax");
+        }
+        //if (nextOperator != null) {
+            //nextOperator.genCode(curFunc);
+        //}
+    }
+
+    boolean isArrayVar() {
+        return index != null;
     }
 }

@@ -59,10 +59,10 @@ public enum Token { addToken, assignToken, commaToken, divideToken, elseToken,
         else if(this == greaterEqualToken) return ">=";
         else return null;
     }
-    
+
     public String [] getAssemblerCodeArith(){
         String[] line = new String [4];
-        String op = getOpString(); line[0] = ""; line[2] = "%ecx, %eax";
+        String op = getOpString(); line[0] = ""; line[2] = "%ecx,%eax";
         if (op == null) {
             return line;
         } else if (op.equals("+")) {
@@ -76,20 +76,20 @@ public enum Token { addToken, assignToken, commaToken, divideToken, elseToken,
             line[3] = "Multiplying";
         } else if (op.equals("/")) {
             Code.genInstr("", "cdq", "", "");
-            line[1] = "idivl"; 
+            line[1] = "idivl";
             line[2] = "%ecx";
             line[3] = "Dividing";
         }
         return line;
     }
-    
+
     public String[] getAssemblerCodeComp(){
         String[] line = new String [4];
         String opString = getOpString();
         String assemblyCode = compToAssembly(opString);
-        line[0] = ""; 
+        line[0] = "";
         line[1] = assemblyCode;
-        line[2] = "%al"; 
+        line[2] = "%al";
         line[3] = "Compare operator : "+opString;
         return line;
     }

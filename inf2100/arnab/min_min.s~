@@ -21,26 +21,6 @@ main:   pushl   %ebp                    # int main;
         movl    %eax,%ecx               
         popl    %eax                    
         addl    %ecx,%eax               # Adding
-        pushl   %eax                    
-        movl    $1,%eax                 # 1
-        movl    %eax,%ecx               
-        popl    %eax                    
-        addl    %ecx,%eax               # Adding
-        pushl   %eax                    
-        movl    -4(%ebp),%eax           # Putting k in %eax
-        movl    %eax,%ecx               
-        popl    %eax                    
-        addl    %ecx,%eax               # Adding
-        pushl   %eax                    
-        movl    $2,%eax                 # 2
-        movl    %eax,%ecx               
-        popl    %eax                    
-        addl    %ecx,%eax               # Adding
-        pushl   %eax                    
-        movl    -4(%ebp),%eax           # Putting k in %eax
-        movl    %eax,%ecx               
-        popl    %eax                    
-        addl    %ecx,%eax               # Adding
         movl    %eax,-4(%ebp)           # k being assigned
 .exit$main:                                
         addl    $4,%esp                 # Free 4 bytes
