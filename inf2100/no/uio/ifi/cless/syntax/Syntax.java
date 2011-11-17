@@ -1238,15 +1238,19 @@ class ReturnStatm extends Statement {
     @Override
     void check(DeclList curDecls) {
         //part 2
-        exp.check(curDecls);
+        if (exp != null) {
+            exp.check(curDecls);
+        }
     }
 
     @Override
     void genCode(FuncDecl curFunc) {
         //part2
-        exp.genCode(curFunc);
-        Code.genInstr("", "jmp", ".exit$"+curFunc.assemblerName,
-                "return-statement for "+curFunc.name);
+        if (exp != null) {
+            exp.genCode(curFunc);
+        }
+        Code.genInstr("", "jmp", ".exit$" + curFunc.assemblerName,
+                "return-statement for " + curFunc.name);
     }
 
     @Override
@@ -1433,8 +1437,6 @@ class ForControl extends Statement {
 }
 
 //-- Must be changed in part 1+2:
-
-
 /*
  * An <expression list>.
  */
@@ -1514,9 +1516,9 @@ class ExprList extends SyntaxUnit {
     }
 
     Expression[] toArray() {
-        Expression [] expTab = new Expression[size()];
+        Expression[] expTab = new Expression[size()];
         int i = 0;
-        for(Expression e = firstExpr; e != null; e = e.nextExpr){
+        for (Expression e = firstExpr; e != null; e = e.nextExpr) {
             expTab[i] = e;
             i++;
         }
@@ -1758,16 +1760,16 @@ class FunctionCall extends Operand {
     @Override
     void genCode(FuncDecl curFunc) {
         //-- Must be changed in part 2:  
-        Expression [] expTab = exps.toArray();
-        for(int i = exps.size(); i > 0; i--){
-            genParamCall(expTab[i-1], i, curFunc);
+        Expression[] expTab = exps.toArray();
+        for (int i = exps.size(); i > 0; i--) {
+            genParamCall(expTab[i - 1], i, curFunc);
         }
-        
+
         Code.genInstr("", "call", func_assemblerName, "call " + varName);
 
         int i = 0;
         for (Expression e = exps.firstExpr; e != null; e = e.nextExpr) {
-            Code.genInstr("", "popl", "%ecx", "Pop param #"+i);
+            Code.genInstr("", "popl", "%ecx", "Pop param #" + i);
             i++;
         }
 
