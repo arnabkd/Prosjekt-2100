@@ -1160,7 +1160,10 @@ class IfStatm extends Statement {
     void check(DeclList curDecls) {
         //-- Must be changed in part 2:
     		eks.check(curDecls);
-    		st.check(curDecls); 
+    		st.check(curDecls);
+    		if(els != null){
+    			els.check(curDecls);
+    		}
     }
 
     @Override
@@ -1170,14 +1173,19 @@ class IfStatm extends Statement {
     	
     	//Code.genInstr(testLabel, "", "", "Start if-statement");
     	
+    	Code.genInstr("", "", "", "Start if-statement");
     	eks.genCode(curFunc);
     	Code.genInstr("", "cmpl", "$0,%eax", "");
     	Code.genInstr("", "je", label, "");
     	st.genCode(curFunc);
     	if(els == null) {
-    		Code.genInstr(label, "", "", "if-statmement");
+    		Code.genInstr(label, "", "", "End if-statmement");
     	} else {
+    		String label2 = Code.getLocalLabel();
+    		Code.genInstr("", "jmp", label2, "End if-statement");
+    		Code.genInstr(label, "", "", "Start else-statement");
     		els.genCode(curFunc);
+    		Code.genInstr(label2, "", "", "End else-statement");
     	}
     	
     	
@@ -1249,11 +1257,12 @@ class ElseStatm extends Statement {
 
     @Override
     void check(DeclList curDecls) {
+    	st.check(curDecls);
     }
 
     @Override
     void genCode(FuncDecl curFunc) {
-    	
+    	st.genCode(curFunc);    	
     }
 }
 
