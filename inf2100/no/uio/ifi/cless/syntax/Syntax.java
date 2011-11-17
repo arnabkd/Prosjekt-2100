@@ -1141,7 +1141,12 @@ class IfStatm extends Statement {
     	Code.genInstr("", "cmpl", "$0,%eax", "");
     	Code.genInstr("", "je", label, "");
     	st.genCode(curFunc);
-    	Code.genInstr(label, "", "", "if-statmement");
+    	if(els == null) {
+    		Code.genInstr(label, "", "", "if-statmement");
+    	} else {
+    		els.genCode(curFunc);
+    	}
+    	
     	
     }
 
@@ -1215,6 +1220,7 @@ class ElseStatm extends Statement {
 
     @Override
     void genCode(FuncDecl curFunc) {
+    	
     }
 }
 
@@ -1297,7 +1303,6 @@ class WhileStatm extends Statement {
         Scanner.skip(leftParToken);
         test = new Expression();
         test.parse();
-
         Scanner.skip(rightParToken);
         Scanner.skip(leftCurlToken);
         body.parse();
@@ -1375,7 +1380,8 @@ class ForControl extends Statement {
     Expression eks = null;
     Expression eks2 = null;
     Expression eks3 = null;
-
+    
+	
     @Override
     void parse() {
         Log.enterParser("<for-control>");
@@ -1394,7 +1400,7 @@ class ForControl extends Statement {
         Scanner.skip(assignToken);
         eks3 = new Expression();
         eks3.parse();
-
+        
         Log.leaveParser("</for-control>");
     }
 
@@ -1417,6 +1423,7 @@ class ForControl extends Statement {
 
     @Override
     void check(DeclList curDecls) {
+    
     }
 }
 
