@@ -1,7 +1,12 @@
-
-
-
-
 int main(){
+   int LF;
+   LF = 10;
+   getchar();
+   getint();
 
+   putchar(LF);
+   putint(10);
+
+
+   exit(0);
 }

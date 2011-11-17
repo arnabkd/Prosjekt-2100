@@ -1,13 +1,10 @@
-int one(int a, int b){
-  return a*b;
-}
-
-
-
 int main(){
-   int k; int x; int f;
-   k = 1;
-   x = one(k,k);
+   getchar();
+   getint();
 
-   f = one(x,one(x+k, x));
+   putchar(LF);
+   putint(10);
+
+
+   exit(0);
 }
