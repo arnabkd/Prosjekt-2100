@@ -240,6 +240,16 @@ abstract class DeclList extends SyntaxUnit {
         return res;
     }
 
+    void printList() {
+        Declaration d = firstDecl;
+        System.err.println("**Start of " + this);
+        while (d != null) {
+            System.err.println("- " + d.name);
+            d = d.nextDecl;
+        }
+        System.err.println("**End of " + this);
+    }
+
     Declaration findDecl(String name, SyntaxUnit usedIn) {
         //-- Must be changed in part 2:
         Declaration current = firstDecl;
@@ -249,7 +259,10 @@ abstract class DeclList extends SyntaxUnit {
             }
             current = current.nextDecl;
         }
-        return null;
+        if (outerScope == null) {
+            Syntax.error(usedIn, name + " is not defined.");
+        }
+        return outerScope.findDecl(name, usedIn);
     }
 
     Declaration getDecl(String name) {
@@ -1456,6 +1469,13 @@ class ExprList extends SyntaxUnit {
 
     @Override
     void parse() {
+        //Special case if there are no arguments
+        if (Scanner.curToken == rightParToken) {
+            Log.enterParser("<expr list>");
+            Log.leaveParser("</expr list>");
+            return;
+        }
+
         Expression lastExpr = null;
         firstExpr = new Expression();
         Expression currentExp = firstExpr;
@@ -1476,6 +1496,7 @@ class ExprList extends SyntaxUnit {
         //-- Must be changed in part 1:
 
         Log.leaveParser("</expr list>");
+
     }
 
     @Override
@@ -1544,10 +1565,13 @@ class Expression extends Operand {
     @Override
     void genCode(FuncDecl curFunc) {
         //-- Must be changed in part 2:
-        if (firstOp != null) {
-            //Initiate gencode call for first operand. This first call will
-            //trigger gencode for the rest of the expression as well
-            firstOp.genCode(curFunc);
+        firstOp.genCode(curFunc);
+        Operator curOperator = firstOp.nextOperator;
+        while (curOperator != null) {
+            Code.genInstr("", "pushl", "%eax", "");
+            curOperator.secondOp.genCode(curFunc);
+            curOperator.genCode(curFunc);
+            curOperator = curOperator.secondOp.nextOperator;
         }
     }
 
@@ -1651,11 +1675,12 @@ abstract class Operator extends SyntaxUnit {
     }
     //-- Must be changed in part 1+2:
 
-    void genCodeNextOperand(FuncDecl curFunc) {
-        Code.genInstr("", "pushl", "%eax", "");
-        if (secondOp != null) {
-            secondOp.genCode(curFunc);
-        }
+    void genCodeBeforeNextOperand(FuncDecl curFunc) {
+//        if (secondOp != null) {
+//            secondOp.genCode(curFunc);
+//        }
+//        Code.genInstr("", "pushl", "%eax", "");
+
     }
 }
 
@@ -1663,7 +1688,7 @@ class ComparisonOperator extends Operator {
 
     @Override
     void genCode(FuncDecl curFunc) {
-        super.genCodeNextOperand(curFunc);
+        super.genCodeBeforeNextOperand(curFunc);
 
         Code.genInstr("", "popl", "%ecx", "");
         Code.genInstr("", "cmpl", "%eax,%ecx", "");
@@ -1679,7 +1704,7 @@ class ArithmeticOperator extends Operator {
 
     @Override
     void genCode(FuncDecl curFunc) {
-        super.genCodeNextOperand(curFunc);
+        super.genCodeBeforeNextOperand(curFunc);
 
         Code.genInstr("", "movl", "%eax,%ecx", "");
         Code.genInstr("", "popl", "%eax", "");
@@ -1701,11 +1726,6 @@ abstract class Operand extends SyntaxUnit {
         nextOperator = next;
     }
 
-    public void genCodeNextOperator(FuncDecl curFunc) {
-        if (nextOperator != null) {
-            nextOperator.genCode(curFunc);
-        }
-    }
 
     public void checkNextOperator(DeclList curDecl) {
         if (nextOperator != null) {
@@ -1759,7 +1779,7 @@ class FunctionCall extends Operand {
 
     @Override
     void genCode(FuncDecl curFunc) {
-        //-- Must be changed in part 2:  
+        //-- Must be changed in part 2:
         Expression[] expTab = exps.toArray();
         for (int i = exps.size(); i > 0; i--) {
             genParamCall(expTab[i - 1], i, curFunc);
@@ -1773,9 +1793,9 @@ class FunctionCall extends Operand {
             i++;
         }
 
-        if (nextOperator != null) {
-            nextOperator.genCode(curFunc);
-        }
+        //if (nextOperator != null) {
+            //nextOperator.genCode(curFunc);
+        //}
     }
 
     private void genParamCall(Expression e, int num, FuncDecl func) {
@@ -1849,9 +1869,9 @@ class Number extends Operand {
     @Override
     void genCode(FuncDecl curFunc) {
         Code.genInstr("", "movl", "$" + numVal + ",%eax", "" + numVal);
-        if (nextOperator != null) {
-            nextOperator.genCode(curFunc);
-        }
+        //if (nextOperator != null) {
+            //nextOperator.genCode(curFunc);
+        //}
     }
 
     @Override
@@ -1896,6 +1916,7 @@ class Variable extends Operand {
     @Override
     void check(DeclList curDecls) {
         Declaration d = curDecls.findDecl(varName, this);
+
         if (index == null) {
             d.checkWhetherSimpleVar(this);
         } else {
@@ -1978,9 +1999,9 @@ class Variable extends Operand {
             Code.genInstr("", "movl", declRef.assemblerName + ",%eax",
                     "Putting " + varName + " in %eax");
         }
-        if (nextOperator != null) {
-            nextOperator.genCode(curFunc);
-        }
+        //if (nextOperator != null) {
+            //nextOperator.genCode(curFunc);
+        //}
     }
 
     boolean isArrayVar() {

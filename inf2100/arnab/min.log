@@ -1,4 +1,7 @@
-Binding: Line 3: k refers to declaration in line 2
-Binding: Line 4: k refers to declaration in line 2
-Binding: Line 4: k refers to declaration in line 2
-Binding: main refers to declaration in line 1
+Binding: Line 9: k refers to declaration in line 8
+Binding: Line 9: one refers to declaration in line 1
+Binding: Line 9: one refers to declaration in line 1
+Binding: Line 9: one refers to declaration in line 1
+Binding: Line 9: k refers to declaration in line 8
+Binding: Line 9: k refers to declaration in line 8
+Binding: main refers to declaration in line 7
