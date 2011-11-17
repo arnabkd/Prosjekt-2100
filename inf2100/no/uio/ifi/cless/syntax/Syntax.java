@@ -1233,16 +1233,20 @@ class ElseStatm extends Statement {
 class ReturnStatm extends Statement {
     //part1 + part2
 
-    Expression exps = null;
+    Expression exp = null;
 
     @Override
     void check(DeclList curDecls) {
         //part 2
+        exp.check(curDecls);
     }
 
     @Override
     void genCode(FuncDecl curFunc) {
         //part2
+        exp.genCode(curFunc);
+        Code.genInstr("", "jmp", ".exit$"+curFunc.assemblerName,
+                "return-statement for "+curFunc.name);
     }
 
     @Override
@@ -1251,8 +1255,8 @@ class ReturnStatm extends Statement {
         Log.enterParser("<return-statm>");
 
         Scanner.skip(returnToken);
-        exps = new Expression();
-        exps.parse();
+        exp = new Expression();
+        exp.parse();
 
         Scanner.skip(semicolonToken);
 
@@ -1263,7 +1267,7 @@ class ReturnStatm extends Statement {
     void printTree() {
         //part1
         Log.wTree("return ");
-        exps.printTree();
+        exp.printTree();
         Log.wTreeLn(";");
     }
 }
@@ -1429,6 +1433,8 @@ class ForControl extends Statement {
 }
 
 //-- Must be changed in part 1+2:
+
+
 /*
  * An <expression list>.
  */
@@ -1495,6 +1501,26 @@ class ExprList extends SyntaxUnit {
             current = current.nextExpr;
         }
         return i;
+    }
+
+    int size() {
+        int size = 0;
+        Expression curExpression = firstExpr;
+        while (curExpression != null) {
+            size++;
+            curExpression = curExpression.nextExpr;
+        }
+        return size;
+    }
+
+    Expression[] toArray() {
+        Expression [] expTab = new Expression[size()];
+        int i = 0;
+        for(Expression e = firstExpr; e != null; e = e.nextExpr){
+            expTab[i] = e;
+            i++;
+        }
+        return expTab;
     }
 }
 
@@ -1625,7 +1651,7 @@ abstract class Operator extends SyntaxUnit {
 
     void genCodeNextOperand(FuncDecl curFunc) {
         Code.genInstr("", "pushl", "%eax", "");
-        if(secondOp != null){
+        if (secondOp != null) {
             secondOp.genCode(curFunc);
         }
     }
@@ -1708,6 +1734,7 @@ abstract class Operand extends SyntaxUnit {
 class FunctionCall extends Operand {
     //-- Must be changed in part 1+2:
 
+    String func_assemblerName;
     String varName;
     ExprList exps;
 
@@ -1718,6 +1745,10 @@ class FunctionCall extends Operand {
     @Override
     void check(DeclList curDecls) {
         //-- Must be changed in part 2:
+        FuncDecl func = (FuncDecl) curDecls.findDecl(varName, this);
+        func.checkWhetherFunction(exps.size(), this);
+        func_assemblerName = func.assemblerName;
+        exps.check(curDecls);
 
         if (nextOperator != null) {
             nextOperator.check(curDecls);
@@ -1726,10 +1757,28 @@ class FunctionCall extends Operand {
 
     @Override
     void genCode(FuncDecl curFunc) {
-        //-- Must be changed in part 2:
+        //-- Must be changed in part 2:  
+        Expression [] expTab = exps.toArray();
+        for(int i = exps.size(); i > 0; i--){
+            genParamCall(expTab[i-1], i, curFunc);
+        }
+        
+        Code.genInstr("", "call", func_assemblerName, "call " + varName);
+
+        int i = 0;
+        for (Expression e = exps.firstExpr; e != null; e = e.nextExpr) {
+            Code.genInstr("", "popl", "%ecx", "Pop param #"+i);
+            i++;
+        }
+
         if (nextOperator != null) {
             nextOperator.genCode(curFunc);
         }
+    }
+
+    private void genParamCall(Expression e, int num, FuncDecl func) {
+        e.genCode(func);
+        Code.genInstr("", "pushl", "%eax", "Push parameter #" + num);
     }
 
     @Override

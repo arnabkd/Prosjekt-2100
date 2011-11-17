@@ -1,6 +1,7 @@
 int f(){
   return 3;
 }
+
 int main(){
   int b; int c;
   b = f();
