@@ -1099,11 +1099,13 @@ class CallStatm extends Statement {
     @Override
     void check(DeclList curDecls) {
         //part2
+        func.check(curDecls);
     }
 
     @Override
     void genCode(FuncDecl curFunc) {
         //part2
+        func.genCode(curFunc);
     }
 
     @Override
@@ -1431,10 +1433,10 @@ class ForStatm extends Statement {
     	String label = Code.getLocalLabel(),
     			label2 = Code.getLocalLabel();
     	Code.genInstr(label, "", "", "Start for-statement");
-    	
+
     	cont.genCode(curFunc);
     	exps.genCode(curFunc);
-    	
+
     	Code.genInstr(label2, "", "", "End for-statement");
     }
 
