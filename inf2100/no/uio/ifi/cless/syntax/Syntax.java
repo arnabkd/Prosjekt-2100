@@ -255,8 +255,8 @@ abstract class DeclList extends SyntaxUnit {
         Declaration current = firstDecl;
         while (current != null) {
             if (current.comPareTo(name) == 0) {
-                System.err.println("Found declaration with assemblername : \n"
-                        +current.assemblerName);
+                System.err.println("Found declaration with name : \n"
+                        + current.name);
                 return current;
             }
             current = current.nextDecl;
@@ -851,6 +851,7 @@ class FuncDecl extends Declaration {
         //-- Must be changed in part 1:
         body = new StatmList();
         localVarList = new LocalDeclList();
+
         paramList = new ParamDeclList();
     }
 
@@ -1126,6 +1127,46 @@ class CallStatm extends Statement {
     }
 }
 
+class Assignment extends SyntaxUnit {
+
+    Variable var;
+    Expression exp;
+
+    @Override
+    void check(DeclList curDecls) {
+        var.check(curDecls);
+        exp.check(curDecls);
+    }
+
+    @Override
+    void genCode(FuncDecl curFunc) {
+        if (var.isArrayVar()) {
+            var.index.genCode(curFunc);
+            Code.genInstr("", "pushl", "%eax", "");
+        }
+        exp.genCode(curFunc);
+        var.genCodeForStoring(curFunc);
+    }
+
+    @Override
+    void parse() {
+        Log.enterParser("<assignment>");
+        var = new Variable(Scanner.nextName);
+        var.parse();
+        Scanner.skip(assignToken);
+        exp = new Expression();
+        exp.parse();
+        Log.leaveParser("</assignment>");
+    }
+
+    @Override
+    void printTree() {
+        var.printTree();
+        Log.wTree(" = ");
+        exp.printTree();
+    }
+}
+
 
 /*
  * <assign stam>
@@ -1133,46 +1174,51 @@ class CallStatm extends Statement {
 class AssignStatm extends Statement {
     //part1 + part2
 
-    Variable var;
-    Expression exps;
+//    Variable var;
+//    Expression exps;
 
+    Assignment assignment = new Assignment();
     @Override
     void check(DeclList curDecls) {
         //part 2
-        var.check(curDecls);
-        exps.check(curDecls);
+//        var.check(curDecls);
+//        exps.check(curDecls);
+        assignment.check(curDecls);
     }
 
     @Override
     void genCode(FuncDecl curFunc) {
         //part 2
-        if (var.isArrayVar()) {
-            var.index.genCode(curFunc);
-            Code.genInstr("", "pushl", "%eax", "");
-        }
-        exps.genCode(curFunc);
-        var.genCodeForStoring(curFunc);
+//        if (var.isArrayVar()) {
+//            var.index.genCode(curFunc);
+//            Code.genInstr("", "pushl", "%eax", "");
+//        }
+//        exps.genCode(curFunc);
+//        var.genCodeForStoring(curFunc);
+        assignment.genCode(curFunc);
     }
 
     @Override
     void parse() {
         Log.enterParser("<assign-statm>");
-        Log.enterParser("<assignment>");
-        var = new Variable(Scanner.nextName);
-        var.parse();
-        Scanner.skip(assignToken);
-        exps = new Expression();
-        exps.parse();
-        Log.leaveParser("</assignment>");
+//        Log.enterParser("<assignment>");
+//        var = new Variable(Scanner.nextName);
+//        var.parse();
+//        Scanner.skip(assignToken);
+//        exps = new Expression();
+//        exps.parse();
+//        Log.leaveParser("</assignment>");
+        assignment.parse();
         Log.leaveParser("</assign-statm>");
         Scanner.skip(semicolonToken);
     }
 
     @Override
     void printTree() {
-        var.printTree();
-        Log.wTree(" = ");
-        exps.printTree();
+//        var.printTree();
+//        Log.wTree(" = ");
+//        exps.printTree();
+        assignment.printTree();
         Log.wTreeLn(";");
     }
 }
@@ -1518,20 +1564,20 @@ class ForControl extends Statement {
 
     @Override
     void genCode(FuncDecl curFunc) {
-    	var.genCode(curFunc);
-    	eks.genCode(curFunc);
-    	eks2.genCode(curFunc);
-    	var2.genCode(curFunc);
-    	eks3.genCode(curFunc);
+        var.genCode(curFunc);
+        eks.genCode(curFunc);
+        eks2.genCode(curFunc);
+        var2.genCode(curFunc);
+        eks3.genCode(curFunc);
     }
 
     @Override
     void check(DeclList curDecls) {
-    	var.check(curDecls);
-    	eks.check(curDecls);
-    	eks2.check(curDecls);
-    	var2.check(curDecls);
-    	eks3.check(curDecls);
+        var.check(curDecls);
+        eks.check(curDecls);
+        eks2.check(curDecls);
+        var2.check(curDecls);
+        eks3.check(curDecls);
     }
 }
 
@@ -1871,8 +1917,8 @@ class FunctionCall extends Operand {
     void genCode(FuncDecl curFunc) {
         //-- Must be changed in part 2:
         Expression[] expTab = exps.toArray();
-        System.err.println("exptab has length: "+ expTab.length);
-        for (int i = exps.size()-1; i >= 0; i--) {
+        System.err.println("exptab has length: " + expTab.length);
+        for (int i = exps.size() - 1; i >= 0; i--) {
             genParamCall(expTab[i], i, curFunc);
         }
 
