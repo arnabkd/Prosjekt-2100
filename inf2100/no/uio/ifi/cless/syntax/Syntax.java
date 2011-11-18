@@ -1432,11 +1432,15 @@ class ForStatm extends Statement {
         //-- Must be changed in part 2
     	String label = Code.getLocalLabel(),
     			label2 = Code.getLocalLabel();
+    	
+    	//cont.genCode(curFunc;)
+    	
     	Code.genInstr(label, "", "", "Start for-statement");
 
-    	cont.genCode(curFunc);
-    	exps.genCode(curFunc);
+    	Code.genInstr("", "cmpl", "$0,%eax", "");
+    	Code.genInstr("", "je", label2, "");
 
+    	Code.genInstr("", "jmp", label, "");
     	Code.genInstr(label2, "", "", "End for-statement");
     }
 
