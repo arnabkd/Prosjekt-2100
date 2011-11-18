@@ -1463,13 +1463,13 @@ class WhileStatm extends Statement {
 
 class ForStatm extends Statement {
 
-    ExprList exps = new ExprList();
+    //ExprList exps = new ExprList();
     ForControl cont = new ForControl();
     StatmList body = new StatmList();
 
     @Override
     void check(DeclList curDecls) {
-        exps.check(curDecls);
+    	cont.check(curDecls);
         body.check(curDecls);
     }
 
@@ -1479,13 +1479,13 @@ class ForStatm extends Statement {
     	String label = Code.getLocalLabel(),
     			label2 = Code.getLocalLabel();
     	
-    	//cont.genCode(curFunc;)
-    	
+    	cont.genCode(curFunc);
     	Code.genInstr(label, "", "", "Start for-statement");
-
+    	cont.eks.genCode(curFunc);
     	Code.genInstr("", "cmpl", "$0,%eax", "");
     	Code.genInstr("", "je", label2, "");
-
+    	body.genCode(curFunc);
+    	cont.a2.genCode(curFunc);
     	Code.genInstr("", "jmp", label, "");
     	Code.genInstr(label2, "", "", "End for-statement");
     }
@@ -1521,65 +1521,103 @@ class ForStatm extends Statement {
 
 class ForControl extends Statement {
 
-    Variable var = null;
-    Variable var2 = null;
-    Expression eks = null;
-    Expression eks2 = null;
-    Expression eks3 = null;
-
-    @Override
-    void parse() {
-        Log.enterParser("<for-control>");
-
-        var = new Variable(Scanner.nextName);
-        var.parse();
-        Scanner.skip(assignToken);
-        eks = new Expression();
-        eks.parse();
-        Scanner.skip(semicolonToken);
-        eks2 = new Expression();
-        eks2.parse();
-        Scanner.skip(semicolonToken);
-        var2 = new Variable(Scanner.nextName);
-        var2.parse();
-        Scanner.skip(assignToken);
-        eks3 = new Expression();
-        eks3.parse();
-
-        Log.leaveParser("</for-control>");
-    }
-
-    @Override
-    void printTree() {
-        var.printTree();
-        Log.wTree("=");
-        eks.printTree();
-        Log.wTree("; ");
-        eks2.printTree();
-        Log.wTree("; ");
-        var2.printTree();
-        Log.wTree("=");
-        eks3.printTree();
-    }
-
-    @Override
-    void genCode(FuncDecl curFunc) {
-        var.genCode(curFunc);
-        eks.genCode(curFunc);
-        eks2.genCode(curFunc);
-        var2.genCode(curFunc);
-        eks3.genCode(curFunc);
-    }
-
-    @Override
-    void check(DeclList curDecls) {
-        var.check(curDecls);
-        eks.check(curDecls);
-        eks2.check(curDecls);
-        var2.check(curDecls);
-        eks3.check(curDecls);
-    }
+	Assignment a1 = null;//new Assignment();
+	Expression eks = null; //new Expression();
+	Assignment a2 = null; //new Assignment();
+	
+	@Override 
+	void parse() {
+		Log.enterParser("<for-control>");
+	
+		a1 = new Assignment();
+		a1.parse();
+		Scanner.skip(semicolonToken);
+		eks = new Expression();
+		eks.parse();
+		Scanner.skip(semicolonToken);
+		a2 = new Assignment();
+		a2.parse();
+		Log.leaveParser("</for-control>");
+	}
+	
+	@Override
+	void printTree() {
+	
+		a1.printTree();
+		Log.wTree("; ");
+		eks.printTree();
+		Log.wTree("; ");
+		a2.printTree();
+	}
+	
+	@Override
+	void genCode(FuncDecl curFunc) {
+		a1.genCode(curFunc);
+//		eks.genCode(curFunc);
+//		a2.genCode(curFunc);
+	}
+	
+	@Override
+	void check(DeclList curDecls) {
+		a1.check(curDecls);
+		eks.check(curDecls);
+		a2.check(curDecls);
+	}
+	
 }
+//class ForControl extends Statement {
+//
+//    Variable var = null;
+//    Variable var2 = null;
+//    Expression eks = null;
+//    Expression eks2 = null;
+//    Expression eks3 = null;
+//
+//    @Override
+//    void parse() {
+//        Log.enterParser("<for-control>");
+//
+//        var = new Variable(Scanner.nextName);
+//        var.parse();
+//        Scanner.skip(assignToken);
+//        eks = new Expression();
+//        eks.parse();
+//        Scanner.skip(semicolonToken);
+//        eks2 = new Expression();
+//        eks2.parse();
+//        Scanner.skip(semicolonToken);
+//        var2 = new Variable(Scanner.nextName);
+//        var2.parse();
+//        Scanner.skip(assignToken);
+//        eks3 = new Expression();
+//        eks3.parse();
+//
+//        Log.leaveParser("</for-control>");
+//    }
+//
+//    @Override
+//    void printTree() {
+//        var.printTree();
+//        Log.wTree("=");
+//        eks.printTree();
+//        Log.wTree("; ");
+//        eks2.printTree();
+//        Log.wTree("; ");
+//        var2.printTree();
+//        Log.wTree("=");
+//        eks3.printTree();
+//    }
+//
+//    @Override
+//    void genCode(FuncDecl curFunc) {
+//
+//    }
+//
+//    @Override
+//    void check(DeclList curDecls) {
+//
+//    }
+//}
 
 //-- Must be changed in part 1+2:
 /*
