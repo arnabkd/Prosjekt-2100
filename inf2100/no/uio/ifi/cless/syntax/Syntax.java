@@ -1393,6 +1393,14 @@ class ForStatm extends Statement {
     @Override
     void genCode(FuncDecl curFunc) {
         //-- Must be changed in part 2
+    	String label = Code.getLocalLabel(),
+    			label2 = Code.getLocalLabel();
+    	Code.genInstr(label, "", "", "Start for-statement");
+    	
+    	cont.genCode(curFunc);
+    	exps.genCode(curFunc);
+    	
+    	Code.genInstr(label2, "", "", "End for-statement");
     }
 
     @Override
@@ -1470,11 +1478,20 @@ class ForControl extends Statement {
 
     @Override
     void genCode(FuncDecl curFunc) {
+    	var.genCode(curFunc);
+    	eks.genCode(curFunc);
+    	eks2.genCode(curFunc);
+    	var2.genCode(curFunc);
+    	eks3.genCode(curFunc);
     }
 
     @Override
     void check(DeclList curDecls) {
-    
+    	var.check(curDecls);
+    	eks.check(curDecls);
+    	eks2.check(curDecls);
+    	var2.check(curDecls);
+    	eks3.check(curDecls);
     }
 }
 
