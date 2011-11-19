@@ -1990,12 +1990,12 @@ class FunctionCall extends Operand {
 
     @Override
     void parse() {
-        if (!Syntax.library.declExists(varName)
+        /*if (!Syntax.library.declExists(varName)
                 && !Syntax.program.progDecls.declExists(varName)) {
             Error.error("Function " + varName + " is not defined :"
                     + "\nLine " + CharGenerator.curLineNum() + ": "
                     + CharGenerator.sourceLine);
-        }
+        }*/
 
 
         Log.enterParser("<function call>");
