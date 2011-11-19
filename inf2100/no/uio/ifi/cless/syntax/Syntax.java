@@ -1248,7 +1248,31 @@ class IfStatm extends Statement {
             els.check(curDecls);
         }
     }
+//@Override
+//     void genCode(FuncDecl paramFuncDecl)
+//  {
+//    String str1 = Code.getLocalLabel();
+//
+//    Code.genInstr("", "", "", "Start if-statement");
+//    this.eks.genCode(paramFuncDecl);
+//    Code.genInstr("", "cmpl", "$0,%eax", "");
+//
+//    if (els != null) {
+//      String str2 = Code.getLocalLabel();
+//
+//      Code.genInstr("", "je", str2, "");
+//      st.genCode(paramFuncDecl);
+//      Code.genInstr("", "jmp", str1, "");
+//      Code.genInstr(str2, "", "", "  else-part");
+//      els.genCode(paramFuncDecl);
+//    } else {
+//      Code.genInstr("", "je", str1, "");
+//      st.genCode(paramFuncDecl);
+//    }
+//    Code.genInstr(str1, "", "", "End if-statement");
+//  }
 
+   //Jesper's
     @Override
     void genCode(FuncDecl curFunc) {
         //-- Must be changed in part 2:
@@ -1260,10 +1284,10 @@ class IfStatm extends Statement {
         Code.genInstr("", "", "", "Start if-statement");
         eks.genCode(curFunc);
         Code.genInstr("", "cmpl", "$0,%eax", "");
-        Code.genInstr("", "je", label2, "");
+        Code.genInstr("", "je", label, "");
         st.genCode(curFunc);
         if (els == null) {
-            Code.genInstr(label2, "", "", "End if-statmement");
+            Code.genInstr(label, "", "", "End if-statmement");
         } else {
             //String label2 = Code.getLocalLabel();
             Code.genInstr("", "jmp", label, "End if-statement");
@@ -1762,7 +1786,7 @@ class Expression extends Operand {
             Scanner.skip(leftParToken);
             level++;
         }
-        
+
         firstOp = Operand.getOperand();
 
         if (firstOp != null) {
@@ -1789,26 +1813,26 @@ class Expression extends Operand {
             firstOp.printTree();
             return;
         }
-        
+
         Operand curOperand = firstOp;
-        
+
         while(curOperand!=null){
             Log.wTree("(");
             curOperand.printTree();
             Log.wTree(")");
-            
+
             if(curOperand.nextOperator == null){
                 return;
             }
-            
+
             curOperand.nextOperator.printTree();
             curOperand = curOperand.nextOperator.secondOp;
         }
     }
-    
 
 
-    
+
+
 }
 
 //-- Must be changed in part 1+2:
@@ -2109,7 +2133,7 @@ class Variable extends Operand {
             d.checkWhetherArray(this);
             index.check(curDecls);
         }
-       
+
         declRef = (VarDecl) d;
          System.err.println("Running check");
          System.err.println("assembler name " + declRef.assemblerName);
