@@ -1,12 +1,5 @@
 int main(){
-   int LF;
-   LF = 10;
-   getchar();
-   getint();
-
-   putchar(LF);
-   putint(10);
-
-
-   exit(0);
+  int a; int k;
+  a = 1;
+  k = a + (2*a) + (1*a);
 }
