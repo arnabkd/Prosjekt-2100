@@ -1762,6 +1762,7 @@ class Expression extends Operand {
             Scanner.skip(leftParToken);
             level++;
         }
+        
         firstOp = Operand.getOperand();
 
         if (firstOp != null) {
@@ -1781,7 +1782,6 @@ class Expression extends Operand {
                     ? new ComparisonOperator() : new ArithmeticOperator();
             nextOperator.parse();
         }
-
     }
     @Override
     void printTree(){
@@ -1791,6 +1791,7 @@ class Expression extends Operand {
         }
         
         Operand curOperand = firstOp;
+        
         while(curOperand!=null){
             Log.wTree("(");
             curOperand.printTree();
