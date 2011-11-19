@@ -1248,29 +1248,7 @@ class IfStatm extends Statement {
             els.check(curDecls);
         }
     }
-//@Override
-//     void genCode(FuncDecl paramFuncDecl)
-//  {
-//    String str1 = Code.getLocalLabel();
-//
-//    Code.genInstr("", "", "", "Start if-statement");
-//    this.eks.genCode(paramFuncDecl);
-//    Code.genInstr("", "cmpl", "$0,%eax", "");
-//
-//    if (els != null) {
-//      String str2 = Code.getLocalLabel();
-//
-//      Code.genInstr("", "je", str2, "");
-//      st.genCode(paramFuncDecl);
-//      Code.genInstr("", "jmp", str1, "");
-//      Code.genInstr(str2, "", "", "  else-part");
-//      els.genCode(paramFuncDecl);
-//    } else {
-//      Code.genInstr("", "je", str1, "");
-//      st.genCode(paramFuncDecl);
-//    }
-//    Code.genInstr(str1, "", "", "End if-statement");
-//  }
+
 
    //Jesper's
     @Override
