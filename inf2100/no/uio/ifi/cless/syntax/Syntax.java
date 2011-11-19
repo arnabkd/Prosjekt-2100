@@ -255,8 +255,6 @@ abstract class DeclList extends SyntaxUnit {
         Declaration current = firstDecl;
         while (current != null) {
             if (current.comPareTo(name) == 0) {
-                System.err.println("Found declaration with name : \n"
-                        + current.name);
                 return current;
             }
             current = current.nextDecl;
@@ -1144,6 +1142,8 @@ class Assignment extends SyntaxUnit {
             var.index.genCode(curFunc);
             Code.genInstr("", "pushl", "%eax", "");
         }
+
+
         exp.genCode(curFunc);
         var.genCodeForStoring(curFunc);
     }
@@ -1176,8 +1176,8 @@ class AssignStatm extends Statement {
 
 //    Variable var;
 //    Expression exps;
-
     Assignment assignment = new Assignment();
+
     @Override
     void check(DeclList curDecls) {
         //part 2
@@ -1469,25 +1469,25 @@ class ForStatm extends Statement {
 
     @Override
     void check(DeclList curDecls) {
-    	cont.check(curDecls);
+        cont.check(curDecls);
         body.check(curDecls);
     }
 
     @Override
     void genCode(FuncDecl curFunc) {
         //-- Must be changed in part 2
-    	String label = Code.getLocalLabel(),
-    			label2 = Code.getLocalLabel();
-    	
-    	cont.genCode(curFunc);
-    	Code.genInstr(label, "", "", "Start for-statement");
-    	cont.eks.genCode(curFunc);
-    	Code.genInstr("", "cmpl", "$0,%eax", "");
-    	Code.genInstr("", "je", label2, "");
-    	body.genCode(curFunc);
-    	cont.a2.genCode(curFunc);
-    	Code.genInstr("", "jmp", label, "");
-    	Code.genInstr(label2, "", "", "End for-statement");
+        String label = Code.getLocalLabel(),
+                label2 = Code.getLocalLabel();
+
+        cont.genCode(curFunc);
+        Code.genInstr(label, "", "", "Start for-statement");
+        cont.eks.genCode(curFunc);
+        Code.genInstr("", "cmpl", "$0,%eax", "");
+        Code.genInstr("", "je", label2, "");
+        body.genCode(curFunc);
+        cont.a2.genCode(curFunc);
+        Code.genInstr("", "jmp", label, "");
+        Code.genInstr(label2, "", "", "End for-statement");
     }
 
     @Override
@@ -1521,49 +1521,48 @@ class ForStatm extends Statement {
 
 class ForControl extends Statement {
 
-	Assignment a1 = null;//new Assignment();
-	Expression eks = null; //new Expression();
-	Assignment a2 = null; //new Assignment();
-	
-	@Override 
-	void parse() {
-		Log.enterParser("<for-control>");
-	
-		a1 = new Assignment();
-		a1.parse();
-		Scanner.skip(semicolonToken);
-		eks = new Expression();
-		eks.parse();
-		Scanner.skip(semicolonToken);
-		a2 = new Assignment();
-		a2.parse();
-		Log.leaveParser("</for-control>");
-	}
-	
-	@Override
-	void printTree() {
-	
-		a1.printTree();
-		Log.wTree("; ");
-		eks.printTree();
-		Log.wTree("; ");
-		a2.printTree();
-	}
-	
-	@Override
-	void genCode(FuncDecl curFunc) {
-		a1.genCode(curFunc);
+    Assignment a1 = null;//new Assignment();
+    Expression eks = null; //new Expression();
+    Assignment a2 = null; //new Assignment();
+
+    @Override
+    void parse() {
+        Log.enterParser("<for-control>");
+
+        a1 = new Assignment();
+        a1.parse();
+        Scanner.skip(semicolonToken);
+        eks = new Expression();
+        eks.parse();
+        Scanner.skip(semicolonToken);
+        a2 = new Assignment();
+        a2.parse();
+        Log.leaveParser("</for-control>");
+    }
+
+    @Override
+    void printTree() {
+
+        a1.printTree();
+        Log.wTree("; ");
+        eks.printTree();
+        Log.wTree("; ");
+        a2.printTree();
+    }
+
+    @Override
+    void genCode(FuncDecl curFunc) {
+        a1.genCode(curFunc);
 //		eks.genCode(curFunc);
 //		a2.genCode(curFunc);
-	}
-	
-	@Override
-	void check(DeclList curDecls) {
-		a1.check(curDecls);
-		eks.check(curDecls);
-		a2.check(curDecls);
-	}
-	
+    }
+
+    @Override
+    void check(DeclList curDecls) {
+        a1.check(curDecls);
+        eks.check(curDecls);
+        a2.check(curDecls);
+    }
 }
 //class ForControl extends Statement {
 //
@@ -1736,6 +1735,9 @@ class Expression extends Operand {
     void check(DeclList curDecls) {
         //-- Must be changed in part 2:
         firstOp.check(curDecls);
+        if(nextOperator != null){
+            nextOperator.check(curDecls);
+        }
     }
 
     @Override
@@ -1745,6 +1747,7 @@ class Expression extends Operand {
         Operator curOperator = firstOp.nextOperator;
         while (curOperator != null) {
             Code.genInstr("", "pushl", "%eax", "");
+            System.err.println(curOperator.secondOp);
             curOperator.secondOp.genCode(curFunc);
             curOperator.genCode(curFunc);
             curOperator = curOperator.secondOp.nextOperator;
@@ -1780,25 +1783,31 @@ class Expression extends Operand {
         }
 
     }
-
     @Override
-    void printTree() {
-        //-- Must be changed in part 1:
-        if (firstOp != null) {
-            if (firstOp instanceof Expression) {
-                Log.wTree("(");
-                firstOp.printTree();
-                Log.wTree(")");
-            } else {
-                firstOp.printTree();
+    void printTree(){
+        if(firstOp.nextOperator == null){
+            firstOp.printTree();
+            return;
+        }
+        
+        Operand curOperand = firstOp;
+        while(curOperand!=null){
+            Log.wTree("(");
+            curOperand.printTree();
+            Log.wTree(")");
+            
+            if(curOperand.nextOperator == null){
+                return;
             }
-
-
-            if (nextOperator != null) {
-                nextOperator.printTree();
-            }
+            
+            curOperand.nextOperator.printTree();
+            curOperand = curOperand.nextOperator.secondOp;
         }
     }
+    
+
+
+    
 }
 
 //-- Must be changed in part 1+2:
@@ -1837,15 +1846,15 @@ abstract class Operator extends SyntaxUnit {
         if (s != null) {
             Log.wTree(s);
         }
-        if (secondOp != null) {
-            if (secondOp instanceof Expression) {
-                Log.wTree("(");
-                secondOp.printTree();
-                Log.wTree(")");
-            } else {
-                secondOp.printTree();
-            }
+        /*    if (secondOp != null) {
+        if (secondOp instanceof Expression) {
+        Log.wTree("(");
+        secondOp.printTree();
+        Log.wTree(")");
+        } else {
+        secondOp.printTree();
         }
+        }*/
 
 
     }
@@ -1886,6 +1895,7 @@ class ArithmeticOperator extends Operator {
 
         String[] line = token.getAssemblerCodeArith();
         Code.genInstr(line[0], line[1], line[2], line[3]);
+
     }
 }
 
@@ -2013,9 +2023,9 @@ class FunctionCall extends Operand {
         Log.wTree(varName + "(");
         exps.printTree();
         Log.wTree(")");
-        if (nextOperator != null) {
-            nextOperator.printTree();
-        }
+//        if (nextOperator != null) {
+//            nextOperator.printTree();
+//        }
 
     }
     //-- Must be changed in part 1+2:
@@ -2068,9 +2078,9 @@ class Number extends Operand {
     @Override
     void printTree() {
         Log.wTree("" + numVal);
-        if (nextOperator != null) {
-            nextOperator.printTree();
-        }
+//        if (nextOperator != null) {
+//            nextOperator.printTree();
+//        }
     }
 }
 
@@ -2098,8 +2108,12 @@ class Variable extends Operand {
             d.checkWhetherArray(this);
             index.check(curDecls);
         }
+       
         declRef = (VarDecl) d;
-
+         System.err.println("Running check");
+         System.err.println("assembler name " + declRef.assemblerName);
+         System.err.println("is declref null? " + declRef == null);
+         System.err.println("----------");
         if (nextOperator != null) {
             nextOperator.check(curDecls);
         }
@@ -2139,9 +2153,9 @@ class Variable extends Operand {
             index.printTree();
             Log.wTree("]");
         }
-        if (nextOperator != null) {
-            nextOperator.printTree();
-        }
+//        if (nextOperator != null) {
+//            nextOperator.printTree();
+//        }
     }
 
     void genCodeForStoring(FuncDecl curDecl) {
@@ -2165,7 +2179,7 @@ class Variable extends Operand {
     @Override
     void genCode(FuncDecl curFunc) {
 
-        if (index != null) {
+        if (isArrayVar()) {
             index.genCode(curFunc);
             Code.genInstr("", "leal", declRef.assemblerName + ",%edx",
                     "Putting" + varName + "[index] in %eax");
