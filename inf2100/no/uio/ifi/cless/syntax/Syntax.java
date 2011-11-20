@@ -1675,7 +1675,7 @@ class Expression extends Operand {
         Operator curOperator = firstOp.nextOperator;
         while (curOperator != null) {
             Code.genInstr("", "pushl", "%eax", "");
-            System.err.println(curOperator.secondOp);
+
             curOperator.secondOp.genCode(curFunc);
             curOperator.genCode(curFunc);
             curOperator = curOperator.secondOp.nextOperator;
@@ -1832,14 +1832,11 @@ abstract class Operand extends SyntaxUnit {
         Operand o = null;
         if (Scanner.curToken == nameToken
                 && Scanner.nextToken != leftParToken) {
-            System.err.println("Variable: " + Scanner.nextName);
             o = new Variable(Scanner.nextName);
         } else if (Scanner.curToken == numberToken) {
-            System.err.println("Number: " + Scanner.nextNum);
             o = new Number(Scanner.nextNum);
         } else if (Scanner.curToken == leftParToken) {
             o = new Expression();
-
         } else if (Scanner.curToken == nameToken
                 && Scanner.nextToken == leftParToken) {
             o = new FunctionCall(Scanner.nextName);
@@ -1879,7 +1876,6 @@ class FunctionCall extends Operand {
     void genCode(FuncDecl curFunc) {
         //-- Must be changed in part 2:
         Expression[] expTab = exps.toArray();
-        System.err.println("exptab has length: " + expTab.length);
         for (int i = exps.size() - 1; i >= 0; i--) {
             genParamCall(expTab[i], i, curFunc);
         }
@@ -1993,10 +1989,7 @@ class Variable extends Operand {
         }
 
         declRef = (VarDecl) d;
-        System.err.println("Running check");
-        System.err.println("assembler name " + declRef.assemblerName);
-        System.err.println("is declref null? " + declRef == null);
-        System.err.println("----------");
+
         if (nextOperator != null) {
             nextOperator.check(curDecls);
         }
