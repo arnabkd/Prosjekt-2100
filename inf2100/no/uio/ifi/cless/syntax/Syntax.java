@@ -465,7 +465,7 @@ abstract class Declaration extends SyntaxUnit {
 
     Declaration(String n) {
         name = n;
-        //System.err.println(this + " has name : " + name);
+
     }
 
     abstract int dataSize();
@@ -742,7 +742,7 @@ class LocalSimpleVarDecl extends VarDecl {
     void check(DeclList curDecls) {
         //-- Must be changed in part 2:
         visible = true;
-        //System.err.println("Setting " + this.name + " to visible");
+
     }
 
     @Override
@@ -1174,7 +1174,6 @@ class Assignment extends SyntaxUnit {
 class AssignStatm extends Statement {
     //part1 + part2
 
-
     Assignment assignment = new Assignment();
 
     @Override
@@ -1537,8 +1536,6 @@ class ForControl extends Statement {
     @Override
     void genCode(FuncDecl curFunc) {
         a1.genCode(curFunc);
-//		eks.genCode(curFunc);
-//		a2.genCode(curFunc);
     }
 
     @Override
@@ -1548,7 +1545,6 @@ class ForControl extends Statement {
         a2.check(curDecls);
     }
 }
-
 
 //-- Must be changed in part 1+2:
 /*
@@ -1662,8 +1658,6 @@ class Expression extends Operand {
 
     Operand firstOp;
     Expression nextExpr;
-    Operand curOp;
-    Operator operator;
 
     @Override
     void check(DeclList curDecls) {
@@ -1703,7 +1697,9 @@ class Expression extends Operand {
             }
 
             curOperand.nextOperator = Operator.getOperator();
-            if(curOperand.nextOperator == null) break;
+            if (curOperand.nextOperator == null) {
+                break;
+            }
 
             curOperand.nextOperator.parse();
             Operand op = Operand.getOperand();
@@ -1712,7 +1708,6 @@ class Expression extends Operand {
         }
         Log.leaveParser("<expression>");
     }
-
 
     @Override
     void printTree() {
@@ -1758,14 +1753,6 @@ abstract class Operator extends SyntaxUnit {
         token = Scanner.curToken;
         Scanner.skip(token);
         Log.leaveParser("</operator>");
-
-//        secondOp = Operand.getOperand();
-//
-//        if (secondOp == null) {
-//            Scanner.expected("Operand");
-//        } else {
-//            secondOp.parse();
-//        }
     }
 
     @Override
@@ -1774,15 +1761,7 @@ abstract class Operator extends SyntaxUnit {
         if (s != null) {
             Log.wTree(s);
         }
-        /*    if (secondOp != null) {
-        if (secondOp instanceof Expression) {
-        Log.wTree("(");
-        secondOp.printTree();
-        Log.wTree(")");
-        } else {
-        secondOp.printTree();
-        }
-        }*/
+
 
 
     }
@@ -1800,20 +1779,13 @@ abstract class Operator extends SyntaxUnit {
         return null;
     }
 
-    void genCodeBeforeNextOperand(FuncDecl curFunc) {
-//        if (secondOp != null) {
-//            secondOp.genCode(curFunc);
-//        }
-//        Code.genInstr("", "pushl", "%eax", "");
-    }
+
 }
 
 class ComparisonOperator extends Operator {
 
     @Override
     void genCode(FuncDecl curFunc) {
-        super.genCodeBeforeNextOperand(curFunc);
-
         Code.genInstr("", "popl", "%ecx", "");
         Code.genInstr("", "cmpl", "%eax,%ecx", "");
 
@@ -1828,8 +1800,6 @@ class ArithmeticOperator extends Operator {
 
     @Override
     void genCode(FuncDecl curFunc) {
-        super.genCodeBeforeNextOperand(curFunc);
-
         Code.genInstr("", "movl", "%eax,%ecx", "");
         Code.genInstr("", "popl", "%eax", "");
 
@@ -1857,47 +1827,22 @@ abstract class Operand extends SyntaxUnit {
         }
     }
 
-//    public static Operand getOperand2() {
-//        if (Scanner.curToken == nameToken
-//                && Scanner.nextToken != leftParToken) {
-//            return new Variable(Scanner.nextName);
-//        } else if (Scanner.curToken == numberToken) {
-//            return new Number(Scanner.nextNum);
-//        } else if (Scanner.curToken == leftParToken) {
-//            return new Expression();
-//        } else if (Scanner.curToken == nameToken
-//                && Scanner.nextToken == leftParToken) {
-//            return new FunctionCall(Scanner.nextName);
-//        } else {
-//            return null;
-//        }
-//    }
+
     public static Operand getOperand() {
         Operand o = null;
-        boolean nested = false;
         if (Scanner.curToken == nameToken
                 && Scanner.nextToken != leftParToken) {
             System.err.println("Variable: " + Scanner.nextName);
             o = new Variable(Scanner.nextName);
-            //o.parse();
         } else if (Scanner.curToken == numberToken) {
             System.err.println("Number: " + Scanner.nextNum);
             o = new Number(Scanner.nextNum);
-            //o.parse();
         } else if (Scanner.curToken == leftParToken) {
-            //System.err.println("Nested expression");
-            //Scanner.skip(leftParToken);
-            System.err.println("skip left bracket");
             o = new Expression();
-            //o.parse(); // Double parsing, watch out!
-            // Scanner.skip(rightParToken);
-            // System.err.println("skip right bracket");
+
         } else if (Scanner.curToken == nameToken
                 && Scanner.nextToken == leftParToken) {
-            System.err.println("Function call: " + Scanner.nextName);
             o = new FunctionCall(Scanner.nextName);
-            //o.parse();
-        } else {
         }
         return o;
     }
@@ -1947,9 +1892,7 @@ class FunctionCall extends Operand {
             i++;
         }
 
-        //if (nextOperator != null) {
-        //nextOperator.genCode(curFunc);
-        //}
+
     }
 
     private void genParamCall(Expression e, int num, FuncDecl func) {
@@ -1959,14 +1902,6 @@ class FunctionCall extends Operand {
 
     @Override
     void parse() {
-        /*if (!Syntax.library.declExists(varName)
-        && !Syntax.program.progDecls.declExists(varName)) {
-        Error.error("Function " + varName + " is not defined :"
-        + "\nLine " + CharGenerator.curLineNum() + ": "
-        + CharGenerator.sourceLine);
-        }*/
-
-
         Log.enterParser("<function call>");
         Scanner.skip(nameToken);
         Scanner.skip(leftParToken);
@@ -1975,15 +1910,7 @@ class FunctionCall extends Operand {
         Scanner.skip(rightParToken);
         Log.leaveParser("</function call");
 
-//        nextOperator = Operator.getOperator();
-//        if (Token.isOperator(Scanner.curToken)) {
-//            nextOperator = Token.isComparisonOperator(Scanner.curToken)
-//                    ? new ComparisonOperator() : new ArithmeticOperator();
-//        }
-//        if (nextOperator != null) {
-//            nextOperator.parse();
-//        }
-        //-- Must be changed in part 1:
+
     }
 
     @Override
@@ -1992,9 +1919,7 @@ class FunctionCall extends Operand {
         Log.wTree(varName + "(");
         exps.printTree();
         Log.wTree(")");
-//        if (nextOperator != null) {
-//            nextOperator.printTree();
-//        }
+
 
     }
     //-- Must be changed in part 1+2:
@@ -2023,9 +1948,7 @@ class Number extends Operand {
     @Override
     void genCode(FuncDecl curFunc) {
         Code.genInstr("", "movl", "$" + numVal + ",%eax", "" + numVal);
-        //if (nextOperator != null) {
-        //nextOperator.genCode(curFunc);
-        //}
+
     }
 
     @Override
@@ -2034,22 +1957,13 @@ class Number extends Operand {
         //-- Must be changed in part 1:
         Scanner.skip(numberToken);
         Log.leaveParser("</number>");
-//        nextOperator = Operator.getOperator();
-//        if (Token.isOperator(Scanner.curToken)) {
-//            nextOperator = Token.isComparisonOperator(Scanner.curToken)
-//                    ? new ComparisonOperator() : new ArithmeticOperator();
-//        }
-//        if (nextOperator != null) {
-//            nextOperator.parse();
-//        }
+
     }
 
     @Override
     void printTree() {
         Log.wTree("" + numVal);
-//        if (nextOperator != null) {
-//            nextOperator.printTree();
-//        }
+
     }
 }
 
@@ -2101,14 +2015,7 @@ class Variable extends Operand {
             Scanner.skip(rightBracketToken);
         }
 
-//        nextOperator = Operator.getOperator();
-//        if (Token.isOperator(Scanner.curToken)) {
-//            nextOperator = Token.isComparisonOperator(Scanner.curToken)
-//                    ? new ComparisonOperator() : new ArithmeticOperator();
-//        }
-//        if (nextOperator != null) {
-//            nextOperator.parse();
-//        }
+
         //-- Must be changed in part 1:
 
 
