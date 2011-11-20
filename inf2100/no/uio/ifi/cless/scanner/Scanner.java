@@ -179,7 +179,7 @@ public class Scanner {
 	}
 
 	private static boolean isDigit(char c) {
-		return Character.isDigit(c);
+		return (c >= '0' && c<= '9');
 	}
 
 
