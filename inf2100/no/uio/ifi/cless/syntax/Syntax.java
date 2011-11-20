@@ -196,7 +196,6 @@ abstract class DeclList extends SyntaxUnit {
             variableAlreadyDefinedError(d);
             return;
         }
-//        System.err.println("adding " + d.name +" to declaration list");
         //Declaration does not exist yet, add it to the declList
         Declaration last = getLastDecl();
         last.nextDecl = d;
@@ -1175,40 +1174,25 @@ class Assignment extends SyntaxUnit {
 class AssignStatm extends Statement {
     //part1 + part2
 
-//    Variable var;
-//    Expression exps;
+
     Assignment assignment = new Assignment();
 
     @Override
     void check(DeclList curDecls) {
         //part 2
-//        var.check(curDecls);
-//        exps.check(curDecls);
         assignment.check(curDecls);
     }
 
     @Override
     void genCode(FuncDecl curFunc) {
         //part 2
-//        if (var.isArrayVar()) {
-//            var.index.genCode(curFunc);
-//            Code.genInstr("", "pushl", "%eax", "");
-//        }
-//        exps.genCode(curFunc);
-//        var.genCodeForStoring(curFunc);
         assignment.genCode(curFunc);
     }
 
     @Override
     void parse() {
         Log.enterParser("<assign-statm>");
-//        Log.enterParser("<assignment>");
-//        var = new Variable(Scanner.nextName);
-//        var.parse();
-//        Scanner.skip(assignToken);
-//        exps = new Expression();
-//        exps.parse();
-//        Log.leaveParser("</assignment>");
+
         assignment.parse();
         Log.leaveParser("</assign-statm>");
         Scanner.skip(semicolonToken);
@@ -1216,9 +1200,7 @@ class AssignStatm extends Statement {
 
     @Override
     void printTree() {
-//        var.printTree();
-//        Log.wTree(" = ");
-//        exps.printTree();
+
         assignment.printTree();
         Log.wTreeLn(";");
     }
@@ -1566,59 +1548,7 @@ class ForControl extends Statement {
         a2.check(curDecls);
     }
 }
-//class ForControl extends Statement {
-//
-//    Variable var = null;
-//    Variable var2 = null;
-//    Expression eks = null;
-//    Expression eks2 = null;
-//    Expression eks3 = null;
-//
-//    @Override
-//    void parse() {
-//        Log.enterParser("<for-control>");
-//
-//        var = new Variable(Scanner.nextName);
-//        var.parse();
-//        Scanner.skip(assignToken);
-//        eks = new Expression();
-//        eks.parse();
-//        Scanner.skip(semicolonToken);
-//        eks2 = new Expression();
-//        eks2.parse();
-//        Scanner.skip(semicolonToken);
-//        var2 = new Variable(Scanner.nextName);
-//        var2.parse();
-//        Scanner.skip(assignToken);
-//        eks3 = new Expression();
-//        eks3.parse();
-//
-//        Log.leaveParser("</for-control>");
-//    }
-//
-//    @Override
-//    void printTree() {
-//        var.printTree();
-//        Log.wTree("=");
-//        eks.printTree();
-//        Log.wTree("; ");
-//        eks2.printTree();
-//        Log.wTree("; ");
-//        var2.printTree();
-//        Log.wTree("=");
-//        eks3.printTree();
-//    }
-//
-//    @Override
-//    void genCode(FuncDecl curFunc) {
-//
-//    }
-//
-//    @Override
-//    void check(DeclList curDecls) {
-//
-//    }
-//}
+
 
 //-- Must be changed in part 1+2:
 /*
@@ -1758,83 +1688,32 @@ class Expression extends Operand {
         }
     }
 
-//    @Override
-//    void parse() {
-//        Log.enterParser("<expression>");
-//        firstOp = Operand.getOperand();
-//        Operator curOperator = firstOp.nextOperator;
-//
-//        while (curOperator != null) {
-//            curOperator.parse();
-//            curOperator.secondOp = Operand.getOperand();
-//            curOperator = curOperator.secondOp.nextOperator;
-//        }
-//        Log.leaveParser("</expression>");
-//
-//        nextOperator = Operator.getOperator();
-//    }
     @Override
     void parse() {
-
         Log.enterParser("<expression>");
-        //-- Must be changed in part 1:
+        Operand curOperand = firstOp = Operand.getOperand();
+
         while (Token.isOperand(Scanner.curToken)) {
-            boolean nested = false;
-            curOp = Operand.getOperand();
-
-            if (firstOp == null) {
-                firstOp = curOp;
-            } else {
-                operator.secondOp = curOp;
-            }
-
-            if (Scanner.curToken == leftParToken) {
+            if (curOperand instanceof Expression) {
                 Scanner.skip(leftParToken);
-                nested = true;
-            }
-            curOp.parse();
-            if(nested){
+                curOperand.parse();
                 Scanner.skip(rightParToken);
-                nested = false;
+            } else {
+                curOperand.parse();
             }
 
-            if (Token.isOperator(Scanner.curToken)
-                    && isOperand(Scanner.nextToken)) {
-                curOp.nextOperator = operator = Operator.getOperator();
-                curOp.nextOperator.parse();
-            } else {
-                break;
-            }
+            curOperand.nextOperator = Operator.getOperator();
+            if(curOperand.nextOperator == null) break;
+
+            curOperand.nextOperator.parse();
+            Operand op = Operand.getOperand();
+            curOperand.nextOperator.secondOp = op;
+            curOperand = op;
         }
-        Log.leaveParser("</expression>");
+        Log.leaveParser("<expression>");
     }
 
-//    @Override
-//    void parse() {
-//        int level = 0;
-//        Log.enterParser("<expression>");
-//        if (Scanner.curToken == leftParToken) {
-//            System.err.print("(");
-//            Scanner.skip(leftParToken);
-//            level++;
-//        }
-//        firstOp = Operand.getOperand();
-//        if (firstOp != null) {
-//            firstOp.parse();
-//        }
-//        if (Scanner.curToken == rightParToken && level == 1) {
-//            Scanner.skip(rightParToken);
-//            System.err.print(")");
-//            level--;
-//        }
-    //-- Must be changed in part 1:
-//        Log.leaveParser("</expression>");
-//        if (Token.isOperator(Scanner.curToken)) {
-//            nextOperator = Token.isComparisonOperator(Scanner.curToken)
-//                    ? new ComparisonOperator() : new ArithmeticOperator();
-//            nextOperator.parse();
-//        }
-//    }
+
     @Override
     void printTree() {
         if (firstOp.nextOperator == null) {
@@ -2011,15 +1890,14 @@ abstract class Operand extends SyntaxUnit {
             System.err.println("skip left bracket");
             o = new Expression();
             //o.parse(); // Double parsing, watch out!
-           // Scanner.skip(rightParToken);
-           // System.err.println("skip right bracket");
+            // Scanner.skip(rightParToken);
+            // System.err.println("skip right bracket");
         } else if (Scanner.curToken == nameToken
                 && Scanner.nextToken == leftParToken) {
             System.err.println("Function call: " + Scanner.nextName);
             o = new FunctionCall(Scanner.nextName);
             //o.parse();
         } else {
-
         }
         return o;
     }
@@ -2246,9 +2124,7 @@ class Variable extends Operand {
             index.printTree();
             Log.wTree("]");
         }
-//        if (nextOperator != null) {
-//            nextOperator.printTree();
-//        }
+
     }
 
     void genCodeForStoring(FuncDecl curDecl) {
@@ -2281,9 +2157,7 @@ class Variable extends Operand {
             Code.genInstr("", "movl", declRef.assemblerName + ",%eax",
                     "Putting " + varName + " in %eax");
         }
-        //if (nextOperator != null) {
-        //nextOperator.genCode(curFunc);
-        //}
+
     }
 
     boolean isArrayVar() {
