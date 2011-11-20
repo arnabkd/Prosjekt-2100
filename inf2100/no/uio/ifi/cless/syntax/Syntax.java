@@ -1232,30 +1232,52 @@ class IfStatm extends Statement {
     }
 
     //Jesper's
+//    @Override
+//    void genCode(FuncDecl curFunc) {
+//        //-- Must be changed in part 2:
+//        String elseLabel = Code.getLocalLabel(),
+//                ifEndLabel = Code.getLocalLabel();
+//
+//        //Code.genInstr(testLabel, "", "", "Start if-statement");
+//
+//        Code.genInstr("", "", "", "Start if-statement");
+//        eks.genCode(curFunc);
+//        Code.genInstr("", "cmpl", "$0,%eax", "");
+//        Code.genInstr("", "je", elseLabel, "");
+//        st.genCode(curFunc);
+//        if (els == null) {
+//            Code.genInstr(elseLabel, "", "", "End if-statmement");
+//        } else {
+//            //String label2 = Code.getLocalLabel();
+//            Code.genInstr("", "jmp", elseLabel, "End if-statement");
+//            Code.genInstr(ifEndLabel, "", "", "Start else-statement");
+//            els.genCode(curFunc);
+//            Code.genInstr(elseLabel, "", "", "End else-statement");
+//        }
+//
+//
+//    }
     @Override
     void genCode(FuncDecl curFunc) {
-        //-- Must be changed in part 2:
-        String label = Code.getLocalLabel(),
+        String label1 = Code.getLocalLabel(),
                 label2 = Code.getLocalLabel();
-
-        //Code.genInstr(testLabel, "", "", "Start if-statement");
 
         Code.genInstr("", "", "", "Start if-statement");
         eks.genCode(curFunc);
         Code.genInstr("", "cmpl", "$0,%eax", "");
-        Code.genInstr("", "je", label, "");
-        st.genCode(curFunc);
+
         if (els == null) {
-            Code.genInstr(label, "", "", "End if-statmement");
+            Code.genInstr("", "je", label1, "");
+            st.genCode(curFunc);
+            Code.genInstr(label1, "", "", "");
         } else {
-            //String label2 = Code.getLocalLabel();
-            Code.genInstr("", "jmp", label, "End if-statement");
-            Code.genInstr(label2, "", "", "Start else-statement");
+            Code.genInstr("", "je", label2, "");
+            st.genCode(curFunc);
+            Code.genInstr("", "jmp", label1, "");
+            Code.genInstr(label2, "", "", "");
             els.genCode(curFunc);
-            Code.genInstr(label, "", "", "End else-statement");
+            Code.genInstr(label1, "", "", "");
         }
-
-
     }
 
     @Override
@@ -1778,8 +1800,6 @@ abstract class Operator extends SyntaxUnit {
         }
         return null;
     }
-
-
 }
 
 class ComparisonOperator extends Operator {
@@ -1826,7 +1846,6 @@ abstract class Operand extends SyntaxUnit {
             nextOperator.check(curDecl);
         }
     }
-
 
     public static Operand getOperand() {
         Operand o = null;
