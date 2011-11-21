@@ -1231,32 +1231,7 @@ class IfStatm extends Statement {
         }
     }
 
-    //Jesper's
-//    @Override
-//    void genCode(FuncDecl curFunc) {
-//        //-- Must be changed in part 2:
-//        String elseLabel = Code.getLocalLabel(),
-//                ifEndLabel = Code.getLocalLabel();
-//
-//        //Code.genInstr(testLabel, "", "", "Start if-statement");
-//
-//        Code.genInstr("", "", "", "Start if-statement");
-//        eks.genCode(curFunc);
-//        Code.genInstr("", "cmpl", "$0,%eax", "");
-//        Code.genInstr("", "je", elseLabel, "");
-//        st.genCode(curFunc);
-//        if (els == null) {
-//            Code.genInstr(elseLabel, "", "", "End if-statmement");
-//        } else {
-//            //String label2 = Code.getLocalLabel();
-//            Code.genInstr("", "jmp", elseLabel, "End if-statement");
-//            Code.genInstr(ifEndLabel, "", "", "Start else-statement");
-//            els.genCode(curFunc);
-//            Code.genInstr(elseLabel, "", "", "End else-statement");
-//        }
-//
-//
-//    }
+
     @Override
     void genCode(FuncDecl curFunc) {
         String label1 = Code.getLocalLabel(),
@@ -1728,7 +1703,7 @@ class Expression extends Operand {
             curOperand.nextOperator.secondOp = op;
             curOperand = op;
         }
-        Log.leaveParser("<expression>");
+        Log.leaveParser("</expression>");
     }
 
     @Override
