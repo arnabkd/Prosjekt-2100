@@ -1,9 +1,0 @@
-int f (int x) {
-   return x*2;
-}
-
-int f;  /* NB! Dobbeltdeklarasjon! */
-
-int main () {
-   f = f(2);
-}

@@ -1,4 +1,0 @@
-int main (int argc)  /* main skal ikke ha parametre! */
-{
-   putchar('!');   putchar(10);
-}
