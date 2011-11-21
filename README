@@ -1,8 +1,10 @@
 Gruppemedlemmer : 
 Jesperov og Arnabkd
 
+
+
 Hvordan teste :
-alle testfiler ligger i inf2100/Testfiler. Der finnes det to mapper, en med riktig cless kode og en med clesskode som skal feile. Begge disse mappene har et lite script i seg : removecomments.py
+alle testfiler ligger i inf2100/Testfiler. Der finnes det to mapper, en med riktig cless kode og en med clesskode som skal feile. Mappa "riktig" har et lite script i seg : removecomments.py . Den er laget for å gjøre feilsjekking av assembly litt lettere, ved at den fjerner alle kommentarer i en assemblyfil.
 
 Eksempel
 1) kjør java -jar CLess.jar Testfiler/riktig/easter.cless
@@ -11,3 +13,9 @@ Eksempel
 4) Gjør det samme med referansekompilator og bytt ut easter_min.s med easter_ref.s
 
 Da kan man bare kjøre "diff" på filene og se om det er noen forskjell :)
+
+
+
+
+Mangler / forskjeller fra referansekompilator :
+1) Vi begynner å telle linjer fra 0, og ikke fra 1 slik referansekompilatoren gjør. Vi skjønner ikke helt hvorfor, ettersom alle kall er jo gjort med LineNumberReader.curlineNum() og det bør jo gi riktig linjenummer. Det er uansett veldig trivielt.

@@ -112,7 +112,12 @@ class Program extends SyntaxUnit {
             //-- Must be changed in part 2:
 
             if (!progDecls.declExists("main")) {
-                Error.error("No main method defined in file");
+                Syntax.error(this, "No main method defined in file");
+            }
+
+            FuncDecl main = (FuncDecl)progDecls.findDecl("main", this);
+            if(main.paramList.size() != 0){
+                Syntax.error(this, "main cannot have arguments");
             }
 
         }
@@ -225,7 +230,8 @@ abstract class DeclList extends SyntaxUnit {
         errormessage += d.name; // Add variable name to error message
         errormessage += " is already defined";
 
-        Error.error(errormessage);
+
+        Syntax.error(this, errormessage);
     }
 
     int dataSize() {
@@ -1231,7 +1237,6 @@ class IfStatm extends Statement {
         }
     }
 
-
     @Override
     void genCode(FuncDecl curFunc) {
         String label1 = Code.getLocalLabel(),
@@ -1583,7 +1588,7 @@ class ExprList extends SyntaxUnit {
         Log.enterParser("<expr list>");
         while (currentExp != null) {
             currentExp.parse();
-            if (Scanner.curToken != rightParToken) {
+            if (Scanner.curToken == commaToken) {
                 currentExp.nextExpr = new Expression();
             }
             if (currentExp.nextExpr != null) {
@@ -1974,7 +1979,11 @@ class Variable extends Operand {
     @Override
     void check(DeclList curDecls) {
         Declaration d = curDecls.findDecl(varName, this);
-
+        //System.err.println("variable.check "+ varName);
+        //Syntax.program.progDecls.printList();
+        if(!d.visible){
+            Syntax.error(this, varName + " is not defined yet!");
+        }
         if (index == null) {
             d.checkWhetherSimpleVar(this);
         } else {
