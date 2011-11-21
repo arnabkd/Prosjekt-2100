@@ -1,0 +1,5 @@
+int main(){
+  int a; int k;
+  a = 1;
+  k = a + (2*a) + (1*a);
+}

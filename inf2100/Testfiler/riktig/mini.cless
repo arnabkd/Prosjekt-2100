@@ -1,0 +1,10 @@
+# Program 'mini'
+# --------------
+# A minimal C< program!
+
+int k;
+
+int main () 
+{
+  putchar('x');
+}
