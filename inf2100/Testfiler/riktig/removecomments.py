@@ -5,13 +5,12 @@ try:
     file = open(filename, 'r')
     newfile = open(sys.argv[2] , 'w')
 except:
-    print "meh"
+    print "Usage : python removecomments.py infile outfile"
 
 
 comment = r'#.*'
 
 for line in file:
-    print line
     newfile.write(re.sub(comment,'', line))
 
 file.close()
