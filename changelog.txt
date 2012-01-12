@@ -1,0 +1,159 @@
+4dfef34 arnabkd 3 weeks ago - minor changes
+dedbf14 Arnab Datta 7 weeks ago - minor bugfixes and delivery version
+0d04315 Arnab Datta 7 weeks ago - updated readme
+b9102ca Jesper Vestlie 7 weeks ago - testing directory added
+140f21a Jesper Vestlie 7 weeks ago - cleanup
+0a39bd8 Arnab Datta 7 weeks ago - cleanup in code
+aae7529 Arnab Datta 7 weeks ago - updated ignore file
+0bbe0a9 Arnab Datta 8 weeks ago - added a utility to remove comments in both test folders
+132b85b Arnab Datta 8 weeks ago - Fixed a bug in if-statement gencode()
+83c5d2a Arnab Datta 8 weeks ago - tweaked isDigit(char c) in scanner slightly, more readable now
+a61dee8 Arnab Datta 8 weeks ago - removed some more debugging code
+d6096a7 Arnab Datta 8 weeks ago - Cleaned up a bit in the code (commented code removed etc)
+5780552 Arnab Datta 8 weeks ago - easter.cless working now
+9e56bd8 Arnab Datta 8 weeks ago - tentative commit, need to clarify Expression.parse()
+cc86313 Arnab Datta 8 weeks ago - removed duplicate gencode method
+7facd3e Arnab Datta 8 weeks ago - Fixed a minor issue with labelling in if-statement
+3b7c1b0 Arnab Kumar Datta 8 weeks ago - multiple expressions in expressions now work properly, but easter.cless still does not generate code properly
+c20927f Arnab Kumar Datta 8 weeks ago - recursive calls allowed now
+c84dd42 Arnab Kumar Datta 8 weeks ago - cleanup
+7e23c42 Arnab Kumar Datta 8 weeks ago - cleaned up a bit
+2733ca4 Arnab Kumar Datta 8 weeks ago - fixed a bug in Expression (forgot to add check call for nextoperator)
+d0f8d18 Jesper Vestlie 8 weeks ago - Finished forControl and forStatm
+2d61dd6 Jesper Vestlie 8 weeks ago - Fixed conflict
+797b916 Jesper Vestlie 8 weeks ago - Before pulling
+bcf466c Arnab Datta 8 weeks ago - Added assignment class
+639d78c Arnab Datta 8 weeks ago - added check and gencode in callstatement
+79552cf Jesper Vestlie 8 weeks ago - solved confilct
+a3a1647 Jesper Vestlie 8 weeks ago - Merge commit
+8134c45 Arnab Datta 8 weeks ago - Tested gcd.cless, it works now
+29db296 Arnab Datta 8 weeks ago - variables in function call now working properly
+04eff26 Arnab Datta 8 weeks ago - function calls with functioncalls inside them now work. Not tested yet with variables inside function calls
+0699b63 Arnab Datta 8 weeks ago - function calls working with multiple params (ONLY tested with just numbers)
+e8103a1 Arnab Datta 8 weeks ago - global simple and array variable declarations work now
+0b32958 Jesper Vestlie 8 weeks ago - Started to write in ForStatm and tested if- else-statement
+351ccd1 Jesper Vestlie 8 weeks ago - Wrote genCode() and check() in IfStatm and ElseStatm
+2ba576a Jesper Vestlie 8 weeks ago - Merge branch 'master' of github.com:arnabkd/Prosjekt-2100
+f77ed1b Jesper Vestlie 8 weeks ago - Merge commit
+f486ea5 Arnab Datta 8 weeks ago - Expression now generates code properly (identical to referance compiler). The sequntial calls to gencode have been removed, as this would lead to obfuscation further on. This is replaced by a while-loop (see diff / genCode in expression). The expressions have only been tested in assignments, but should behave properly for return statements as well.
+09ee57a Arnab Kumar Datta 8 weeks ago - added NP check in gencode and check in class returnstatm
+f980369 Arnab Kumar Datta 8 weeks ago - return statement now works with single number
+673b1b5 Arnab Datta 8 weeks ago - updated README
+469ed37 Arnab Datta 8 weeks ago - expressions with numbers and variables working now, assignments with just those kind of expressions work
+5ca9ce5 Jesper Vestlie 8 weeks ago - -Wrote genCode() and check()
+30cf7b3 Arnab Datta 8 weeks ago - Array storage and variable storage should work now
+8f68b10 Arnab Kumar Datta 8 weeks ago - testing some .cless files
+5c0cdd5 Arnab Kumar Datta 8 weeks ago - first draft of operator's with gencode and check. Also, added more helper methods in operator class to call on next operand's gencode
+52a852a Arnab Kumar Datta 8 weeks ago - added some helper functions for generating assembly code more easily
+ad4188b Arnab Kumar Datta 8 weeks ago - test commit
+5067404 Arnab Kumar Datta 8 weeks ago - gencode complete for localVarList. simple and array vars dont need to generate any assembly code. gencode complete for funcdecl
+a5b8f3c Arnab Kumar Datta 8 weeks ago - updated ignore file
+d4fc275 Arnab Kumar Datta 8 weeks ago - deleted binaries
+14a42a8 Arnab Kumar Datta 8 weeks ago - gencode in funcdecl complete. Remember to generate code for allocation and frees in localvars
+4d60495 Arnab Kumar Datta 8 weeks ago - added git ignore
+8f92aa8 Arnab Datta 8 weeks ago - Added check for funcdecl, simple and array variables (both global and local), gencode for funcDecl
+cd4b3ea Arnab Datta 8 weeks ago - merge conflict
+f4a911b Arnab Datta 8 weeks ago - small change in mini.cless
+5d532b4 Arnab Datta 8 weeks ago - added more abstraction when adding library functions
+a1d474c Arnab Kumar Datta 9 weeks ago - Added checking for main and made some minor improvements in the error module (now correctly reports line numbers for faulty source code
+038a7ae Arnab Kumar Datta 9 weeks ago - added two gcd log files for comparison purposes, should be used as referance
+79dc5ea Arnab Kumar Datta 9 weeks ago - fixed the problem of variables indenting improperly when put in an expression (first variable tag contained the rest of the expression, this has been fixed now)
+e84c788 Arnab Kumar Datta 9 weeks ago - fixed additional <Statement> and </Statement> along with <func body> and </func body> tags
+3ac90c0 Arnab Datta 3 months ago - Parameter checking and spellcheck of main and stuff like that is in Part 2, not Part 1
+ea6e645 Arnab Datta 3 months ago - almost all error files fail properly, need to fix failing of incorrect number of parameters and undefined variables
+0fad799 Arnab Datta 3 months ago - parsing properly, need to test a bit more for syntax but seems OK
+88895c3 Arnab Datta 3 months ago - printTree formatting fixed, need to test with error files and proper files
+43e44a9 Arnab Datta 3 months ago - printTree() working, but just needs some better formatting
+ed92653 Arnab Datta 3 months ago - all testfiles working properly, need to check logfiles for further bugs, but seems OK
+0ad07fa Arnab Datta 3 months ago - everything except expressions with multiple brackets working
+259a001 Arnab Datta 3 months ago - merge commit
+406deec Arnab Datta 3 months ago - merge commit
+5c34ed7 Jesper Vestlie 3 months ago - -Debugged parse() in ifStatm/elseStatm, completed forStatm and forControl
+e93d414 Jesper Vestlie 3 months ago - -Fixed callStatm -Almost finished with else-part(missing printTree())
+dcfa99a Jesper Vestlie 3 months ago - Merge branch 'master' of github.com:arnabkd/Prosjekt-2100
+326a71a Arnab Datta 3 months ago - TODO - for-statm (with for-control) , if-statm, else-part, while, callstatm and retunstatement
+695b736 Jesper Vestlie 3 months ago - Merge branch 'master' of github.com:arnabkd/Prosjekt-2100
+8922bd5 Jesper Vestlie 3 months ago - Merge commit
+94531f7 Arnab Datta 3 months ago - function call working properly
+fb0777b Arnab Datta 3 months ago - Number and multiple operators in assignment working
+b5ac100 Arnab Datta 3 months ago - x=1+1 not working yet, but x=1 should work
+61622ca Arnab Datta 3 months ago - merge commit
+b4cdafa Arnab Datta 3 months ago - merge commit
+ad9f419 Jesper Vestlie 3 months ago - -Wrote StatmList, methods parse() and printTree()
+ead3fa1 Jesper Vestlie 3 months ago - Merge branch 'master' of github.com:arnabkd/Prosjekt-2100
+cc561dc Jesper Vestlie 3 months ago - Merge branch 'master' of github.com:arnabkd/Prosjekt-2100
+9efb575 Arnab Datta 3 months ago - completed variable parse and printtree (possibly). Latest update at 15:19
+80c87ed Jesper Vestlie 3 months ago - Before pulling update
+07b9b97 Arnab Datta 3 months ago - done with printtree in operator and operand classes
+4d59f6f Arnab Datta 3 months ago - readnext() calls at start should be in scanner instead
+e9dcf98 Jesper Vestlie 3 months ago - Class CallStatm updated, parse() and printTree()
+9e89298 Arnab Datta 3 months ago - merged conflicts
+1840928 Jesper Vestlie 3 months ago - deleted class files again
+71c3a7e Jesper Vestlie 3 months ago - Merge branch 'master' of github.com:arnabkd/Prosjekt-2100
+49e89c1 Jesper Vestlie 3 months ago - a
+dafa51a Arnab Datta 3 months ago - parse() and printTree() working properly for all declaration units it seems, more testing required
+3936db2 Arnab Datta 3 months ago - Attempt #2 at removing directory s
+50b09d6 Arnab Datta 3 months ago - removed folder "s"
+721ba8c Jesper Vestlie 3 months ago - More code in statement methods
+8bcbe34 Jesper Vestlie 3 months ago -  _Merge branch 'master' of github.com:arnabkd/Prosjekt-2100
+378ee78 Jesper Vestlie 3 months ago - Written more on parse() and printTree()
+0a8426f Arnab Datta 3 months ago - now parses and prints functions with multiple params properly. Syntax tree is built up slightly differently, see diff log
+ee6c323 Jesper Vestlie 3 months ago - Merge branch 'master' of github.com:arnabkd/Prosjekt-2100
+1542f41 Jesper Vestlie 3 months ago - Adden new classes to handle statements, added some code in methods(uncomplete)
+a0019cb Arnab Datta 3 months ago - can parse int var and an empty main method now
+13ac3bd Arnab Datta 3 months ago - added a note to parse() in LocalDeclList in syntax.java
+2336a81 Arnab Datta 3 months ago - added some more code to LocalDeclList
+87fa2d3 Arnab Datta 3 months ago - Log.java : changed function params of stringRepeater as a single space character was too unclear in logfile
+a1f3590 Arnab Datta 3 months ago - Syntax.java : funcDecl.parse() complete
+c01cbb1 Arnab Datta 3 months ago - Log.java : - added a helper method and cleaned up in enterparser and leaveparser
+5c5acef Arnab Datta 3 months ago - Completed enterparser and leaveparser in Log.java, started on funcDecl in Syntax.java
+ad793e7 Arnab Datta 3 months ago - added nExpr() method for ExprList
+d02abf2 Arnab Datta 3 months ago - wrote outdent- and indenttree, pretty trivial methods, see javadoc for more info
+c7ddb97 Arnab Datta 3 months ago - removed the faulty "s" folder
+4ac2326 Arnab Datta 3 months ago - misspelled semicolonToken in Syntax.java fixed
+80a57e3 Arnab Datta 3 months ago - another minor edit
+1db7f4d Arnab Datta 3 months ago - minor delete of some comments
+90721ef Arnab Datta 3 months ago - Minor changes in Syntax.java (added parsing for global simple variables)
+52ff81a Arnab Datta 3 months ago - Added helper methods in Syntax.java : - void variableAlreadyDefinedError(Declaration d) - boolean declExists (Declaration d)
+e646dc9 Arnab Datta 3 months ago - In syntax.java : - wrote first version of printTree() - wrote first version of addDecl(Declaration d)
+e23361f Arnab Datta 3 months ago - updated README
+d74c14e Arnab Datta 3 months ago - return token parsed properly
+73a1211 Arnab Datta 3 months ago - Fixed bug in Scanner: now reads single quotes properly
+e18572f Arnab Datta 3 months ago - Accepts underscores as part of nametokens now
+847e563 Arnab Datta 3 months ago - Fixed comment reading and single quotes parsing
+106427e Arnab Datta 3 months ago - eoftokens working, and handles linefeed properly
+d10a83d Arnab Datta 3 months ago - added testfiles
+6d300ca Arnab Datta 3 months ago - parsing comma properly
+115fe18 Arnab Kumar Datta 4 months ago - deleted : minfil.cless
+3c66013 Arnab Kumar Datta 4 months ago - Now logging #-style comments in log file
+4fe96f2 Arnab Kumar Datta 4 months ago - now logs sourcelines
+05d5e55 Arnab Kumar Datta 4 months ago - last bug fixed (check diff for location of bug). TODO : scaner needs to call Log.noteSourceLine() everytime we read a newline in Scanner.readNext() through indirect use of CharGenerator.readNext()
+2b7d8fc Arnab Kumar Datta 4 months ago - Scanner now ignore javadoc-style comments. BUG : all tokens that are preceded by x carriagereturns/newlines/spaces are repeated x times. The bug is somewhere in Scanner.readNext()
+5c01485 Arnab Kumar Datta 4 months ago - removed redundant/unused code blocks and debug prints. TODO : CharGenerator's sourceLine and sourcePos are still not working as intended, and name/numberTokens are still being logged twice
+faff6dd Arnab Kumar Datta 4 months ago - Scanner almost working. BUG: nametoken and numbertoken get logged twice
+dbfa679 Arnab Kumar Datta 4 months ago - Scanner and CharGenerator now read all lines in a .cless file properly. Scanner needs to parse tokens properly now
+417ddd9 Jesper Vestlie 4 months ago - -Log.java 	-Check diff CharGenerator.java 	-Problems with EOF, debugging Scanner.java 	-Added all cases in readNext()
+64b73df Arnab Kumar Datta 4 months ago - added else-if hook for semicolonToken and added else-if hooks for if,int,for,else,while,name and numberToken
+53f9b9b Jesper Vestlie 4 months ago - Started scanner.readNext()
+8c80839 Arnab Kumar Datta 4 months ago - Starting from scratch in Scanner.readNext()
+9357e6c Arnab Kumar Datta 4 months ago - SourceLine and SourcePos correctly updated now
+afd9644 Arnab Kumar Datta 4 months ago - Added referance compiler and sample .cless file
+1d74a7b Arnab Kumar Datta 4 months ago - somewhat further in reading tokens now
+ed0e9e6 Arnab Kumar Datta 4 months ago - Added some debug printouts that might help with debugging the readNext() method. Not parsing correctly at the moment
+4ad544c Arnab Kumar Datta 4 months ago - added a isDelim(char c) method
+26b617b Arnab Kumar Datta 4 months ago - Added intToken to getToken() method
+4b06d0e Arnab Kumar Datta 4 months ago - Added a getToken(String s) method that returns the correct token type based on the currently parsed string
+eeac939 Arnab Kumar Datta 4 months ago - Added helper methods in Scanner.java : 	- Token isComparisonOperator (char c1, c2) 	- Token isComparisonOperator (char c) 	- Token isNumericalOperator (char c)
+5cae784 Arnab Kumar Datta 4 months ago - fixed compile error in Scanner.java
+6875220 Jesper Vestlie 4 months ago - Logging done, isDigit() and isLetter() in Scanner
+c89640b Jesper Vestlie 4 months ago - Scanner.java: 	-isLetterAZ(char c);
+2065dd7 Arnab Kumar Datta 4 months ago - Added a small comment in Scanner.java
+4c6b3cb Arnab Kumar Datta 4 months ago - fixed compile error in Token.java : 31 and 40 (missing return statement)
+43d4233 Arnab Kumar Datta 4 months ago - Token class : - isOperatorToken(Token t) 	- isNumericalToken(Token t) 	- isComparisonOperator(Token t)
+9b13dce Arnab Kumar Datta 4 months ago - First draft of chargenerator completed : - readNext() - isMoreToRead() - isComment()
+efa8413 Arnab Kumar Datta 4 months ago - fixed indentation on some files
+fa62321 Jesper Vestlie 4 months ago - Merge branch 'master' of github.com:arnabkd/Prosjekt-2100
+1bb145b Jesper Vestlie 4 months ago - Error method completed (String where, String message)
+504826c Jesper Vestlie 4 months ago - Gjort ferdig public static void error(String where, String message)
+5966ba9 Arnab Kumar Datta 4 months ago - La til en How-To for enkel git bruk :)
+59e2de4 Arnab Kumar Datta 4 months ago - initial commit with project files
