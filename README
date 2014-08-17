@@ -1,3 +1,21 @@
+===============================
+
+Group members:
+Jesperov, Arnabkd
+
+How to test:
+- All test files are in inf2100/Testfiler. 
+- This folder has two subfolders: one with cless code that should fail and one that should succeed.
+- There is also a removecomments.py script that removes assembly comments and makes it easier to compare reference compiler output to the output from our compiler.
+
+
+Eksempel
+1) java -jar CLess.jar Testfiler/riktig/easter.cless
+2) cd Testfiler/riktig
+3) python removecomments.py easter.s easter_min.s 
+4) Repeat the reference compiler og instead of supplying "easter_min.s" as an argument to removecomments, use "easter_ref.s"
+
+
 Gruppemedlemmer : 
 Jesperov og Arnabkd
 
@@ -21,19 +39,3 @@ Mangler / forskjeller fra referansekompilator :
 1) Vi begynner � telle linjer fra 0, og ikke fra 1 slik referansekompilatoren gj�r. Vi skj�nner ikke helt hvorfor, ettersom alle kall er jo gjort med LineNumberReader.curlineNum() og det b�r jo gi riktig linjenummer. Det er uansett veldig trivielt.
 
 
-===============================
-
-Group members:
-Jesperov, Arnabkd
-
-How to test:
-- All test files are in inf2100/Testfiler. 
-- This folder has two subfolders: one with cless code that should fail and one that should succeed.
-- There is also a removecomments.py script that removes assembly comments and makes it easier to compare reference compiler output to the output from our compiler.
-
-
-Eksempel
-1) java -jar CLess.jar Testfiler/riktig/easter.cless
-2) cd Testfiler/riktig
-3) python removecomments.py easter.s easter_min.s 
-4) Repeat the reference compiler og instead of supplying "easter_min.s" as an argument to removecomments, use "easter_ref.s"
