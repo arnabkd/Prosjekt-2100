@@ -1,4 +1,4 @@
-===============================
+
 
 Group members:
 Jesperov, Arnabkd
@@ -15,6 +15,8 @@ Eksempel
 3) python removecomments.py easter.s easter_min.s 
 4) Repeat the reference compiler og instead of supplying "easter_min.s" as an argument to removecomments, use "easter_ref.s"
 
+
+===============================
 
 Gruppemedlemmer : 
 Jesperov og Arnabkd
